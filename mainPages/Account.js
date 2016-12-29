@@ -14,16 +14,13 @@ export default class Account extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg')}
-        <ListItem
-          roundAvatar
-          hideChevron
-          containerStyle={styles.titleContainer}
-          avatarStyle={styles.avatar}
-          titleStyle={styles.title}
-          underlayColor={'black'}
-          avatar={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg' }}
-          title={'Bob Clinton'}/>
+        <View style={styles.header}>
+          <Image source={require('../img/doge.jpg')}
+            style={styles.avatar}/>
+          <Text style={styles.title}>Bob Clinton</Text>
+        </View>
+        <View style={styles.content}>
+        </View>
       </View>
     );
   }
@@ -33,15 +30,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: '#242628',
+    alignItems: 'stretch',
+    flexDirection: 'column',
+  },
+  header: {
+    flex: 1,
+    height: 200,
+    backgroundColor: 'gray'
+  },
+  content: {
+    flex: 1,
+    height: 500,
+    backgroundColor: '#242628'
   },
   avatar: {
     width: 75,
-    height: 75
+    height: 75,
+    borderRadius: 37,
+    marginTop: 75,
+    marginLeft: 75
   },
   title: {
     fontSize: 20,
-    paddingLeft: 20,
+    marginLeft: 180,
+    marginTop: -50,
     color: 'white'
   },
   titleContainer: {
