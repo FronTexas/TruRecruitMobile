@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   Navigator,
+  Text,
+  View
 } from 'react-native';
 
 import Login from './Login';
@@ -15,6 +17,7 @@ import Splash from './Splash';
 import Signup from './Signup';
 import Main from './Main';
 import EventPage from './EventPage';
+import EventDetailsPage from './EventDetailsPage';
 
 class AwesomeProject extends Component {
   render() {
@@ -61,9 +64,22 @@ class AwesomeProject extends Component {
     if (routeId === 'EventPage') {
       return (
          <EventPage
-          navigator={navigator}></EventPage>
+          navigator={navigator}
+          something="something"></EventPage>
       )
     }
+
+    if (routeId === 'EventDetailsPage') {
+      return (
+        // <View>
+        //   <Text>{route.event.eventTitle}</Text>
+        //   <Text>{route.event.eventDate}</Text>
+        // </View>
+         <EventDetailsPage
+            navigator={navigator}
+            event={route.event}/>
+      )
+    }    
   }
 }
 

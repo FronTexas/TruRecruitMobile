@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import EventCard from './EventCard'
 
-export default class EventPage extends Component
+export default class EventDetailsPage extends Component
 {	
 	
 	constructor(props){
@@ -20,29 +20,13 @@ export default class EventPage extends Component
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
 		const events = [
-			{
-				eventTitle:"HackTX",
-				eventDate:"February 20th 2017",
-				resumeScanned: 200
-			},
-			{
-				eventTitle:"UT Job Fair",
-				eventDate:"February 25th 2017",
-				resumeScanned: 420
-			},
-			{
-				eventTitle:"PennApps",
-				eventDate:"March 20th 2017",
-				resumeScanned: 69
-			},
+
 		]
 		this.state.dataSource = ds.cloneWithRows(events);
-		this.state.selectedEvent = null;
 	}
 
 
-	_renderHeader()
-	{
+	_renderHeader(){
 		const SearchBar = require('react-native-search-bar');
 		return(
 			<View style={styles.top_nav}>
@@ -62,7 +46,10 @@ export default class EventPage extends Component
 			
 
 				<View style={styles.header_title_and_action}> 
-					<Text style={styles.title}>Events</Text>
+					<View style={styles.eventDetailsContainer}>
+						<Text style={styles.title}>{this.props.event.eventTitle}</Text>
+						<Text style={[styles.title,styles.date]}>{this.props.event.eventDate}</Text>
+					</View>
 					<Icon name="md-add-circle" size={30} style={{color:'#FFF',marginTop:10,marginRight:10}}></Icon>
 				</View>
 		</View>
@@ -79,8 +66,7 @@ export default class EventPage extends Component
 					<EventCard 
 					eventTitle={rowData.eventTitle} 
 					eventDate={rowData.eventDate}
-					resumeScanned={rowData.resumeScanned}
-					navigator={this.props.navigator}></EventCard>
+					resumeScanned={rowData.resumeScanned}></EventCard>
 				}
 				style = {styles.list_view}
 			></ListView>	
@@ -107,11 +93,18 @@ const styles = StyleSheet.create({
 	},
 	event_list:{
 	},
+	eventDetailsContainer:{
+		flexDirection:'column'
+	},
 	title:{
 		color: '#FFF',
 		fontWeight: 'bold',
 		fontSize: 45,
 		marginLeft:10,
+	},
+	date:{
+	    fontSize:20,
+	    fontWeight:'normal'
 	},
 	arrow_back:{
 		marginBottom:10

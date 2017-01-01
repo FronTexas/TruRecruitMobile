@@ -4,7 +4,8 @@ import {
 	ScrollView,
 	ListView,
 	View,
-	Text
+	Text,
+	TouchableHighlight
 } from 'react-native';
 
 export default class EventCard extends Component
@@ -14,19 +15,33 @@ export default class EventCard extends Component
 		super(props);
 	}
 
+	_goToEventDetails(){
+		this.props.navigator.push({
+			id:"EventDetailsPage",
+			name:"Event Details Page",
+			event:{
+				eventTitle: this.props.eventTitle,
+				eventDate: this.props.eventDate
+			}
+		})
+	}
+
 	render()
 	{
 		return(
-			<View style={styles.container}>
-				<View style={styles.eventInfoContainer}>
-					<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
-					<Text style={styles.eventDate}>{this.props.eventDate}</Text>
+			<TouchableHighlight onPress={this._goToEventDetails.bind(this)}>
+				<View style={styles.container}>
+					<View style={styles.eventInfoContainer}>
+						<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
+						<Text style={styles.eventDate}>{this.props.eventDate}</Text>
+					</View>
+					<View style={styles.resume_scanned_container}>
+						<Text style={styles.resume_scanned_number}>{this.props.resumeScanned}</Text>
+						<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
+					</View>
 				</View>
-				<View style={styles.resume_scanned_container}>
-					<Text style={styles.resume_scanned_number}>{this.props.resumeScanned}</Text>
-					<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
-				</View>
-			</View>
+			</TouchableHighlight>
+		
 		)
 	}
 
