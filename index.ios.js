@@ -14,12 +14,13 @@ import Login from './Login';
 import Splash from './Splash';
 import Signup from './Signup';
 import Main from './Main';
+import EventPage from './EventPage';
 
 class AwesomeProject extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'SplashPage', name: 'Index'}}
+          initialRoute={{id: 'EventPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {
@@ -54,6 +55,13 @@ class AwesomeProject extends Component {
       return (
         <Main
           navigator={navigator} />
+      )
+    }
+
+    if (routeId === 'EventPage') {
+      return (
+         <EventPage
+          navigator={navigator}></EventPage>
       )
     }
   }
