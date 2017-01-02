@@ -14,6 +14,7 @@ import {
 import Scanner from './mainPages/Scanner';
 import Feed from './mainPages/Feed';
 import Account from './mainPages/Account';
+import EventPage from './EventPage'
 
 export default class Login extends Component {
   constructor () {
@@ -41,17 +42,7 @@ export default class Login extends Component {
           renderIcon={() => <Icon name='format-list-bulleted' size={26} />}
           renderSelectedIcon={() => <Icon name='format-list-bulleted' size={26} />}
           onPress={() => this.changeTab('feed')}>
-          <Feed navigator={navigator} />
-        </Tab>
-        <Tab
-          titleStyle={[styles.titleStyle, {marginTop: -1}]}
-          selectedTitleStyle={[styles.titleSelected, {marginTop: -3, marginBottom: 7}]}
-          selected={selectedTab === 'scanner'}
-          title={selectedTab === 'scanner' ? 'SCANNER' : null}
-          renderIcon={() => <Icon style={{paddingBottom: 4}} name='camera' size={26} />}
-          renderSelectedIcon={() => <Icon name='camera' size={26} />}
-          onPress={() => this.changeTab('scanner')}>
-          <Scanner navigator={navigator}/>
+          <EventPage navigator={this.props.navigator} />
         </Tab>
         <Tab
           titleStyle={[styles.titleStyle, {marginTop: -1}]}
