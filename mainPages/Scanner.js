@@ -9,8 +9,16 @@ import {
   Navigator
 } from 'react-native';
 import Camera from 'react-native-camera';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Scanner extends Component {
+
+  _goToAttendeeProfilePage(){
+    this.props.navigator.push({
+      id:"AttendeeProfilePage",
+      name:"Attendee Profile Page"
+    })
+  }
 
   render() {
     return (
@@ -21,7 +29,14 @@ export default class Scanner extends Component {
           }}
           style={styles.preview}
           onBarCodeRead={this.gotoSplash.bind(this)}>
-          <Image source={require('../img/scanner.png')} style={styles.scan}/>
+          <View style={styles.arrow_back_area}>
+            <Icon name="ios-arrow-back" size={30} style={styles.arrowBack}></Icon>
+            <Text style={styles.backText}>Back</Text>
+          </View>
+          <View style={styles.scan_and_instruction}>
+            <Image  source={require('../img/scanner.png')} style={styles.scan}/>
+            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={styles.instruction}>Place the QR code at the center of the icon</Text>
+          </View>
         </Camera>
       </View>
     );
@@ -53,15 +68,31 @@ const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+  },
+  arrow_back_area:{
+    flex:1,
+    padding:20,
+    flexDirection:'row',
+    alignItems:'center'
+  },
+  backText:{color:"#FFF",marginLeft:10,fontSize:20},
+  arrowBack:{
+    color:"#FFF"
+  },
+  scan_and_instruction:{
+    flex: 9,
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:150
   },
   scan: {
-    width: 350,
-    height: 350,
-    marginBottom: 200,
-    justifyContent: 'center'
+    width: 250,
+    height: 250,
+    marginBottom:20
+  },
+  instruction:{
+    fontWeight: 'bold',
+    color: '#FFF',
+    marginBottom: 200
   }
 });
