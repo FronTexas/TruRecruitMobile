@@ -53,6 +53,13 @@ export default class Login extends Component {
     );
   }
 
+  _goToEventPage(){
+    this.props.navigator.push({
+      id:'EventPage',
+      name:'Event Page'
+    })
+  }
+
   gotoMain() {
     this.props.navigator.push({
       id: 'MainPage',
