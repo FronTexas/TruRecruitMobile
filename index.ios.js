@@ -18,12 +18,14 @@ import Signup from './Signup';
 import Main from './Main';
 import EventPage from './EventPage';
 import EventDetailsPage from './EventDetailsPage';
+import Scanner from './mainPages/Scanner';
+import AttendeeProfilePage from './AttendeeProfilePage'
 
 class AwesomeProject extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'EventPage', name: 'Index'}}
+          initialRoute={{id: 'SplashPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {
@@ -79,7 +81,23 @@ class AwesomeProject extends Component {
             navigator={navigator}
             event={route.event}/>
       )
-    }    
+    } 
+
+    if (routeId === 'ScannerPage'){
+      return(
+        <Scanner
+          navigator={navigator
+        }></Scanner>
+      )
+    }
+
+    if(routeId === 'AttendeeProfilePage'){
+      return(
+        <AttendeeProfilePage
+          navigator={navigator}>
+        </AttendeeProfilePage>
+      )
+    }   
   }
 }
 
