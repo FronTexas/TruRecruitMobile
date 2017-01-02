@@ -9,8 +9,8 @@ import {
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import EventDetailsCard from './EventDetailsCard';
 
-import EventCard from './EventCard'
 
 export default class EventDetailsPage extends Component
 {	
@@ -19,14 +19,43 @@ export default class EventDetailsPage extends Component
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
-		const events = [
+		const attendees = [
+			{
+				name:'Jesse Harrick',
+				scanned: '02:42 pm January 20th 2017'
+			},
+			{
+				name:'Raul Camacho',
+				scanned: '02:42 pm January 20th 2017'
+			},
+			{
+				name:'Fahran Kamili',
+				scanned: '02:42 pm January 20th 2017'
+			},
+			{
+				name:'Elon Musk',
+				scanned: '02:42 pm January 20th 2017'
+			},
+			{
+				name:'Steve Jobs',
+				scanned: '02:42 pm January 20th 2017'
+			}
 
 		]
-		this.state.dataSource = ds.cloneWithRows(events);
+		this.state.dataSource = ds.cloneWithRows(attendees);
+	}
+
+	_goToScannerPage()
+	{
+		this.props.navigator.push({
+			id: 'ScannerPage',
+			name: 'Scanner Page'
+		})
 	}
 
 
-	_renderHeader(){
+	_renderHeader()
+	{
 		const SearchBar = require('react-native-search-bar');
 		return(
 			<View style={styles.top_nav}>
@@ -50,7 +79,17 @@ export default class EventDetailsPage extends Component
 						<Text style={styles.title}>{this.props.event.eventTitle}</Text>
 						<Text style={[styles.title,styles.date]}>{this.props.event.eventDate}</Text>
 					</View>
-					<Icon name="md-add-circle" size={30} style={{color:'#FFF',marginTop:10,marginRight:10}}></Icon>
+					<View style={styles.scan_button}>
+						<Icon 
+							style={styles.add_icon}
+							name="ios-qr-scanner" 
+							size={30} 
+							onPress={this._goToScannerPage.bind(this)}
+							></Icon>
+							<Text style={styles.scan_text}
+							onPress={this._goToScannerPage.bind(this)}>Scan</Text>
+					</View>
+					
 				</View>
 		</View>
 		)
@@ -63,10 +102,9 @@ export default class EventDetailsPage extends Component
 				renderHeader={this._renderHeader.bind(this)}
 				dataSource={this.state.dataSource}
 				renderRow={(rowData) => 
-					<EventCard 
-					eventTitle={rowData.eventTitle} 
-					eventDate={rowData.eventDate}
-					resumeScanned={rowData.resumeScanned}></EventCard>
+					<EventDetailsCard
+					attendee_name={rowData.name} 
+					time_scanned={rowData.scanned}></EventDetailsCard>
 				}
 				style = {styles.list_view}
 			></ListView>	
@@ -75,6 +113,9 @@ export default class EventDetailsPage extends Component
 }
 
 const styles = StyleSheet.create({
+	list_view:{
+		backgroundColor:"#FFF"
+	},
 	arrow_back_and_list:{
 		flexDirection:"row",
 		justifyContent: 'space-between',
@@ -88,8 +129,22 @@ const styles = StyleSheet.create({
 	},
 	header_title_and_action:{
 		flexDirection:'row',
-		alignItems:'center',
-		justifyContent:'space-between'
+		justifyContent:'space-between',
+		alignItems:'flex-end'
+	},
+	scan_button:{
+		flexDirection:'row',
+		alignItems:'center'
+	},
+	add_icon:{
+		marginRight: 5,
+		color:"#fff"
+	},
+	scan_text:{
+		color:"#fff",
+		fontWeight:"600",
+		fontSize:20,
+		marginTop:-3
 	},
 	event_list:{
 	},
@@ -103,7 +158,7 @@ const styles = StyleSheet.create({
 		marginLeft:10,
 	},
 	date:{
-	    fontSize:20,
+	    fontSize:15,
 	    fontWeight:'normal'
 	},
 	arrow_back:{
