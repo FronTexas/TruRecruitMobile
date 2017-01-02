@@ -89,6 +89,9 @@ export default class EventPage extends Component
 }
 
 const styles = StyleSheet.create({
+	list_view:{
+		backgroundColor:"#FFF"
+	},
 	arrow_back_and_list:{
 		flexDirection:"row",
 		justifyContent: 'space-between',
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
 	},
 	header_title_and_action:{
 		flexDirection:'row',
-		alignItems:'center',
+		alignItems:'flex-end',
 		justifyContent:'space-between'
 	},
 	event_list:{
