@@ -14,9 +14,9 @@ import {
 import Scanner from './mainPages/Scanner';
 import Feed from './mainPages/Feed';
 import Account from './mainPages/Account';
-import EventPage from './EventPage'
+import EventPage from './EventPage';
 import EventDetailsPage from './EventDetailsPage';
-import AttendeeProfilePage from './AttendeeProfilePage'
+import AttendeeProfilePage from './AttendeeProfilePage';
 import IconIon from 'react-native-vector-icons/Ionicons';
 
 
@@ -84,6 +84,8 @@ export default class Login extends Component {
           style={{backgroundColor:"#1DBB96"}}></EventPage>
       )
     }
+
+
 
     if (routeId === 'EventDetailsPage') {
       return (

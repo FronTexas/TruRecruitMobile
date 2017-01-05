@@ -46,7 +46,7 @@ export default class Login extends Component {
         <Button
           containerStyle={styles.loginButton}
           style={{fontSize: 20, color: '#f9fafc'}}
-          onPress={this.gotoMain.bind(this)}>
+          onPress={this._goToEventPage.bind(this)}>
           Log in
         </Button>
       </View>
