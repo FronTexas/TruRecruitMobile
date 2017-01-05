@@ -9,8 +9,8 @@ import {
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import EventCard from './EventCard'
+import ActionButton from 'react-native-action-button'
 
 export default class EventPage extends Component
 {	
@@ -51,7 +51,6 @@ export default class EventPage extends Component
 					<Icon name="ios-list" size={30} color="#FFF" style={styles.options_more} />
 				</View> 
 
-
 				<SearchBar
 				    ref='searchBar'
 				    placeholder='Search'
@@ -59,32 +58,44 @@ export default class EventPage extends Component
 				    onSearchButtonPress={() => {}}
 				    onCancelButtonPress={() => {}}
 				    hideBackground={true}/>
-			
 
 				<View style={styles.header_title_and_action}> 
 					<Text style={styles.title}>Events</Text>
-					<Icon name="md-add-circle" size={30} style={{color:'#FFF',marginTop:10,marginRight:10}}></Icon>
 				</View>
-		</View>
+			</View>
 		)
 	}
 
 	render()
 	{
 		return(
-			<ListView
-				renderHeader={this._renderHeader.bind(this)}
-				dataSource={this.state.dataSource}
-				renderRow={(rowData) => 
-					<EventCard 
-					eventTitle={rowData.eventTitle} 
-					eventDate={rowData.eventDate}
-					resumeScanned={rowData.resumeScanned}
-					navigator={this.props.navigator}></EventCard>
-				}
-				style = {styles.list_view}
-			></ListView>	
+			<View style={{flex:1}}>
+				<ListView
+					renderHeader={this._renderHeader.bind(this)}
+					dataSource={this.state.dataSource}
+					renderRow={(rowData) => 
+						<EventCard 
+						eventTitle={rowData.eventTitle} 
+						eventDate={rowData.eventDate}
+						resumeScanned={rowData.resumeScanned}
+						navigator={this.props.navigator}></EventCard>
+					}
+					style = {styles.list_view}>
+				</ListView>	
+				<ActionButton 
+				buttonColor="rgba(0,188,150,1)"
+				backgroundTappable={true}
+				onPress={this._goToAddEventPage.bind(this)}></ActionButton>
+			</View>
+			
 		)
+	}
+
+	_goToAddEventPage(){
+		this.props.navigator.push({
+			id:"AddEventPage",
+			name:"Add Event Page"
+		})
 	}
 }
 

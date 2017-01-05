@@ -17,6 +17,7 @@ import Splash from './Splash';
 import Signup from './Signup';
 import Main from './Main';
 import EventPage from './EventPage';
+import AddEventPage from './AddEventPage';
 import EventDetailsPage from './EventDetailsPage';
 import Scanner from './mainPages/Scanner';
 import AttendeeProfilePage from './AttendeeProfilePage'
@@ -70,6 +71,14 @@ class AwesomeProject extends Component {
           something="something"></EventPage>
       )
     }
+
+    if (routeId === 'AddEventPage'){
+      return(
+        <AddEventPage
+          navigator={navigator}
+        ></AddEventPage>
+      )
+    } 
 
     if (routeId === 'EventDetailsPage') {
       return (
