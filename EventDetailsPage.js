@@ -22,22 +22,27 @@ export default class EventDetailsPage extends Component
 		const attendees = [
 			{
 				name:'Jesse Harrick',
+				summary: 'Graduating May 2018',
 				scanned: '02:42 pm January 20th 2017'
 			},
 			{
 				name:'Raul Camacho',
+				summary: 'Graduating May 2017',
 				scanned: '02:42 pm January 20th 2017'
 			},
 			{
 				name:'Fahran Kamili',
+				summary: 'Graduating May 2017',
 				scanned: '02:42 pm January 20th 2017'
 			},
 			{
 				name:'Elon Musk',
+				summary: 'CEO at Tesla',
 				scanned: '02:42 pm January 20th 2017'
 			},
 			{
 				name:'Steve Jobs',
+				summary: 'CEO at Apple',
 				scanned: '02:42 pm January 20th 2017'
 			}
 
@@ -49,7 +54,8 @@ export default class EventDetailsPage extends Component
 	{
 		this.props.navigator.push({
 			id: 'ScannerPage',
-			name: 'Scanner Page'
+			name: 'Scanner Page',
+			eventTitle: this.props.event.eventTitle
 		})
 	}
 
@@ -104,7 +110,9 @@ export default class EventDetailsPage extends Component
 				renderRow={(rowData) => 
 					<EventDetailsCard
 					attendee_name={rowData.name} 
-					time_scanned={rowData.scanned}></EventDetailsCard>
+					attendee_summary={rowData.summary}
+					time_scanned={rowData.scanned}
+					></EventDetailsCard>
 				}
 				style = {styles.list_view}
 			></ListView>	

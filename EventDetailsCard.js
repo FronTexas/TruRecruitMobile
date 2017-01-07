@@ -25,6 +25,7 @@ export default class EventDetailsCard extends Component
 				<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
 				<View style={styles.attendee_scan_information}>
 					<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
+					<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
 					<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
 				</View>
 			</View>
@@ -54,6 +55,10 @@ const styles = StyleSheet.create({
 		fontWeight:"bold",
 		fontSize:20,
 		color:'#535455'
+	},
+	attendee_summary:{
+		fontSize:12,
+		color:"#534555"
 	},
 	time_scanned:{
 		fontWeight:"normal",

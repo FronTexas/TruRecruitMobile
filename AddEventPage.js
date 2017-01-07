@@ -4,7 +4,9 @@ import {
 	ScrollView,
 	ListView,
 	View,
-	Text
+	Text,
+	TouchableOpacity,
+	DatePickerIOS
 } from 'react-native';
 
 import{
@@ -20,7 +22,7 @@ import {
 import DatePicker from 'react-native-datepicker'
 
 
-
+var moment = require('moment');
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -28,16 +30,52 @@ export default class AddEventPage extends Component{
 	constructor(props){
 		super(props);
 
-		this.state = {
-	      date: '',
-	      time: '20:00',
-	      datetime: '2016-05-05 20:00',
-	      datetime1: '2016-05-05 20:00'
-	    };
+		this.state={
+			eventTitle: null,
+			eventDate: new Date(),
+			eventLocation: null,
+			showDatePicker: false,
+		}
 	}
 	render(){
+		const datePicker = this.state.showDatePicker ? 
+		<View style={styles.datePicker_area}>
+			<DatePickerIOS 
+				date={this.state.eventDate} 
+				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
+				mode="date">
+			</DatePickerIOS> 
+			<TouchableOpacity
+				onPress={() => this.setState({showDatePicker:false})}
+			>
+			<Text style={styles.done_datePicker_text}>Done</Text>
+			</TouchableOpacity>
+		</View>
+		: <View></View>;
+
+		const saveButton = !this.state.showDatePicker ?
+		<View style={styles.saveButton_area}>
+			<TouchableOpacity 
+				onPress={() => 
+					this.props.navigator.push(
+					{
+						id:"EventPage",
+						eventCreated: {
+							eventTitle: this.state.eventTitle,
+							eventDate: this.state.eventDate,
+							eventLocation: this.state.eventLocation, 
+							resumeScanned: 0
+						}
+					})}
+				>
+				<View style={styles.save_add_event_button}>
+					<Text style={styles.save_text}>Save</Text>
+				</View>
+			</TouchableOpacity>
+		</View> : <View></View>
+
 		return(
-			<View style={{backgroundColor:"#FFF"}}>
+			<View style={{backgroundColor:"#FFF",flex:1}}>
 				<View style={styles.top_nav}>
 					<View style={styles.arrow_back_and_list}> 
 						<Icon name="ios-arrow-back" size={20} color="#FFF" style={styles.arrow_back} />
@@ -46,31 +84,35 @@ export default class AddEventPage extends Component{
 				</View>
 
 				<FormLabel labelStyle={styles.formLabel}>Name</FormLabel>
-				<FormInput placeholder="Enter the name of the event"></FormInput>
+				<FormInput 
+					placeholder="Enter the name of the event"
+					onChangeText={(eventTitle) => this.setState({eventTitle: eventTitle})}></FormInput>
 
 				<FormLabel labelStyle={styles.formLabel}>Location</FormLabel>
-				<FormInput placeholder="Enter the location of the event"></FormInput>
+				<FormInput 
+					placeholder="Enter the location of the event"
+					onChangeText={(eventLocation) => this.setState({eventLocation: eventLocation})}></FormInput>
 
 				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
-		        <DatePicker
-		          style={{marginLeft:20, width: 345}}
-		          date={this.state.date}
-		          mode="date"
-		          placeholder="placeholder"
-		          format="YYYY-MM-DD"
-		          minDate="2016-05-01"
-		          maxDate="2016-06-01"
-		          confirmBtnText="Confirm"
-		          cancelBtnText="Cancel"
-		          onDateChange={(date) => {this.setState({date: date});}}
-		        />
+				<TouchableOpacity
+					onPress={() => this.setState({showDatePicker: !this.state.showDatePicker})}
+					style={styles.set_date_touchable}
+				>
+				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>				
+				</TouchableOpacity>
+
+				{datePicker}
+
+				{saveButton}	
+
+				
 			</View>
 		
 		)
 	}
 
-	onDateChange = (date) => {
-    	this.setState({date: date});
+	onDateChange = (eventDate) => {
+    	this.setState({eventDate: eventDate});
   	};
 }
 
@@ -91,6 +133,38 @@ const styles = StyleSheet.create({
 	formLabel:{
 		color:"#1DBB96",
 		marginTop:20
+	},
+	set_date_touchable:{
+		marginLeft:20,
+		marginTop:10,
+	},
+	date_text:{
+		fontSize:20
+	},
+	done_datePicker_text:{
+		color: '#1DBB96',
+		marginLeft:150,
+		fontWeight: 'bold',
+		fontSize: 30
+	},
+	saveButton_area:{
+		alignItems:'center'
+	},
+	save_add_event_button:{
+		backgroundColor: '#1DBB96',
+		paddingLeft:20,
+		paddingRight:20,
+		paddingTop:10,
+		paddingBottom:10,
+		borderRadius:20,
+		width:150,
+		alignItems:'center',
+		marginTop:30
+	},
+	save_text:{
+		color:"#FFF",
+		fontSize:20,
+		fontWeight:"600"
 	}
 
 })

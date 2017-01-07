@@ -5,7 +5,7 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableHighlight
+	TouchableOpacity
 } from 'react-native';
 
 export default class EventCard extends Component
@@ -29,10 +29,11 @@ export default class EventCard extends Component
 	render()
 	{
 		return(
-			<TouchableHighlight onPress={this._goToEventDetails.bind(this)}>
+			<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
 				<View style={styles.container}>
 					<View style={styles.eventInfoContainer}>
 						<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
+						<Text style={styles.eventDate}>{this.props.eventLocation}</Text>
 						<Text style={styles.eventDate}>{this.props.eventDate}</Text>
 					</View>
 					<View style={styles.resume_scanned_container}>
@@ -40,7 +41,7 @@ export default class EventCard extends Component
 						<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
 					</View>
 				</View>
-			</TouchableHighlight>
+			</TouchableOpacity>
 		
 		)
 	}
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 		color:'#535455'
 	},
 	eventDate:{
-		fontSize:15,
+		fontSize:12,
 		color:'#1DBB96'
 	},
 	resume_scanned_number:{
