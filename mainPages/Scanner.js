@@ -29,13 +29,17 @@ export default class Scanner extends Component {
           }}
           style={styles.preview}
           onBarCodeRead={this.gotoSplash.bind(this)}>
-          <View style={styles.arrow_back_area}>
-            <Icon name="ios-arrow-back" size={30} style={styles.arrowBack}></Icon>
-            <Text style={styles.backText}>Back</Text>
+
+          <View style={styles.arrowBackArea_and_EventTitle}>
+            <View style={styles.arrowBackArea}>
+              <Icon name="ios-arrow-back" size={30} style={styles.arrowBack}></Icon>
+              <Text style={styles.backText}>Back</Text>
+            </View>
+            <Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={styles.instruction}>Place the QR code at the center of the icon</Text>
+            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={styles.instruction}>Hold your camera up to a TR code</Text>
           </View>
         </Camera>
       </View>
@@ -69,15 +73,28 @@ const styles = StyleSheet.create({
   preview: {
     flex: 1,
   },
-  arrow_back_area:{
+  arrowBackArea_and_EventTitle:{
     flex:1,
     padding:20,
+    flexDirection:'column',
+  },
+  arrowBackArea:{
     flexDirection:'row',
     alignItems:'center'
   },
-  backText:{color:"#FFF",marginLeft:10,fontSize:20},
+  backText:{
+    color:"#FFF",
+    marginLeft:10,
+    fontSize:20
+  },
   arrowBack:{
     color:"#FFF"
+  },
+  eventTitle:{
+    color:"#FFF",
+    fontSize:30,
+    fontWeight:'bold',
+    marginTop:20,
   },
   scan_and_instruction:{
     flex: 9,
