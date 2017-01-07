@@ -24,11 +24,13 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E86F80FDD4B4ED8A781FD8F /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 02EDB8C1620743899551FF84 /* EvilIcons.ttf */; };
+		2CD3E98F1E208FE300BA5310 /* resume.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2CD3E98E1E208FE300BA5310 /* resume.pdf */; };
 		43230624326C457B9D1395D2 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0613A2B0AF864C1D8CF6E932 /* libRNSearchBar.a */; };
 		58AAE581CDCB4424BE79BE21 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 305FE99FA3654291A829E2D1 /* libRNVectorIcons.a */; };
 		6CBAEAD857814164ACEA531B /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3525D5EB49884A62939F62BF /* SimpleLineIcons.ttf */; };
 		7F6002CC4AC14F1C97E73BEC /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D801A8C0AA374E46BB8D05CE /* Entypo.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8D5A49B7D3A3466AB300BD4E /* libRNPDFView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C47BD890414DAD87DA397C /* libRNPDFView.a */; };
 		995FD2C1E4BB472EA1C0A7FE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C78BA2BBB5442AB92A34EA3 /* MaterialIcons.ttf */; };
 		B9CDB9A27A8E4D27BB8C4816 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCE165B0D05D4846ACFD6EA2 /* Ionicons.ttf */; };
 		C243104CB9734C318A5EC754 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25A3AA17444448F1AC52ACFE /* Foundation.ttf */; };
@@ -108,6 +110,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSearchBar;
 		};
+		2CD3E98A1E20899900BA5310 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6424D8C659E4651975548C5 /* RNPDFView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 20D8E03F1C8E946C00039823;
+			remoteInfo = RNPDFView;
+		};
 		3D3B5C501E13722200EDDFC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1597AA866DDF4D7CAB9EBBE1 /* RNVectorIcons.xcodeproj */;
@@ -162,6 +171,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1597AA866DDF4D7CAB9EBBE1 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		25A3AA17444448F1AC52ACFE /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		2CD3E98E1E208FE300BA5310 /* resume.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = resume.pdf; path = ../resumes/resume.pdf; sourceTree = "<group>"; };
 		305FE99FA3654291A829E2D1 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		3525D5EB49884A62939F62BF /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		4FE925194F534823AA57A9C5 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
@@ -170,11 +180,13 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7A4F6F8FCAD14F87B65AA6D6 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		A3C47BD890414DAD87DA397C /* libRNPDFView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPDFView.a; sourceTree = "<group>"; };
 		BCE165B0D05D4846ACFD6EA2 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		CD398FBFCF6C4254961BA3EE /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		CD9ED5B07BA6403D8B6FEF05 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		D801A8C0AA374E46BB8D05CE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		DAF77368DE9C4EE1AA7B96C5 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		E6424D8C659E4651975548C5 /* RNPDFView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPDFView.xcodeproj; path = "../node_modules/react-native-pdf-view/RNPDFView.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +215,7 @@
 				58AAE581CDCB4424BE79BE21 /* libRNVectorIcons.a in Frameworks */,
 				0C1CE0405C42457BA7DD7868 /* libRCTCamera.a in Frameworks */,
 				43230624326C457B9D1395D2 /* libRNSearchBar.a in Frameworks */,
+				8D5A49B7D3A3466AB300BD4E /* libRNPDFView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +325,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2CD3E97C1E20899800BA5310 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2CD3E98B1E20899900BA5310 /* libRNPDFView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3D3B5C431E13722100EDDFC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +352,7 @@
 		534DC53891DC4FF4B447EB23 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2CD3E98E1E208FE300BA5310 /* resume.pdf */,
 				D801A8C0AA374E46BB8D05CE /* Entypo.ttf */,
 				02EDB8C1620743899551FF84 /* EvilIcons.ttf */,
 				7A4F6F8FCAD14F87B65AA6D6 /* FontAwesome.ttf */,
@@ -368,6 +390,7 @@
 				1597AA866DDF4D7CAB9EBBE1 /* RNVectorIcons.xcodeproj */,
 				CD9ED5B07BA6403D8B6FEF05 /* RCTCamera.xcodeproj */,
 				4FE925194F534823AA57A9C5 /* RNSearchBar.xcodeproj */,
+				E6424D8C659E4651975548C5 /* RNPDFView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -447,7 +470,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 820;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -515,6 +538,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 2CD3E97C1E20899800BA5310 /* Products */;
+					ProjectRef = E6424D8C659E4651975548C5 /* RNPDFView.xcodeproj */;
 				},
 				{
 					ProductGroup = 2C0552251E18FD670083E61C /* Products */;
@@ -597,6 +624,13 @@
 			remoteRef = 2C0552331E18FD670083E61C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		2CD3E98B1E20899900BA5310 /* libRNPDFView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNPDFView.a;
+			remoteRef = 2CD3E98A1E20899900BA5310 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		3D3B5C511E13722200EDDFC6 /* libRNVectorIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -642,6 +676,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7F6002CC4AC14F1C97E73BEC /* Entypo.ttf in Resources */,
+				2CD3E98F1E208FE300BA5310 /* resume.pdf in Resources */,
 				1E86F80FDD4B4ED8A781FD8F /* EvilIcons.ttf in Resources */,
 				EAB8C5441ED8476C8CB699F5 /* FontAwesome.ttf in Resources */,
 				C243104CB9734C318A5EC754 /* Foundation.ttf in Resources */,
@@ -730,6 +765,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -748,6 +784,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -772,6 +809,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
+					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -799,6 +837,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
+					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -859,6 +898,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
+					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -907,6 +947,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
+					"$(SRCROOT)/../node_modules/react-native-pdf-view/RNPDFView",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
