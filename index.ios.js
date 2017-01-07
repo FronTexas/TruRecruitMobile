@@ -21,12 +21,13 @@ import AddEventPage from './AddEventPage';
 import EventDetailsPage from './EventDetailsPage';
 import Scanner from './mainPages/Scanner';
 import AttendeeProfilePage from './AttendeeProfilePage'
+import ResumeViewPage from './ResumeViewPage'
 
 class AwesomeProject extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'SplashPage', name: 'Index'}}
+          initialRoute={{id: 'AttendeeProfilePage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {
@@ -68,7 +69,7 @@ class AwesomeProject extends Component {
       return (
          <EventPage
           navigator={navigator}
-          something="something"></EventPage>
+          eventCreated={route.eventCreated}></EventPage>
       )
     }
 
@@ -95,8 +96,8 @@ class AwesomeProject extends Component {
     if (routeId === 'ScannerPage'){
       return(
         <Scanner
-          navigator={navigator
-        }></Scanner>
+          navigator={navigator}
+          eventTitle={route.eventTitle}></Scanner>
       )
     }
 
@@ -107,6 +108,13 @@ class AwesomeProject extends Component {
         </AttendeeProfilePage>
       )
     }   
+
+    if(routeId == 'ResumeViewPage'){
+      return(
+        <ResumeViewPage>
+        </ResumeViewPage>
+      )
+    }
   }
 }
 
