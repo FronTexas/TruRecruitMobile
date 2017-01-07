@@ -7,7 +7,8 @@ import {
 	Text,
 	Image,
 	Dimensions,
-	Button
+	Button,
+	TouchableOpacity
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -43,7 +44,13 @@ export default class AttendeeProfilePage extends Component
 							<Text style={styles.link_text}>linkedin.com/in/fahrankamili</Text>
 						</View>
 					</View>
-					<Image style={styles.resume_preview} source={require("./img/fron_resume.jpg")}></Image>
+					<TouchableOpacity
+						onPress={() => this.props.navigator.push({
+							id: "ResumeViewPage",
+						}) }
+						>
+						<Image style={styles.resume_preview} source={require("./img/fron_resume.jpg")}></Image>
+					</TouchableOpacity>
 				</View>
 				<View style={styles.rate_area}>
 					<Text style={styles.rate_text}>
