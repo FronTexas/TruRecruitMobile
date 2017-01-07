@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "moment": "^2.17.1",
     "react": "15.3.2",
     "react-native": "0.34.1",
     "react-native-action-button": "^2.0.18",
@@ -14,6 +15,7 @@
     "react-native-datepicker": "^1.4.3",
     "react-native-elements": "^0.8.2",
     "react-native-form-generator": "^0.9.9",
+    "react-native-pdf-view": "^0.3.2",
     "react-native-search-bar": "^2.16.0",
     "react-native-star-rating": "^1.0.6",
     "react-native-vector-icons": "^3.0.0"
