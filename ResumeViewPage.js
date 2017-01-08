@@ -10,7 +10,8 @@ import {
 	Dimensions,
 	Button,
 	WebView,
-	TouchableOpacity
+	TouchableOpacity,
+	LayoutAnimation
 } from 'react-native';
 
 import PDFView from 'react-native-pdf-view';
@@ -28,21 +29,58 @@ export default class ResumeViewPage extends Component{
 	}
 
 	_onNoteTakingActionPress(){
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
 		this.setState({isNoteTakingMode:!this.state.isNoteTakingMode})
 	}
 	render(){
-		const noteTakingView = this.state.isNoteTakingMode ? 
-			<ScrollView style={styles.noteTakingScrollView}>
-					<View style={{justifyContent:'space-between',top:20,flexDirection:'row',padding:10}}>
+		noteTakingViewStyle = this.state.isNoteTakingMode ? 
+			{
+				flex:1,
+				height:1000,
+				width:Dimensions.get('window').width,
+				position:'absolute',
+				backgroundColor:"#000",
+				opacity:0.9,
+			} : 
+			{
+				flex:0,
+				height:0,
+				width:Dimensions.get('window').width,
+			}	
+
+		scrollViewNoteTakingStyle = this.state.isNoteTakingMode? 
+		{
+			flex : 1, 
+			height:1000,
+			top:0,
+		} :
+		{
+			flex : 0,
+			height: 0
+		}
+
+		textInputNoteTakingStyle = this.state.isNoteTakingMode ? 
+		{
+			height: 1000, 
+			padding: 10
+		} :
+		{
+			height: 0,
+			padding: 0
+		}
+
+		const noteTakingView = 
+			<ScrollView style={[scrollViewNoteTakingStyle,{width:Dimensions.get('window').width, position:'absolute',backgroundColor:"#000",opacity:0.9}]}>
+					<View refs = 'noteTakingHeader' style={{justifyContent:'space-between',top:20,flexDirection:'row',padding:10}}>
 						<Text style={styles.noteTakingModeText}>Note taking mode</Text>
 						<TouchableOpacity 
-							onPress={() => this.setState({isNoteTakingMode:!this.state.isNoteTakingMode})}
+							onPress={this._onNoteTakingActionPress.bind(this)}
 						>
 							<Text style={styles.doneText}>Done</Text>
 						</TouchableOpacity>
 					</View>
 					<TextInput
-			        	style={styles.note_textInput}
+			        	style={[textInputNoteTakingStyle , {width: Dimensions.get('window').width ,color: "#FFF", fontSize: 30, fontWeight: "600",top:35}]}
 				        onChangeText={(text) => this.setState({text})}
 				        value={this.state.text}
 				        multiline={true}
@@ -52,8 +90,7 @@ export default class ResumeViewPage extends Component{
 				    >
 				    </TextInput>			
 			</ScrollView>
-			
-			: <View></View>
+
 		const actionButton = !this.state.isNoteTakingMode ? 
 		<ActionButton 
 				buttonColor="rgba(0,188,150,1)"
@@ -61,11 +98,14 @@ export default class ResumeViewPage extends Component{
 				onPress={this._onNoteTakingActionPress.bind(this)}
 				icon={<Icon name={'md-create'} style={styles.takeNoteIcon} size={20}></Icon>}></ActionButton>
 		: <View></View>
+
+
 		return(
 		<View style={{flex:1,backgroundColor:"#FFF"}}>
 			<WebView 
 				source={{uri:'resume.pdf'}}
-				scalesPageToFit={true}>
+				scalesPageToFit={true}
+			>
 			</WebView>
 			{noteTakingView}	
 			{actionButton}
