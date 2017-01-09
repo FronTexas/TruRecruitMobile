@@ -10,13 +10,18 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
+import BackButton from '.././BackButton'
 
 export default class Scanner extends Component {
 
   _goToAttendeeProfilePage(){
     this.props.navigator.push({
       id:"AttendeeProfilePage",
-      name:"Attendee Profile Page"
+      name:"Attendee Profile Page",
+      attendee:{
+        attendee_name:"Fahran Kamili",
+        attendee_summary:"Graduating May 2017"
+      }
     })
   }
 
@@ -32,14 +37,13 @@ export default class Scanner extends Component {
 
           <View style={styles.arrowBackArea_and_EventTitle}>
             <View style={styles.arrowBackArea}>
-              <Icon name="ios-arrow-back" size={30} style={styles.arrowBack}></Icon>
-              <Text style={styles.backText}>Back</Text>
+              <BackButton navigator={this.props.navigator} style={styles.arrowBack}></BackButton>
             </View>
-            <Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
+            <Text style={[styles.textShadow,styles.eventTitle]}>{this.props.eventTitle}</Text>
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={styles.instruction}>Hold your camera up to a TR code</Text>
+            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={[styles.textShadow,styles.instruction]}>Hold your camera up to a TR code</Text>
           </View>
         </Camera>
       </View>
@@ -67,6 +71,14 @@ export default class Scanner extends Component {
 }
 
 const styles = StyleSheet.create({
+  textShadow:{
+    shadowOffset:{
+          width:0,
+          height:0
+        },
+        shadowColor:'black',
+        shadowOpacity:0.5
+  },
   container: {
     flex: 1
   },

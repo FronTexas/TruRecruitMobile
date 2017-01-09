@@ -33,21 +33,6 @@ export default class ResumeViewPage extends Component{
 		this.setState({isNoteTakingMode:!this.state.isNoteTakingMode})
 	}
 	render(){
-		noteTakingViewStyle = this.state.isNoteTakingMode ? 
-			{
-				flex:1,
-				height:1000,
-				width:Dimensions.get('window').width,
-				position:'absolute',
-				backgroundColor:"#000",
-				opacity:0.9,
-			} : 
-			{
-				flex:0,
-				height:0,
-				width:Dimensions.get('window').width,
-			}	
-
 		scrollViewNoteTakingStyle = this.state.isNoteTakingMode? 
 		{
 			flex : 1, 
@@ -69,10 +54,23 @@ export default class ResumeViewPage extends Component{
 			padding: 0
 		}
 
+
 		const noteTakingView = 
-			<ScrollView style={[scrollViewNoteTakingStyle,{width:Dimensions.get('window').width, position:'absolute',backgroundColor:"#000",opacity:0.9}]}>
+			<ScrollView style={[scrollViewNoteTakingStyle,
+					{
+						width:Dimensions.get('window').width, 
+						position:'absolute',
+						backgroundColor:"#000",
+						opacity:0.9}]
+					}>
 					<View refs = 'noteTakingHeader' style={{justifyContent:'space-between',top:20,flexDirection:'row',padding:10}}>
-						<Text style={styles.noteTakingModeText}>Note taking mode</Text>
+						<Text style={{
+							color:"#FFF",
+							fontWeight:"600",
+							padding:10,
+							borderWidth:0.5,
+							borderColor:"#FFF",
+							borderRadius:5 }}>Note taking mode</Text>
 						<TouchableOpacity 
 							onPress={this._onNoteTakingActionPress.bind(this)}
 						>
@@ -85,28 +83,60 @@ export default class ResumeViewPage extends Component{
 				        value={this.state.text}
 				        multiline={true}
 				        placeholder={'Starts Typing Here'}
-				          placeholderTextColor="white"
-
+				        placeholderTextColor="white"
 				    >
 				    </TextInput>			
 			</ScrollView>
 
 		const actionButton = !this.state.isNoteTakingMode ? 
-		<ActionButton 
-				buttonColor="rgba(0,188,150,1)"
-				backgroundTappable={true}
-				onPress={this._onNoteTakingActionPress.bind(this)}
-				icon={<Icon name={'md-create'} style={styles.takeNoteIcon} size={20}></Icon>}></ActionButton>
-		: <View></View>
+			<ActionButton 
+					buttonColor="rgba(0,188,150,1)"
+					backgroundTappable={true}
+					onPress={this._onNoteTakingActionPress.bind(this)}
+					icon={<Icon name={'md-create'} style={styles.takeNoteIcon} size={20}></Icon>}></ActionButton>
+			: <View></View>
 
 
 		return(
-		<View style={{flex:1,backgroundColor:"#FFF"}}>
+		<View style={{flex:1,backgroundColor:"#EEF1F7"}}>
 			<WebView 
 				source={{uri:'resume.pdf'}}
 				scalesPageToFit={true}
+				style={{backgroundColor:"#EEF1F7"}}
 			>
 			</WebView>
+			<View
+				style={
+					{
+						position:'absolute',
+						top:30,
+						width: Dimensions.get('window').width,
+						paddingRight:20,
+						alignItems:'flex-end'
+					}
+				}
+			>
+				<TouchableOpacity
+					onPress={() => this.props.navigator.pop()}
+				>
+					<Text style={
+					{
+						fontSize:30,
+						fontWeight:'600',
+						color:"#FFF",
+						backgroundColor:'rgba(52,52,52,0)',
+						shadowOffset:{
+							width:0,
+							height:0
+						},
+						shadowColor:'black',
+						shadowOpacity:0.5
+					}
+					}>Done</Text>
+				</TouchableOpacity>
+			
+			</View>
+			
 			{noteTakingView}	
 			{actionButton}
 		</View>

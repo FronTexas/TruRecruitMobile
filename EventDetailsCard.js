@@ -5,10 +5,12 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableHighlight
+	TouchableOpacity
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import IconFa from 'react-native-vector-icons/FontAwesome';
+
 
 
 export default class EventDetailsCard extends Component
@@ -21,14 +23,53 @@ export default class EventDetailsCard extends Component
 	render()
 	{
 		return(
-			<View style={styles.container}>
-				<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
-				<View style={styles.attendee_scan_information}>
-					<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
-					<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
-					<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
+			<TouchableOpacity
+				onPress={() => this.props.navigator.push({
+					id:"AttendeeProfilePage",
+					attendee:{
+						attendee_name: this.props.attendee_name,
+						attendee_summary:this.props.attendee_summary,
+					}
+				})}
+			>
+				<View style={styles.container}>
+					<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
+					<View style={styles.attendee_scan_information}>
+						<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
+						<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
+						<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
+					</View>
+					<View refs='starArea' 
+						style={
+							{
+								alignItems:'center',
+								marginLeft:75
+							}
+						}
+					>
+						<IconFa
+							name="star"
+							style={
+								{
+									color:"#F5C87F"
+								}
+							}
+							size={60}
+						>
+						</IconFa>
+						<Text
+							style={{
+								marginTop:-42,
+								backgroundColor:'rgba(0,0,0,0)',
+								color:"#FFF",
+								fontSize:20,
+								fontWeight:'600'
+							}}
+						>5</Text>
+					</View>
 				</View>
-			</View>
+			</TouchableOpacity>
+	
 		)
 	}
 

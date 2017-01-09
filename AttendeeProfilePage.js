@@ -30,8 +30,8 @@ export default class AttendeeProfilePage extends Component
 			<ScrollView style={styles.container}>
 				<View style={styles.profpic_and_name}>
 					<Icon name="ios-contact" size={60} style={styles.profpic}></Icon>
-					<Text style={styles.name}>Fahran Kamili</Text>
-					<Text style={styles.graduation}>Graduating May 2017</Text>
+					<Text style={styles.name}>{this.props.attendee.attendee_name}</Text>
+					<Text style={styles.graduation}>{this.props.attendee.attendee_summary}</Text>
 				</View>
 				<View style={styles.links_and_resume}>
 					<View style={styles.links}>
@@ -67,11 +67,16 @@ export default class AttendeeProfilePage extends Component
 							></StarRating>
 					</View>
 				</View>
-				<View style={styles.save_button_area}>
-					<View style={styles.save_button}>
-				    	<Text style={styles.save_text}>Save</Text>
-				    </View>
-				</View>
+				<TouchableOpacity
+					onPress={() => this.props.navigator.pop()}
+				>
+					<View style={styles.save_button_area}>
+						<View style={styles.save_button}>
+					    	<Text style={styles.save_text}>Save</Text>
+					    </View>
+					</View>
+				</TouchableOpacity>
+				
 			</ScrollView>
 		)
 	}
@@ -153,7 +158,7 @@ const styles = StyleSheet.create({
 		padding:15,
 		width:150,
 		alignItems:'center',
-		borderRadius:5,
+		borderRadius:30,
 		marginTop:15
 	},
 	save_text:{

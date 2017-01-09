@@ -27,7 +27,7 @@ class AwesomeProject extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'AttendeeProfilePage', name: 'Index'}}
+          initialRoute={{id: 'EventPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {
@@ -104,14 +104,17 @@ class AwesomeProject extends Component {
     if(routeId === 'AttendeeProfilePage'){
       return(
         <AttendeeProfilePage
-          navigator={navigator}>
+          navigator={navigator}
+          attendee={route.attendee}
+        >
         </AttendeeProfilePage>
       )
     }   
 
     if(routeId == 'ResumeViewPage'){
       return(
-        <ResumeViewPage>
+        <ResumeViewPage
+          navigator={navigator}>
         </ResumeViewPage>
       )
     }

@@ -10,6 +10,9 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventDetailsCard from './EventDetailsCard';
+import ActionButton from 'react-native-action-button';
+import BackButton from './BackButton';
+
 
 
 export default class EventDetailsPage extends Component
@@ -23,27 +26,33 @@ export default class EventDetailsPage extends Component
 			{
 				name:'Jesse Harrick',
 				summary: 'Graduating May 2018',
-				scanned: '02:42 pm January 20th 2017'
+				scanned: '02:42 pm January 20th 2017',
+				rating:5
 			},
 			{
 				name:'Raul Camacho',
 				summary: 'Graduating May 2017',
-				scanned: '02:42 pm January 20th 2017'
+				scanned: '02:42 pm January 20th 2017',
+				rating:5
 			},
 			{
 				name:'Fahran Kamili',
 				summary: 'Graduating May 2017',
-				scanned: '02:42 pm January 20th 2017'
+				scanned: '02:42 pm January 20th 2017',
+				rating:4
 			},
 			{
 				name:'Elon Musk',
 				summary: 'CEO at Tesla',
-				scanned: '02:42 pm January 20th 2017'
+				scanned: '02:42 pm January 20th 2017',
+				rating:3
+
 			},
 			{
 				name:'Steve Jobs',
 				summary: 'CEO at Apple',
-				scanned: '02:42 pm January 20th 2017'
+				scanned: '02:42 pm January 20th 2017',
+				rating:3
 			}
 
 		]
@@ -66,36 +75,14 @@ export default class EventDetailsPage extends Component
 		return(
 			<View style={styles.top_nav}>
 				<View style={styles.arrow_back_and_list}> 
-					<Icon name="ios-arrow-back" size={20} color="#FFF" style={styles.arrow_back} />
-					<Icon name="ios-list" size={30} color="#FFF" style={styles.options_more} />
+					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
 				</View> 
-
-
-				<SearchBar
-				    ref='searchBar'
-				    placeholder='Search'
-				    onChangeText={() => {}}
-				    onSearchButtonPress={() => {}}
-				    onCancelButtonPress={() => {}}
-				    hideBackground={true}/>
-			
 
 				<View style={styles.header_title_and_action}> 
 					<View style={styles.eventDetailsContainer}>
 						<Text style={styles.title}>{this.props.event.eventTitle}</Text>
 						<Text style={[styles.title,styles.date]}>{this.props.event.eventDate}</Text>
 					</View>
-					<View style={styles.scan_button}>
-						<Icon 
-							style={styles.add_icon}
-							name="ios-qr-scanner" 
-							size={30} 
-							onPress={this._goToScannerPage.bind(this)}
-							></Icon>
-							<Text style={styles.scan_text}
-							onPress={this._goToScannerPage.bind(this)}>Scan</Text>
-					</View>
-					
 				</View>
 		</View>
 		)
@@ -104,25 +91,34 @@ export default class EventDetailsPage extends Component
 	render()
 	{
 		return(
-			<ListView
-				renderHeader={this._renderHeader.bind(this)}
-				dataSource={this.state.dataSource}
-				renderRow={(rowData) => 
-					<EventDetailsCard
-					attendee_name={rowData.name} 
-					attendee_summary={rowData.summary}
-					time_scanned={rowData.scanned}
-					></EventDetailsCard>
-				}
-				style = {styles.list_view}
-			></ListView>	
+			<View style={{flex:1,backgroundColor:"#FFF"}}>
+				<ListView
+					renderHeader={this._renderHeader.bind(this)}
+					dataSource={this.state.dataSource}
+					renderRow={(rowData) => 
+						<EventDetailsCard
+						attendee_name={rowData.name} 
+						attendee_summary={rowData.summary}
+						time_scanned={rowData.scanned}
+						navigator={this.props.navigator}
+						></EventDetailsCard>
+					}
+					style = {styles.list_view}
+				></ListView>	
+				<ActionButton
+					buttonColor="rgba(0,188,150,1)"
+					icon={<Icon name="ios-qr-scanner" style={{color:"#FFF"}} size={30}></Icon>}
+					onPress={this._goToScannerPage.bind(this)}
+				></ActionButton>
+			</View>
+		
 		)
 	}
 }
 
 const styles = StyleSheet.create({
 	list_view:{
-		backgroundColor:"#FFF"
+		backgroundColor:"#FFF",
 	},
 	arrow_back_and_list:{
 		flexDirection:"row",
@@ -138,7 +134,8 @@ const styles = StyleSheet.create({
 	header_title_and_action:{
 		flexDirection:'row',
 		justifyContent:'space-between',
-		alignItems:'flex-end'
+		alignItems:'flex-end',
+		marginTop:10
 	},
 	scan_button:{
 		flexDirection:'row',

@@ -4,13 +4,15 @@ import {
 	ScrollView,
 	ListView,
 	View,
-	Text
+	Text,
+	TouchableOpacity
 } from 'react-native';
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import EventCard from './EventCard'
-import ActionButton from 'react-native-action-button'
+import EventCard from './EventCard';
+import ActionButton from 'react-native-action-button';
+import BackButton from './BackButton'
 
 
 const monthNames = [
@@ -78,17 +80,8 @@ export default class EventPage extends Component
 		return(
 			<View style={styles.top_nav}>
 				<View style={styles.arrow_back_and_list}> 
-					<Icon name="ios-arrow-back" size={20} color="#FFF" style={styles.arrow_back} />
-					<Icon name="ios-list" size={30} color="#FFF" style={styles.options_more} />
+					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
 				</View> 
-
-				<SearchBar
-				    ref='searchBar'
-				    placeholder='Search'
-				    onChangeText={() => {}}
-				    onSearchButtonPress={() => {}}
-				    onCancelButtonPress={() => {}}
-				    hideBackground={true}/>
 
 				<View style={styles.header_title_and_action}> 
 					<Text style={styles.title}>Events</Text>
@@ -149,7 +142,8 @@ const styles = StyleSheet.create({
 	header_title_and_action:{
 		flexDirection:'row',
 		alignItems:'flex-end',
-		justifyContent:'space-between'
+		justifyContent:'space-between',
+		marginTop:10
 	},
 	event_list:{
 	},
