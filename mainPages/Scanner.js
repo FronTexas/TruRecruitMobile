@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
           width:0,
           height:0
         },
-        shadowColor:'black',
-        shadowOpacity:0.5
+    shadowColor:'black',
+    shadowOpacity:0.5
   },
   container: {
     flex: 1
