@@ -5,14 +5,21 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
+	Modal
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 export default class EventCard extends Component
 {
 	constructor(props)
 	{
 		super(props);
+		this.state={
+			modalVisible:false
+		}
 	}
 
 	_goToEventDetails(){
@@ -29,19 +36,51 @@ export default class EventCard extends Component
 	render()
 	{
 		return(
-			<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
-				<View style={styles.container}>
-					<View style={styles.eventInfoContainer}>
-						<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
-						<Text style={styles.eventDate}>{this.props.eventLocation}</Text>
-						<Text style={styles.eventDate}>{this.props.eventDate}</Text>
+			<View>
+				<Modal
+					animationType={"slide"}
+					visible={this.state.modalVisible}
+				>
+					<Text
+						style={{marginTop:100}}
+						onPress={() => this.setState({modalVisible:false})}
+
+					>Close</Text>
+				</Modal>
+				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
+					<View style={[styles.shadow,styles.container]}>
+						<View style={styles.eventInfoContainer}>
+							<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
+							<Text style={styles.eventDate}>{this.props.eventLocation}</Text>
+							<Text style={styles.eventDate}>{this.props.eventDate}</Text>
+						</View>
+						<View style={styles.resume_scanned_container}>
+							<Text style={styles.resume_scanned_number}>{this.props.resumeScanned}</Text>
+							<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
+						</View>
 					</View>
-					<View style={styles.resume_scanned_container}>
-						<Text style={styles.resume_scanned_number}>{this.props.resumeScanned}</Text>
-						<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
-					</View>
+				</TouchableOpacity>
+				<View style={{alignItems:'flex-end',marginTop:-30}}>
+					<TouchableOpacity
+						onPress={() => {this.setState({modalVisible:true})}}
+					>
+								<View id="send_email_button" style={[styles.shadow,{
+												backgroundColor:"#1DBB96",
+												width:40,
+												height:40,
+												borderRadius:100,
+												alignItems:'center',
+												justifyContent:'center',
+												marginLeft:-45
+
+											}]}>
+							<Icon name="md-mail" size={20} style={{color:"#FFF"}}></Icon>
+						</View>
+					
+					</TouchableOpacity>
 				</View>
-			</TouchableOpacity>
+			</View>
+	
 		
 		)
 	}
@@ -49,15 +88,24 @@ export default class EventCard extends Component
 }
 
 const styles = StyleSheet.create({
+	shadow:{
+		shadowOffset:{
+          width:0,
+          height:0
+        },
+   		shadowColor:'black',
+    	shadowOpacity:0.2
+	},
 	container:{
+		flexDirection: 'row',
 		paddingLeft:20,
 		paddingRight:20,
 		paddingTop: 10,
-		paddingBottom:10,
+		paddingBottom:20,
 		borderBottomColor:'#ecf0f1',
 		borderBottomWidth:1,
-		flexDirection: 'row',
-		justifyContent: 'space-between'
+		margin:10,
+		justifyContent: 'space-between',
 	},
 	eventInfoContainer:{
 		flexDirection: 'column'
