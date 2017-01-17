@@ -100,6 +100,7 @@ export default class EventDetailsPage extends Component
 						attendee_name={rowData.name} 
 						attendee_summary={rowData.summary}
 						time_scanned={rowData.scanned}
+						rating={rowData.rating}
 						navigator={this.props.navigator}
 						></EventDetailsCard>
 					}

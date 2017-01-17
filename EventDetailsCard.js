@@ -51,7 +51,7 @@ export default class EventDetailsCard extends Component
 							name="star"
 							style={
 								{
-									color:"#F5C87F"
+									color:"#F5C87F",
 								}
 							}
 							size={60}
@@ -65,7 +65,7 @@ export default class EventDetailsCard extends Component
 								fontSize:20,
 								fontWeight:'600'
 							}}
-						>5</Text>
+						>{this.props.rating}</Text>
 					</View>
 				</View>
 			</TouchableOpacity>
