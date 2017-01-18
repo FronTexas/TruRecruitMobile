@@ -5,7 +5,8 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
+	Button
 } from 'react-native';
 
 
@@ -13,6 +14,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton'
+var Modal   = require('react-native-modalbox');
+
+
+import{
+	FormLabel,FormInput
+} from 'react-native-elements';
 
 
 const monthNames = [
@@ -71,6 +78,8 @@ export default class EventPage extends Component
 		}
 		this.state.dataSource = ds.cloneWithRows(events);
 		this.state.selectedEvent = null;
+		this.state.isDisabled=false
+		this.state.emailInputs = [];
 	}
 
 
@@ -90,6 +99,21 @@ export default class EventPage extends Component
 		)
 	}
 
+	_handleSendEmailClick(){
+		this.refs.send_email_modal.open();
+	}
+
+	closeModal(){
+		this.refs.send_email_modal.close()
+	}
+
+	addEmailInput(){
+		var currentEmailInputs = this.state.emailInputs.splice();
+		const newFormInput = <FormInput placeholder="Enter email" onPress={this.addEmailInput.bind(this)}></FormInput>
+		currentEmailInputs.push(newFormInput);
+		this.setState({emailInputs:currentEmailInputs});
+	}
+
 	render()
 	{
 		return(
@@ -103,10 +127,62 @@ export default class EventPage extends Component
 						eventDate={rowData.eventDate}
 						eventLocation = {rowData.eventLocation}
 						resumeScanned={rowData.resumeScanned}
-						navigator={this.props.navigator}></EventCard>
+						navigator={this.props.navigator}
+						onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
+						></EventCard>
 					}
 					style = {styles.list_view}>
 				</ListView>	
+				<Modal position={"center"} 
+				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
+					<View
+						id="modal-container"
+						style={{
+							flex:1,
+						}}
+					>	
+						<FormLabel>Email</FormLabel>
+						<FormInput placeholder="Enter email" onFocus={this.addEmailInput.bind(this)}></FormInput>
+						<View
+							style={{flex:1,justifyContent:'flex-end',padding:20}}
+						>	
+
+						<View style={{flexDirection:'row',justifyContent:'space-around'}}>
+							<TouchableOpacity onPress={this.closeModal.bind(this)}>
+									<View
+										id="cancel-button"
+										style={[styles.shadow,{
+																				padding:15,
+																				backgroundColor:'#e74c3c',
+																				borderRadius:30,
+																				width:100,
+																				alignItems:'center'
+																			}]}
+									>
+										<Text style={{color:"#FFF",fontWeight:'600'}}>Cancel</Text>
+									</View>
+							</TouchableOpacity>
+												
+							<TouchableOpacity onPress={this.closeModal.bind(this)}>
+									<View
+										id="send-button"
+										style={[styles.shadow,{
+																				padding:15,
+																				backgroundColor:'#1DBB96',
+																				borderRadius:30,
+																				width:100,
+																				alignItems:'center'
+																			}]}
+									>
+										<Text style={{color:"#FFF",fontWeight:'600'}}>Send</Text>
+									</View>
+							</TouchableOpacity>
+						</View>
+
+						
+						</View>
+					</View>
+				</Modal>
 				<ActionButton 
 				buttonColor="rgba(0,188,150,1)"
 				backgroundTappable={true}
@@ -131,6 +207,14 @@ const styles = StyleSheet.create({
 	arrow_back_and_list:{
 		flexDirection:"row",
 		justifyContent: 'space-between',
+	},
+	shadow:{
+		shadowOffset:{
+          width:0,
+          height:0
+        },
+   		shadowColor:'black',
+    	shadowOpacity:0.2
 	},
 	top_nav:{
 		backgroundColor: '#1DBB96',
