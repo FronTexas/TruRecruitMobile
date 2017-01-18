@@ -106,6 +106,7 @@ class AwesomeProject extends Component {
         <AttendeeProfilePage
           navigator={navigator}
           attendee={route.attendee}
+          onAttendeePop = {route.onAttendeePop}
         >
         </AttendeeProfilePage>
       )

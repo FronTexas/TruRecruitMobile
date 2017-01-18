@@ -68,7 +68,7 @@ export default class AttendeeProfilePage extends Component
 					</View>
 				</View>
 				<TouchableOpacity
-					onPress={() => this.props.navigator.pop()}
+					onPress={() => {this.props.onAttendeePop(); this.props.navigator.pop()}}
 				>
 					<View style={styles.save_button_area}>
 						<View style={styles.save_button}>

@@ -14,15 +14,27 @@ import BackButton from '.././BackButton'
 
 export default class Scanner extends Component {
 
+  constructor(props){
+    super(props);
+    this.state ={
+      qrReadAlready:false
+    };
+  }
+
   _goToAttendeeProfilePage(){
-    this.props.navigator.push({
-      id:"AttendeeProfilePage",
-      name:"Attendee Profile Page",
-      attendee:{
-        attendee_name:"Fahran Kamili",
-        attendee_summary:"Graduating May 2017"
-      }
-    })
+    if(!this.state.qrReadAlready){
+      this.setState({qrReadAlready:true})
+      this.props.navigator.push({
+        id:"AttendeeProfilePage",
+        name:"Attendee Profile Page",
+        attendee:{
+          attendee_name:"Fahran Kamili",
+          attendee_summary:"Graduating May 2017"
+        },
+        onAttendeePop:() => this.setState({qrReadAlready:false})
+      })
+
+    }
   }
 
   render() {
@@ -33,7 +45,8 @@ export default class Scanner extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          onBarCodeRead={this.gotoSplash.bind(this)}>
+          onBarCodeRead={this._goToAttendeeProfilePage.bind(this)}
+          barcodeTypes={['qr']}>
 
           <View style={styles.arrowBackArea_and_EventTitle}>
             <View style={styles.arrowBackArea}>
