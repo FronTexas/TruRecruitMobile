@@ -24,6 +24,13 @@ import DatePicker from 'react-native-datepicker'
 
 var moment = require('moment');
 
+const monthNames = [
+  "January", "February", "March",
+  "April", "May", "June", "July",
+  "August", "September", "October",
+  "November", "December"
+];
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class AddEventPage extends Component{
@@ -57,16 +64,38 @@ export default class AddEventPage extends Component{
 		<View style={styles.saveButton_area}>
 			<TouchableOpacity 
 				onPress={() => 
-					this.props.navigator.push(
-					{
-						id:"EventPage",
-						eventCreated: {
+					{	
+						formatDay = function(day){
+							if (day % 10 == 1)
+								return day + "st"
+							if (day % 10 == 2)
+								return day + "nd"
+							if (day % 10 == 3)
+								return day + "rd"
+							return day + "th"
+						}
+						formatDate = function(date){
+							var day = formatDay(date.getDate());
+							var month = monthNames[date.getMonth()];
+							var year = date.getFullYear();
+							return month + " " + day + " " + year
+						}
+			
+						var events = this.props.events;
+						events.push({
 							eventTitle: this.state.eventTitle,
-							eventDate: this.state.eventDate,
+							eventDate: formatDate(this.state.eventDate),
 							eventLocation: this.state.eventLocation, 
 							resumeScanned: 0
-						}
-					})}
+						})
+						this.props.navigator.push(
+							{
+								id:"EventPage",
+								events: events
+							})
+					}
+					
+				}
 				>
 				<View style={styles.save_add_event_button}>
 					<Text style={styles.save_text}>Save</Text>

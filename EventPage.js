@@ -22,12 +22,7 @@ import{
 } from 'react-native-elements';
 
 
-const monthNames = [
-  "January", "February", "March",
-  "April", "May", "June", "July",
-  "August", "September", "October",
-  "November", "December"
-];
+
 
 export default class EventPage extends Component
 {	
@@ -36,7 +31,7 @@ export default class EventPage extends Component
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
-		var events = [
+		var events = this.props.events ? this.props.events :[
 			{
 				eventTitle:"HackTX",
 				eventLocation: "The University of Texas at Austin",
@@ -55,28 +50,10 @@ export default class EventPage extends Component
 				eventDate:"March 20th 2017",
 				resumeScanned: 69
 			},
-		]
-		if(this.props.eventCreated){
-			var eventCreated = this.props.eventCreated;
-			formatDay = function(day){
-				if (day % 10 == 1)
-					return day + "st"
-				if (day % 10 == 2)
-					return day + "nd"
-				if (day % 10 == 3)
-					return day + "rd"
-				return day + "th"
-			}
-			formatDate = function(date){
-				var day = formatDay(date.getDate());
-				var month = monthNames[date.getMonth()];
-				var year = date.getFullYear();
-				return month + " " + day + " " + year
-			}
-			eventCreated.eventDate = formatDate(eventCreated.eventDate);
-			events.push(eventCreated)
-		}
+		] ; 
+
 		this.state.dataSource = ds.cloneWithRows(events);
+		this.state.events = events;
 		this.state.selectedEvent = null;
 		this.state.isDisabled=false
 		this.state.emailInputs = [];
@@ -195,7 +172,8 @@ export default class EventPage extends Component
 	_goToAddEventPage(){
 		this.props.navigator.push({
 			id:"AddEventPage",
-			name:"Add Event Page"
+			name:"Add Event Page",
+			events: this.state.events
 		})
 	}
 }

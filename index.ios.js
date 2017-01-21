@@ -69,7 +69,7 @@ class AwesomeProject extends Component {
       return (
          <EventPage
           navigator={navigator}
-          eventCreated={route.eventCreated}></EventPage>
+          events={route.events}></EventPage>
       )
     }
 
@@ -77,6 +77,7 @@ class AwesomeProject extends Component {
       return(
         <AddEventPage
           navigator={navigator}
+          events = {route.events}
         ></AddEventPage>
       )
     } 
