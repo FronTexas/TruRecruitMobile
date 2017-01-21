@@ -23,8 +23,8 @@ const monthNames = [
 ];
 
 export default class EventPage extends Component
-{	
-	
+{
+
 	constructor(props){
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
@@ -79,11 +79,11 @@ export default class EventPage extends Component
 		const SearchBar = require('react-native-search-bar');
 		return(
 			<View style={styles.top_nav}>
-				<View style={styles.arrow_back_and_list}> 
+				<View style={styles.arrow_back_and_list}>
 					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-				</View> 
+				</View>
 
-				<View style={styles.header_title_and_action}> 
+				<View style={styles.header_title_and_action}>
 					<Text style={styles.title}>Events</Text>
 				</View>
 			</View>
@@ -94,25 +94,28 @@ export default class EventPage extends Component
 	{
 		return(
 			<View style={{flex:1}}>
+				<View style={styles.header}>
+					<Text style={styles.events}>Events</Text>
+				</View>
 				<ListView
-					renderHeader={this._renderHeader.bind(this)}
+					// renderHeader={this._renderHeader.bind(this)}
 					dataSource={this.state.dataSource}
-					renderRow={(rowData) => 
-						<EventCard 
-						eventTitle={rowData.eventTitle} 
+					renderRow={(rowData) =>
+						<EventCard
+						eventTitle={rowData.eventTitle}
 						eventDate={rowData.eventDate}
 						eventLocation = {rowData.eventLocation}
 						resumeScanned={rowData.resumeScanned}
 						navigator={this.props.navigator}></EventCard>
 					}
 					style = {styles.list_view}>
-				</ListView>	
-				<ActionButton 
+				</ListView>
+				<ActionButton
 				buttonColor="rgba(0,188,150,1)"
 				backgroundTappable={true}
 				onPress={this._goToAddEventPage.bind(this)}></ActionButton>
 			</View>
-			
+
 		)
 	}
 
@@ -135,8 +138,8 @@ const styles = StyleSheet.create({
 	top_nav:{
 		backgroundColor: '#1DBB96',
 		paddingTop: 30,
-		paddingLeft: 10, 
-		paddingRight: 10, 
+		paddingLeft: 10,
+		paddingRight: 10,
 		paddingBottom: 10
 	},
 	header_title_and_action:{
@@ -151,12 +154,25 @@ const styles = StyleSheet.create({
 		color: '#FFF',
 		fontWeight: 'bold',
 		fontSize: 45,
-		marginLeft:10,
+		marginLeft: 10,
 	},
 	arrow_back:{
-		marginBottom:10
+		marginBottom: 10,
 	},
 	options_more:{
 		alignItems: 'flex-end'
-	}
+	},
+	header:{
+		height: 50,
+		backgroundColor: '#1DBB96',
+		flexDirection: 'row',
+		justifyContent: 'center',
+	},
+	events:{
+		alignSelf: 'center',
+		marginTop: 10,
+		fontSize: 25,
+		fontWeight: 'bold',
+		color: 'white',
+	},
 })

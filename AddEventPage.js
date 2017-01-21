@@ -20,6 +20,7 @@ import {
 } from 'react-native-form-generator'
 
 import DatePicker from 'react-native-datepicker'
+import BackButton from './BackButton'
 
 
 var moment = require('moment');
@@ -38,13 +39,13 @@ export default class AddEventPage extends Component{
 		}
 	}
 	render(){
-		const datePicker = this.state.showDatePicker ? 
+		const datePicker = this.state.showDatePicker ?
 		<View style={styles.datePicker_area}>
-			<DatePickerIOS 
-				date={this.state.eventDate} 
+			<DatePickerIOS
+				date={this.state.eventDate}
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
 				mode="date">
-			</DatePickerIOS> 
+			</DatePickerIOS>
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -55,15 +56,15 @@ export default class AddEventPage extends Component{
 
 		const saveButton = !this.state.showDatePicker ?
 		<View style={styles.saveButton_area}>
-			<TouchableOpacity 
-				onPress={() => 
+			<TouchableOpacity
+				onPress={() =>
 					this.props.navigator.push(
 					{
 						id:"EventPage",
 						eventCreated: {
 							eventTitle: this.state.eventTitle,
 							eventDate: this.state.eventDate,
-							eventLocation: this.state.eventLocation, 
+							eventLocation: this.state.eventLocation,
 							resumeScanned: 0
 						}
 					})}
@@ -77,19 +78,19 @@ export default class AddEventPage extends Component{
 		return(
 			<View style={{backgroundColor:"#FFF",flex:1}}>
 				<View style={styles.top_nav}>
-					<View style={styles.arrow_back_and_list}> 
-						<Icon name="ios-arrow-back" size={20} color="#FFF" style={styles.arrow_back} />
-					</View> 
+					<View style={styles.arrow_back_and_list}>
+						<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
+					</View>
 					<Text style={styles.add_event_text}>Add Event</Text>
 				</View>
 
 				<FormLabel labelStyle={styles.formLabel}>Name</FormLabel>
-				<FormInput 
+				<FormInput
 					placeholder="Enter the name of the event"
 					onChangeText={(eventTitle) => this.setState({eventTitle: eventTitle})}></FormInput>
 
 				<FormLabel labelStyle={styles.formLabel}>Location</FormLabel>
-				<FormInput 
+				<FormInput
 					placeholder="Enter the location of the event"
 					onChangeText={(eventLocation) => this.setState({eventLocation: eventLocation})}></FormInput>
 
@@ -98,16 +99,16 @@ export default class AddEventPage extends Component{
 					onPress={() => this.setState({showDatePicker: !this.state.showDatePicker})}
 					style={styles.set_date_touchable}
 				>
-				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>				
+				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>
 				</TouchableOpacity>
 
 				{datePicker}
 
-				{saveButton}	
+				{saveButton}
 
-				
+
 			</View>
-		
+
 		)
 	}
 
@@ -119,16 +120,17 @@ export default class AddEventPage extends Component{
 const styles = StyleSheet.create({
 	top_nav:{
 		backgroundColor: '#1DBB96',
-		paddingTop: 30,
-		paddingLeft: 10, 
-		paddingRight: 10, 
-		paddingBottom: 10
+		paddingTop: 10,
+		paddingLeft: 10,
+		paddingRight: 10,
+		flexDirection: 'row'
 	},
 	add_event_text:{
 		color:"#FFF",
+		alignSelf: 'center',
 		fontWeight:"bold",
-		fontSize: 45,
-		marginTop:25
+		fontSize: 25,
+		marginLeft: 105,
 	},
 	formLabel:{
 		color:"#1DBB96",

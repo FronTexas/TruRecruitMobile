@@ -16,8 +16,8 @@ import BackButton from './BackButton';
 
 
 export default class EventDetailsPage extends Component
-{	
-	
+{
+
 	constructor(props){
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
@@ -74,11 +74,11 @@ export default class EventDetailsPage extends Component
 		const SearchBar = require('react-native-search-bar');
 		return(
 			<View style={styles.top_nav}>
-				<View style={styles.arrow_back_and_list}> 
+				<View style={styles.arrow_back_and_list}>
 					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-				</View> 
+				</View>
 
-				<View style={styles.header_title_and_action}> 
+				<View style={styles.header_title_and_action}>
 					<View style={styles.eventDetailsContainer}>
 						<Text style={styles.title}>{this.props.event.eventTitle}</Text>
 						<Text style={[styles.title,styles.date]}>{this.props.event.eventDate}</Text>
@@ -92,12 +92,18 @@ export default class EventDetailsPage extends Component
 	{
 		return(
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
+				<View style={styles.top_nav}>
+					<View style={styles.arrow_back_and_list}>
+						<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
+					</View>
+					<Text style={styles.add_event_text}>{this.props.event.eventTitle}</Text>
+				</View>
 				<ListView
-					renderHeader={this._renderHeader.bind(this)}
+					// renderHeader={this._renderHeader.bind(this)}
 					dataSource={this.state.dataSource}
-					renderRow={(rowData) => 
+					renderRow={(rowData) =>
 						<EventDetailsCard
-						attendee_name={rowData.name} 
+						attendee_name={rowData.name}
 						attendee_summary={rowData.summary}
 						time_scanned={rowData.scanned}
 						rating={rowData.rating}
@@ -105,33 +111,47 @@ export default class EventDetailsPage extends Component
 						></EventDetailsCard>
 					}
 					style = {styles.list_view}
-				></ListView>	
+				></ListView>
 				<ActionButton
 					buttonColor="rgba(0,188,150,1)"
 					icon={<Icon name="ios-qr-scanner" style={{color:"#FFF"}} size={30}></Icon>}
 					onPress={this._goToScannerPage.bind(this)}
 				></ActionButton>
 			</View>
-		
+
 		)
 	}
 }
 
 const styles = StyleSheet.create({
+	top_nav:{
+		backgroundColor: '#1DBB96',
+		paddingTop: 10,
+		paddingLeft: 10,
+		paddingRight: 10,
+		flexDirection: 'row'
+	},
+	add_event_text:{
+		color:"#FFF",
+		alignSelf: 'center',
+		fontWeight:"bold",
+		fontSize: 25,
+		marginLeft: 105,
+	},
 	list_view:{
 		backgroundColor:"#FFF",
 	},
-	arrow_back_and_list:{
-		flexDirection:"row",
-		justifyContent: 'space-between',
-	},
-	top_nav:{
-		backgroundColor: '#1DBB96',
-		paddingTop: 30,
-		paddingLeft: 10, 
-		paddingRight: 10, 
-		paddingBottom: 10
-	},
+	// arrow_back_and_list:{
+	// 	flexDirection:"row",
+	// 	justifyContent: 'space-between',
+	// },
+	// top_nav:{
+	// 	backgroundColor: '#1DBB96',
+	// 	paddingTop: 30,
+	// 	paddingLeft: 10,
+	// 	paddingRight: 10,
+	// 	paddingBottom: 10
+	// },
 	header_title_and_action:{
 		flexDirection:'row',
 		justifyContent:'space-between',

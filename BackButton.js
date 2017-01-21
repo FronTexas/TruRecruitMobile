@@ -17,5 +17,4 @@ export default class BackButton extends Component{
 			</TouchableOpacity>
 		)
 	}
-	
 }
