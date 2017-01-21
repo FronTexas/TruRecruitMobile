@@ -36,19 +36,19 @@ export default class EventPage extends Component
 				eventTitle:"HackTX",
 				eventLocation: "The University of Texas at Austin",
 				eventDate:"February 20th 2017",
-				resumeScanned: 200
+				resumeScanned: 2
 			},
 			{
 				eventTitle:"UT Job Fair",
 				eventLocation: "The University of Texas at Austin",
 				eventDate:"February 25th 2017",
-				resumeScanned: 420
+				resumeScanned: 2
 			},
 			{
 				eventTitle:"PennApps",
 				eventLocation: "The University of Pennsilvynia",
 				eventDate:"March 20th 2017",
-				resumeScanned: 69
+				resumeScanned: 2
 			},
 		] ; 
 
@@ -169,11 +169,17 @@ export default class EventPage extends Component
 		)
 	}
 
+	_handleAddEventPop(events){
+		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+		this.setState({dataSource:ds.cloneWithRows(events),events:events});
+	}
+
 	_goToAddEventPage(){
 		this.props.navigator.push({
 			id:"AddEventPage",
 			name:"Add Event Page",
-			events: this.state.events
+			events: this.state.events,
+			onAddEventPop: this._handleAddEventPop.bind(this)
 		})
 	}
 }

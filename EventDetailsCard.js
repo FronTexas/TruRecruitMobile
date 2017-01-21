@@ -27,9 +27,10 @@ export default class EventDetailsCard extends Component
 				onPress={() => this.props.navigator.push({
 					id:"AttendeeProfilePage",
 					attendee:{
-						attendee_name: this.props.attendee_name,
-						attendee_summary:this.props.attendee_summary,
-					}
+						name: this.props.attendee_name,
+						summary:this.props.attendee_summary,
+					},
+					
 				})}
 			>
 				<View style={styles.container}>

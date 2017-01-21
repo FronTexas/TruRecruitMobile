@@ -78,6 +78,7 @@ class AwesomeProject extends Component {
         <AddEventPage
           navigator={navigator}
           events = {route.events}
+          onAddEventPop = {route.onAddEventPop}
         ></AddEventPage>
       )
     } 
@@ -100,7 +101,8 @@ class AwesomeProject extends Component {
         <Scanner
           navigator={navigator}
           event={route.event}
-          attendees={route.attendees}></Scanner>
+          attendees={route.attendees}
+          onScannerPagePop = {route.onScannerPagePop}></Scanner>
       )
     }
 

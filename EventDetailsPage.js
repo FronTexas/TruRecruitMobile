@@ -42,14 +42,19 @@ export default class EventDetailsPage extends Component
 		this.state.attendees = attendees;
 	}
 
+	_handleScannerPagePop(attendees){
+		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+		this.setState({dataSource: ds.cloneWithRows(attendees),attendees:attendees})
+	}
+
 	_goToScannerPage()
 	{
-		alert('length of attendees = ' + this.state.attendees.length)
 		this.props.navigator.push({
 			id: 'ScannerPage',
 			name: 'Scanner Page',
 			event: this.props.event,
-			attendees: this.state.attendees
+			attendees: this.state.attendees,
+			onScannerPagePop: this._handleScannerPagePop.bind(this)
 		})
 	}
 

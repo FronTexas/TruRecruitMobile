@@ -89,13 +89,10 @@ export default class AddEventPage extends Component{
 							eventTitle: this.state.eventTitle,
 							eventDate: formatDate(this.state.eventDate),
 							eventLocation: this.state.eventLocation, 
-							resumeScanned: 0
+							resumeScanned: 2
 						})
-						this.props.navigator.push(
-							{
-								id:"EventPage",
-								events: events
-							})
+						this.props.onAddEventPop(events);
+						this.props.navigator.pop();
 					}
 					
 				}

@@ -56,9 +56,7 @@ export default class Scanner extends Component {
 
     if(!this.state.qrReadAlready){
       this.setState({qrReadAlready:true})
-    }
-
-    this.props.navigator.push({
+        this.props.navigator.push({
       id:"AttendeeProfilePage",
       name:"Attendee Profile Page",
       attendee: {
@@ -67,6 +65,9 @@ export default class Scanner extends Component {
       },
       onAttendeePop: handleAttendeePop.bind(this)
     })
+    }
+
+  
   }
 
   render() {
@@ -90,11 +91,8 @@ export default class Scanner extends Component {
                         this.state.attendee
                       )
                     }
-                    this.props.navigator.push({
-                      id:'EventDetailsPage',
-                      event: this.props.event,
-                      attendees: attendees
-                    })
+                    this.props.onScannerPagePop(attendees);
+                    this.props.navigator.pop();
                   }}
                 >
                   <Text id="done_text" style={[styles.textShadow,{color:"#FFF",fontSize:30,fontWeight:"600"}]}>Done</Text>
