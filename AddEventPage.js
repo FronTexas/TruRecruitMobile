@@ -53,14 +53,11 @@ export default class AddEventPage extends Component{
 			<DatePickerIOS
 				date={this.state.eventDate}
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
-<<<<<<< HEAD
 				mode="date">
 			</DatePickerIOS>
-=======
 				mode="date"
 				>
-			</DatePickerIOS> 
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
+			</DatePickerIOS>
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -71,7 +68,6 @@ export default class AddEventPage extends Component{
 
 		const saveButton = !this.state.showDatePicker ?
 		<View style={styles.saveButton_area}>
-<<<<<<< HEAD
 			<TouchableOpacity
 				onPress={() =>
 					this.props.navigator.push(
@@ -84,10 +80,9 @@ export default class AddEventPage extends Component{
 							resumeScanned: 0
 						}
 					})}
-=======
-			<TouchableOpacity 
-				onPress={() => 
-					{	
+			<TouchableOpacity
+				onPress={() =>
+					{
 						formatDay = function(day){
 							if (day % 10 == 1)
 								return day + "st"
@@ -103,20 +98,19 @@ export default class AddEventPage extends Component{
 							var year = date.getFullYear();
 							return month + " " + day + " " + year
 						}
-			
+
 						var events = this.props.events;
 						events.push({
 							eventTitle: this.state.eventTitle,
 							eventDate: formatDate(this.state.eventDate),
-							eventLocation: this.state.eventLocation, 
+							eventLocation: this.state.eventLocation,
 							resumeScanned: 2
 						})
 						this.props.onAddEventPop(events);
 						this.props.navigator.pop();
 					}
-					
+
 				}
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 				>
 				<View style={styles.save_add_event_button}>
 					<Text style={styles.save_text}>Save</Text>
@@ -145,7 +139,7 @@ export default class AddEventPage extends Component{
 
 				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
 				<TouchableOpacity
-					onPress={() => 
+					onPress={() =>
 						{
 							dismissKeyboard();
 							this.setState({showDatePicker: !this.state.showDatePicker})
@@ -158,14 +152,11 @@ export default class AddEventPage extends Component{
 
 				{datePicker}
 
-<<<<<<< HEAD
 				{saveButton}
 
 
-=======
-				{saveButton}	
-				
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
+				{saveButton}
+
 			</View>
 
 		)
