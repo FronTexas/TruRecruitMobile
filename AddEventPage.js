@@ -55,7 +55,9 @@ export default class AddEventPage extends Component{
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
 				mode="date">
 			</DatePickerIOS>
-	
+				mode="date"
+				>
+			</DatePickerIOS>
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -69,6 +71,21 @@ export default class AddEventPage extends Component{
 			<TouchableOpacity 
 				onPress={() => 
 					{	
+			<TouchableOpacity
+				onPress={() =>
+					this.props.navigator.push(
+					{
+						id:"EventPage",
+						eventCreated: {
+							eventTitle: this.state.eventTitle,
+							eventDate: this.state.eventDate,
+							eventLocation: this.state.eventLocation,
+							resumeScanned: 0
+						}
+					})}
+			<TouchableOpacity
+				onPress={() =>
+					{
 						formatDay = function(day){
 							if (day % 10 == 1)
 								return day + "st"
@@ -84,18 +101,18 @@ export default class AddEventPage extends Component{
 							var year = date.getFullYear();
 							return month + " " + day + " " + year
 						}
-			
+
 						var events = this.props.events;
 						events.push({
 							eventTitle: this.state.eventTitle,
 							eventDate: formatDate(this.state.eventDate),
-							eventLocation: this.state.eventLocation, 
+							eventLocation: this.state.eventLocation,
 							resumeScanned: 2
 						})
 						this.props.onAddEventPop(events);
 						this.props.navigator.pop();
 					}
-					
+
 				}
 				>
 				<View style={styles.save_add_event_button}>
@@ -125,7 +142,7 @@ export default class AddEventPage extends Component{
 
 				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
 				<TouchableOpacity
-					onPress={() => 
+					onPress={() =>
 						{
 							dismissKeyboard();
 							this.setState({showDatePicker: !this.state.showDatePicker})
@@ -139,6 +156,10 @@ export default class AddEventPage extends Component{
 				{datePicker}
 
 				{saveButton}
+
+
+				{saveButton}
+
 			</View>
 
 		)

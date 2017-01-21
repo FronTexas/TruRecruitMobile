@@ -50,7 +50,7 @@ export default class EventPage extends Component
 				eventDate:"March 20th 2017",
 				resumeScanned: 2
 			},
-		] ; 
+		] ;
 
 		this.state.dataSource = ds.cloneWithRows(events);
 		this.state.events = events;
@@ -114,18 +114,21 @@ export default class EventPage extends Component
 					style = {styles.list_view}>
 				</ListView>
 				<Modal position={"center"} 
+				<ActionButton
+				</ListView>
+				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
 					<View
 						id="modal-container"
 						style={{
 							flex:1,
 						}}
-					>	
+					>
 						<FormLabel>Email</FormLabel>
 						<FormInput placeholder="Enter email" onFocus={this.addEmailInput.bind(this)}></FormInput>
 						<View
 							style={{flex:1,justifyContent:'flex-end',padding:20}}
-						>	
+						>
 
 						<View style={{flexDirection:'row',justifyContent:'space-around'}}>
 							<TouchableOpacity onPress={this.closeModal.bind(this)}>
@@ -142,7 +145,7 @@ export default class EventPage extends Component
 										<Text style={{color:"#FFF",fontWeight:'600'}}>Cancel</Text>
 									</View>
 							</TouchableOpacity>
-												
+
 							<TouchableOpacity onPress={this.closeModal.bind(this)}>
 									<View
 										id="send-button"
@@ -159,11 +162,11 @@ export default class EventPage extends Component
 							</TouchableOpacity>
 						</View>
 
-						
+
 						</View>
 					</View>
 				</Modal>
-				<ActionButton 
+				<ActionButton
 				buttonColor="rgba(0,188,150,1)"
 				backgroundTappable={true}
 				onPress={this._goToAddEventPage.bind(this)}></ActionButton>
