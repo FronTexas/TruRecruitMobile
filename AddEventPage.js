@@ -21,6 +21,8 @@ import {
 
 import DatePicker from 'react-native-datepicker'
 
+import dismissKeyboard from 'react-native-dismiss-keyboard';
+
 
 var moment = require('moment');
 
@@ -50,7 +52,8 @@ export default class AddEventPage extends Component{
 			<DatePickerIOS 
 				date={this.state.eventDate} 
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
-				mode="date">
+				mode="date"
+				>
 			</DatePickerIOS> 
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
@@ -124,7 +127,12 @@ export default class AddEventPage extends Component{
 
 				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
 				<TouchableOpacity
-					onPress={() => this.setState({showDatePicker: !this.state.showDatePicker})}
+					onPress={() => 
+						{
+							dismissKeyboard();
+							this.setState({showDatePicker: !this.state.showDatePicker})
+						}
+				}
 					style={styles.set_date_touchable}
 				>
 				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>				
@@ -133,7 +141,6 @@ export default class AddEventPage extends Component{
 				{datePicker}
 
 				{saveButton}	
-
 				
 			</View>
 		
