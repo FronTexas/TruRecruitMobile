@@ -33,17 +33,19 @@ export default class EventDetailsCard extends Component
 				})}
 			>
 				<View style={styles.container}>
-					<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
-					<View style={styles.attendee_scan_information}>
-						<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
-						<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
-						<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
+					<View style={{flexDirection:'row'}}>
+						<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
+						<View style={styles.attendee_scan_information}>
+							<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
+							<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
+							<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
+						</View>
 					</View>
+					
 					<View refs='starArea' 
 						style={
 							{
 								alignItems:'center',
-								marginLeft:75
 							}
 						}
 					>
@@ -84,13 +86,14 @@ const styles = StyleSheet.create({
 		borderBottomColor:'#ecf0f1',
 		borderBottomWidth:1,
 		flexDirection: 'row',
+		justifyContent:'space-between'
 	},
 	profpic:{
 		color:"#CCCCCC",
 	},
 	attendee_scan_information:{
 		flexDirection:'column',
-		marginLeft:10
+		marginLeft:10,
 	},
 	attendee_name:{
 		fontWeight:"bold",

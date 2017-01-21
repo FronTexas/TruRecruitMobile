@@ -90,7 +90,8 @@ class AwesomeProject extends Component {
         // </View>
          <EventDetailsPage
             navigator={navigator}
-            event={route.event}/>
+            event={route.event}
+            attendees={route.attendees}/>
       )
     } 
 
@@ -98,7 +99,8 @@ class AwesomeProject extends Component {
       return(
         <Scanner
           navigator={navigator}
-          eventTitle={route.eventTitle}></Scanner>
+          event={route.event}
+          attendees={route.attendees}></Scanner>
       )
     }
 

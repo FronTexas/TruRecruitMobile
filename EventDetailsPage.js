@@ -22,49 +22,34 @@ export default class EventDetailsPage extends Component
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
-		const attendees = [
-			{
-				name:'Jesse Harrick',
-				summary: 'Graduating May 2018',
-				scanned: '02:42 pm January 20th 2017',
-				rating:5
-			},
-			{
-				name:'Raul Camacho',
-				summary: 'Graduating May 2017',
-				scanned: '02:42 pm January 20th 2017',
-				rating:5
-			},
-			{
-				name:'Fahran Kamili',
-				summary: 'Graduating May 2017',
-				scanned: '02:42 pm January 20th 2017',
-				rating:4
-			},
+		const attendees = this.props.attendees ? this.props.attendees : [
 			{
 				name:'Elon Musk',
 				summary: 'CEO at Tesla',
-				scanned: '02:42 pm January 20th 2017',
+				scanned: '02:42PM January 20th 2017',
 				rating:3
 
 			},
 			{
 				name:'Steve Jobs',
 				summary: 'CEO at Apple',
-				scanned: '02:42 pm January 20th 2017',
+				scanned: '02:42PM January 20th 2017',
 				rating:3
 			}
 
 		]
 		this.state.dataSource = ds.cloneWithRows(attendees);
+		this.state.attendees = attendees;
 	}
 
 	_goToScannerPage()
 	{
+		alert('length of attendees = ' + this.state.attendees.length)
 		this.props.navigator.push({
 			id: 'ScannerPage',
 			name: 'Scanner Page',
-			eventTitle: this.props.event.eventTitle
+			event: this.props.event,
+			attendees: this.state.attendees
 		})
 	}
 
