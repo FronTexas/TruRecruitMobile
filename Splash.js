@@ -10,45 +10,53 @@ import {
   Navigator
 } from 'react-native';
 
+import{
+  FormLabel,FormInput
+} from 'react-native-elements';
+
 export default class Splash extends Component {
 
   _handlePress() {
     Alert.alert('Button has been pressed');
   }
 
-  render() {
-    return (
-      <Navigator
-        renderScene={this.renderScene.bind(this)} />
-    );
-  }
-
-  renderScene(route, navigator) {
+  render(){
     return (
       <View style={styles.container}>
         <Image source={require('./img/scanner.png')} style={styles.picture}/>
-        <Button
-          containerStyle={styles.loginButton}
-          style={{fontSize: 18, color: '#f9fafc'}}
-          onPress={this.gotoLogin.bind(this)}>
-          Log in
+        
+        <View
+        >
+          <FormLabel>Email</FormLabel>
+          <FormInput></FormInput>
+
+          <FormLabel>Password</FormLabel>
+          <FormInput></FormInput>
+        </View>
+
+        <View
+          style={{paddingBottom:15,justifyContent:'center',alignItems:'center'}}
+        >
+           <Button
+            containerStyle={styles.loginButton}
+            style={{fontSize: 18, color: '#f9fafc',alignSelf:'center'}}
+            onPress={this.gotoEvent.bind(this)}>
+            Log in
         </Button>
-        <Button
-          containerStyle={styles.button}
-          style={{fontSize: 18, color: '#f9fafc'}}
-          onPress={this.gotoSignup.bind(this)}>
-          Sign Up
-        </Button>
+        </View>
+       
       </View>
     );
   }
 
-  gotoLogin() {
+  gotoEvent() {
     this.props.navigator.push({
-      id: 'LoginPage',
+      id: 'EventPage',
       name: 'Login',
     });
   }
+
+
 
   gotoSignup() {
     this.props.navigator.push({
@@ -62,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#242628',
   },
   welcome: {
@@ -79,9 +86,9 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   picture: {
-    width: 170,
-    height: 170,
-    marginBottom: 200,
+    width: 300,
+    height: 300,
+    alignSelf:'center'
   },
   button: {
     marginTop: 30,

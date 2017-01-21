@@ -27,7 +27,7 @@ class AwesomeProject extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'EventPage', name: 'Index'}}
+          initialRoute={{id: 'SplashPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {

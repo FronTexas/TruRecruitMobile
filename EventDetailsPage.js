@@ -59,24 +59,6 @@ export default class EventDetailsPage extends Component
 	}
 
 
-	_renderHeader()
-	{
-		const SearchBar = require('react-native-search-bar');
-		return(
-			<View style={styles.top_nav}>
-				<View style={styles.arrow_back_and_list}>
-					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-				</View>
-
-				<View style={styles.header_title_and_action}>
-					<View style={styles.eventDetailsContainer}>
-						<Text style={styles.title}>{this.props.event.eventTitle}</Text>
-						<Text style={[styles.title,styles.date]}>{this.props.event.eventDate}</Text>
-					</View>
-				</View>
-		</View>
-		)
-	}
 
 	render()
 	{
@@ -119,13 +101,14 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		height:75
 	},
 	add_event_text:{
 		color:"#FFF",
 		alignSelf: 'center',
 		fontWeight:"bold",
-		fontSize: 25,
+		fontSize: 30,
 		marginLeft: 105,
 	},
 	list_view:{
@@ -178,7 +161,7 @@ const styles = StyleSheet.create({
 	    fontWeight:'normal'
 	},
 	arrow_back:{
-		marginBottom:10
+		marginTop:100
 	},
 	options_more:{
 		alignItems: 'flex-end'

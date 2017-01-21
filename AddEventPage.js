@@ -53,14 +53,9 @@ export default class AddEventPage extends Component{
 			<DatePickerIOS
 				date={this.state.eventDate}
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
-<<<<<<< HEAD
 				mode="date">
 			</DatePickerIOS>
-=======
-				mode="date"
-				>
-			</DatePickerIOS> 
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
+	
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -71,20 +66,6 @@ export default class AddEventPage extends Component{
 
 		const saveButton = !this.state.showDatePicker ?
 		<View style={styles.saveButton_area}>
-<<<<<<< HEAD
-			<TouchableOpacity
-				onPress={() =>
-					this.props.navigator.push(
-					{
-						id:"EventPage",
-						eventCreated: {
-							eventTitle: this.state.eventTitle,
-							eventDate: this.state.eventDate,
-							eventLocation: this.state.eventLocation,
-							resumeScanned: 0
-						}
-					})}
-=======
 			<TouchableOpacity 
 				onPress={() => 
 					{	
@@ -116,7 +97,6 @@ export default class AddEventPage extends Component{
 					}
 					
 				}
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 				>
 				<View style={styles.save_add_event_button}>
 					<Text style={styles.save_text}>Save</Text>
@@ -158,14 +138,7 @@ export default class AddEventPage extends Component{
 
 				{datePicker}
 
-<<<<<<< HEAD
 				{saveButton}
-
-
-=======
-				{saveButton}	
-				
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 			</View>
 
 		)
@@ -182,7 +155,8 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
-		flexDirection: 'row'
+		flexDirection: 'row',
+		height:75
 	},
 	add_event_text:{
 		color:"#FFF",

@@ -112,11 +112,7 @@ export default class EventPage extends Component
 						></EventCard>
 					}
 					style = {styles.list_view}>
-<<<<<<< HEAD
 				</ListView>
-				<ActionButton
-=======
-				</ListView>	
 				<Modal position={"center"} 
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
 					<View
@@ -168,7 +164,6 @@ export default class EventPage extends Component
 					</View>
 				</Modal>
 				<ActionButton 
->>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 				buttonColor="rgba(0,188,150,1)"
 				backgroundTappable={true}
 				onPress={this._goToAddEventPage.bind(this)}></ActionButton>
@@ -236,7 +231,7 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end'
 	},
 	header:{
-		height: 50,
+		height: 75,
 		backgroundColor: '#1DBB96',
 		flexDirection: 'row',
 		justifyContent: 'center',
@@ -244,7 +239,7 @@ const styles = StyleSheet.create({
 	events:{
 		alignSelf: 'center',
 		marginTop: 10,
-		fontSize: 25,
+		fontSize: 30,
 		fontWeight: 'bold',
 		color: 'white',
 	},
