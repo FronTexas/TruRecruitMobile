@@ -69,7 +69,7 @@ class AwesomeProject extends Component {
       return (
          <EventPage
           navigator={navigator}
-          eventCreated={route.eventCreated}></EventPage>
+          events={route.events}></EventPage>
       )
     }
 
@@ -77,6 +77,8 @@ class AwesomeProject extends Component {
       return(
         <AddEventPage
           navigator={navigator}
+          events = {route.events}
+          onAddEventPop = {route.onAddEventPop}
         ></AddEventPage>
       )
     } 
@@ -89,7 +91,8 @@ class AwesomeProject extends Component {
         // </View>
          <EventDetailsPage
             navigator={navigator}
-            event={route.event}/>
+            event={route.event}
+            attendees={route.attendees}/>
       )
     } 
 
@@ -97,7 +100,9 @@ class AwesomeProject extends Component {
       return(
         <Scanner
           navigator={navigator}
-          eventTitle={route.eventTitle}></Scanner>
+          event={route.event}
+          attendees={route.attendees}
+          onScannerPagePop = {route.onScannerPagePop}></Scanner>
       )
     }
 
@@ -106,6 +111,7 @@ class AwesomeProject extends Component {
         <AttendeeProfilePage
           navigator={navigator}
           attendee={route.attendee}
+          onAttendeePop = {route.onAttendeePop}
         >
         </AttendeeProfilePage>
       )

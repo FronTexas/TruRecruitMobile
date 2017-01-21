@@ -6,23 +6,68 @@ import {
   View,
   Image,
   Alert,
-  Navigator
+  Navigator,
+  TouchableOpacity
 } from 'react-native';
 import Camera from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '.././BackButton'
 
+const monthNames = [
+  "January", "February", "March",
+  "April", "May", "June", "July",
+  "August", "September", "October",
+  "November", "December"
+];
+
 export default class Scanner extends Component {
 
+  constructor(props){
+    super(props);
+    this.state ={
+      qrReadAlready:false
+    };
+  }
+
   _goToAttendeeProfilePage(){
-    this.props.navigator.push({
+    handleAttendeePop = function(attendee) {
+      formatDay = function(day){
+            if (day % 10 == 1)
+              return day + "st"
+            if (day % 10 == 2)
+              return day + "nd"
+            if (day % 10 == 3)
+              return day + "rd"
+            return day + "th"
+          }
+      formatDate = function(date){
+        var day = formatDay(date.getDate());
+        var month = monthNames[date.getMonth()];
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var meridiem = hour >= 12 ? "PM" : "AM";
+        var minutes = ("" + date.getMinutes()).length == 1 ? ("0" + date.getMinutes()) : "" + date.getMinutes();
+        currentTime = ((hour + 11) % 12 + 1) + ":" + minutes + meridiem;
+        return currentTime + " " + month + " " + day + " " + year
+      }
+      attendee.scanned = formatDate(new Date())
+      this.setState({qrReadAlready:false,attendee:attendee})
+    }
+
+    if(!this.state.qrReadAlready){
+      this.setState({qrReadAlready:true})
+        this.props.navigator.push({
       id:"AttendeeProfilePage",
       name:"Attendee Profile Page",
-      attendee:{
-        attendee_name:"Fahran Kamili",
-        attendee_summary:"Graduating May 2017"
-      }
+      attendee: {
+        name: 'Fahran Kamili',
+        summary: 'Graduating May 2017',
+      },
+      onAttendeePop: handleAttendeePop.bind(this)
     })
+    }
+
+  
   }
 
   render() {
@@ -33,13 +78,27 @@ export default class Scanner extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          onBarCodeRead={this.gotoSplash.bind(this)}>
+          onBarCodeRead={this._goToAttendeeProfilePage.bind(this)}
+          barcodeTypes={['qr']}>
 
           <View style={styles.arrowBackArea_and_EventTitle}>
             <View style={styles.arrowBackArea}>
-              <BackButton navigator={this.props.navigator} style={styles.arrowBack}></BackButton>
+              <TouchableOpacity
+                  onPress={()=>{
+                    var attendees = this.props.attendees; 
+                    if (this.state.attendee){
+                      attendees.unshift(
+                        this.state.attendee
+                      )
+                    }
+                    this.props.onScannerPagePop(attendees);
+                    this.props.navigator.pop();
+                  }}
+                >
+                  <Text id="done_text" style={[styles.textShadow,{color:"#FFF",fontSize:30,fontWeight:"600"}]}>Done</Text>
+                </TouchableOpacity>
             </View>
-            <Text style={[styles.textShadow,styles.eventTitle]}>{this.props.eventTitle}</Text>
+            <Text style={[styles.textShadow,styles.eventTitle]}>{this.props.event.eventTitle}</Text>
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>

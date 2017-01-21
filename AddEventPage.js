@@ -22,8 +22,17 @@ import {
 import DatePicker from 'react-native-datepicker'
 import BackButton from './BackButton'
 
+import dismissKeyboard from 'react-native-dismiss-keyboard';
+
 
 var moment = require('moment');
+
+const monthNames = [
+  "January", "February", "March",
+  "April", "May", "June", "July",
+  "August", "September", "October",
+  "November", "December"
+];
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -44,8 +53,14 @@ export default class AddEventPage extends Component{
 			<DatePickerIOS
 				date={this.state.eventDate}
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
+<<<<<<< HEAD
 				mode="date">
 			</DatePickerIOS>
+=======
+				mode="date"
+				>
+			</DatePickerIOS> 
+>>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -56,6 +71,7 @@ export default class AddEventPage extends Component{
 
 		const saveButton = !this.state.showDatePicker ?
 		<View style={styles.saveButton_area}>
+<<<<<<< HEAD
 			<TouchableOpacity
 				onPress={() =>
 					this.props.navigator.push(
@@ -68,6 +84,39 @@ export default class AddEventPage extends Component{
 							resumeScanned: 0
 						}
 					})}
+=======
+			<TouchableOpacity 
+				onPress={() => 
+					{	
+						formatDay = function(day){
+							if (day % 10 == 1)
+								return day + "st"
+							if (day % 10 == 2)
+								return day + "nd"
+							if (day % 10 == 3)
+								return day + "rd"
+							return day + "th"
+						}
+						formatDate = function(date){
+							var day = formatDay(date.getDate());
+							var month = monthNames[date.getMonth()];
+							var year = date.getFullYear();
+							return month + " " + day + " " + year
+						}
+			
+						var events = this.props.events;
+						events.push({
+							eventTitle: this.state.eventTitle,
+							eventDate: formatDate(this.state.eventDate),
+							eventLocation: this.state.eventLocation, 
+							resumeScanned: 2
+						})
+						this.props.onAddEventPop(events);
+						this.props.navigator.pop();
+					}
+					
+				}
+>>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 				>
 				<View style={styles.save_add_event_button}>
 					<Text style={styles.save_text}>Save</Text>
@@ -96,7 +145,12 @@ export default class AddEventPage extends Component{
 
 				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
 				<TouchableOpacity
-					onPress={() => this.setState({showDatePicker: !this.state.showDatePicker})}
+					onPress={() => 
+						{
+							dismissKeyboard();
+							this.setState({showDatePicker: !this.state.showDatePicker})
+						}
+				}
 					style={styles.set_date_touchable}
 				>
 				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>
@@ -104,9 +158,14 @@ export default class AddEventPage extends Component{
 
 				{datePicker}
 
+<<<<<<< HEAD
 				{saveButton}
 
 
+=======
+				{saveButton}	
+				
+>>>>>>> b483ed84102e866709f23aa94c78cd93ecca5dee
 			</View>
 
 		)

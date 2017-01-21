@@ -5,8 +5,7 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableOpacity,
-	Modal
+	TouchableOpacity
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -37,16 +36,6 @@ export default class EventCard extends Component
 	{
 		return(
 			<View>
-				<Modal
-					animationType={"slide"}
-					visible={this.state.modalVisible}
-				>
-					<Text
-						style={{marginTop:100}}
-						onPress={() => this.setState({modalVisible:false})}
-
-					>Close</Text>
-				</Modal>
 				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
 					<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
@@ -60,19 +49,18 @@ export default class EventCard extends Component
 						</View>
 					</View>
 				</TouchableOpacity>
-				<View style={{alignItems:'flex-end',marginTop:-30}}>
+				<View style={{alignItems:'flex-start',marginTop:-30}}>
 					<TouchableOpacity
-						onPress={() => {this.setState({modalVisible:true})}}
+						onPress={this.props.onSendEmailClick()}
 					>
 								<View id="send_email_button" style={[styles.shadow,{
 												backgroundColor:"#1DBB96",
-												width:40,
-												height:40,
+												width:50,
+												height:50,
 												borderRadius:100,
 												alignItems:'center',
 												justifyContent:'center',
-												marginLeft:-45
-
+												marginLeft:10
 											}]}>
 							<Icon name="md-mail" size={20} style={{color:"#FFF"}}></Icon>
 						</View>
@@ -88,6 +76,12 @@ export default class EventCard extends Component
 }
 
 const styles = StyleSheet.create({
+	modal:{
+		justifyContent:'center',
+		alignItems:'center',
+		height:300,
+		width:300
+	},
 	shadow:{
 		shadowOffset:{
           width:0,

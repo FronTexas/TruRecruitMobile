@@ -17,7 +17,17 @@ import StarRating from 'react-native-star-rating'
 
 export default class AttendeeProfilePage extends Component
 {
+	constructor(props){
+		super(props);
+		this.state = {
+			attendee: this.props.attendee,
+		}
+	}
+
 	_onStartingPress(rating){
+		var attendee = this.state.attendee;
+		attendee.rating = rating
+		this.setState({attendee:attendee})
 		return
 	}
 
@@ -30,8 +40,8 @@ export default class AttendeeProfilePage extends Component
 			<ScrollView style={styles.container}>
 				<View style={styles.profpic_and_name}>
 					<Icon name="ios-contact" size={60} style={styles.profpic}></Icon>
-					<Text style={styles.name}>{this.props.attendee.attendee_name}</Text>
-					<Text style={styles.graduation}>{this.props.attendee.attendee_summary}</Text>
+					<Text style={styles.name}>{this.props.attendee.name}</Text>
+					<Text style={styles.graduation}>{this.props.attendee.summary}</Text>
 				</View>
 				<View style={styles.links_and_resume}>
 					<View style={styles.links}>
@@ -59,7 +69,7 @@ export default class AttendeeProfilePage extends Component
 					<View style={{width:200}}>
 						<StarRating
 							maxStars={5}
-							rating={3}
+							rating={this.state.attendee.rating}
 							selectedStar={(rating) => this._onStartingPress(rating)}
 							starSize={30}
 							starColor="#F5C87F"
@@ -68,7 +78,7 @@ export default class AttendeeProfilePage extends Component
 					</View>
 				</View>
 				<TouchableOpacity
-					onPress={() => this.props.navigator.pop()}
+					onPress={() => {if (this.props.onAttendeePop) {this.props.onAttendeePop(this.state.attendee)}; this.props.navigator.pop()}}
 				>
 					<View style={styles.save_button_area}>
 						<View style={styles.save_button}>
