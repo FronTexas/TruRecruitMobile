@@ -8,12 +8,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default class BackButton extends Component{
+	_handleBackButtonPressed(){
+		if(this.props.onBackButtonPressed){
+			return this.props.onBackButtonPressed
+		}else{
+			return () => this.props.navigator.pop()
+		}
+	}
 	render(){
 		return(
 			<TouchableOpacity
-				onPress={()=>this.props.navigator.pop()}
+				onPress={this._handleBackButtonPressed()}
 			>
-				<Icon name="ios-arrow-back" size={40} color="#FFF"/>
+				<View>
+					<Icon name="ios-arrow-back" size={40} color="#FFF"/>
+				</View>
 			</TouchableOpacity>
 		)
 	}

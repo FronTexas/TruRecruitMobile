@@ -28,7 +28,8 @@ export default class EventCard extends Component
 			event:{
 				eventTitle: this.props.eventTitle,
 				eventDate: this.props.eventDate
-			}
+			},
+			previousPageTitle: "Events"
 		})
 	}
 

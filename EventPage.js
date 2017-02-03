@@ -13,7 +13,9 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
-import BackButton from './BackButton'
+import BackButton from './BackButton';
+import Navbar from './Navbar';
+
 var Modal   = require('react-native-modalbox');
 
 
@@ -59,23 +61,6 @@ export default class EventPage extends Component
 		this.state.emailInputs = [];
 	}
 
-
-	_renderHeader()
-	{
-		const SearchBar = require('react-native-search-bar');
-		return(
-			<View style={styles.top_nav}>
-				<View style={styles.arrow_back_and_list}>
-					<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-				</View>
-
-				<View style={styles.header_title_and_action}>
-					<Text style={styles.title}>Events</Text>
-				</View>
-			</View>
-		)
-	}
-
 	_handleSendEmailClick(){
 		this.refs.send_email_modal.open();
 	}
@@ -95,9 +80,7 @@ export default class EventPage extends Component
 	{
 		return(
 			<View style={{flex:1}}>
-				<View style={styles.header}>
-					<Text style={styles.events}>Events</Text>
-				</View>
+				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
 				<ListView
 					// renderHeader={this._renderHeader.bind(this)}
 					dataSource={this.state.dataSource}
@@ -112,9 +95,6 @@ export default class EventPage extends Component
 						></EventCard>
 					}
 					style = {styles.list_view}>
-				</ListView>
-				<Modal position={"center"} 
-				<ActionButton
 				</ListView>
 				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
@@ -174,6 +154,7 @@ export default class EventPage extends Component
 
 		)
 	}
+
 
 	_handleAddEventPop(events){
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});

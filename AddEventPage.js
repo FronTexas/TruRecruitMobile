@@ -19,8 +19,9 @@ import {
 	Separator
 } from 'react-native-form-generator'
 
-import DatePicker from 'react-native-datepicker'
-import BackButton from './BackButton'
+import DatePicker from 'react-native-datepicker';
+import BackButton from './BackButton';
+import Navbar from './Navbar';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
 
@@ -55,9 +56,6 @@ export default class AddEventPage extends Component{
 				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
 				mode="date">
 			</DatePickerIOS>
-				mode="date"
-				>
-			</DatePickerIOS>
 			<TouchableOpacity
 				onPress={() => this.setState({showDatePicker:false})}
 			>
@@ -68,21 +66,6 @@ export default class AddEventPage extends Component{
 
 		const saveButton = !this.state.showDatePicker ?
 		<View style={styles.saveButton_area}>
-			<TouchableOpacity 
-				onPress={() => 
-					{	
-			<TouchableOpacity
-				onPress={() =>
-					this.props.navigator.push(
-					{
-						id:"EventPage",
-						eventCreated: {
-							eventTitle: this.state.eventTitle,
-							eventDate: this.state.eventDate,
-							eventLocation: this.state.eventLocation,
-							resumeScanned: 0
-						}
-					})}
 			<TouchableOpacity
 				onPress={() =>
 					{
@@ -103,7 +86,7 @@ export default class AddEventPage extends Component{
 						}
 
 						var events = this.props.events;
-						events.push({
+						events.unshift({
 							eventTitle: this.state.eventTitle,
 							eventDate: formatDate(this.state.eventDate),
 							eventLocation: this.state.eventLocation,
@@ -123,12 +106,7 @@ export default class AddEventPage extends Component{
 
 		return(
 			<View style={{backgroundColor:"#FFF",flex:1}}>
-				<View style={styles.top_nav}>
-					<View style={styles.arrow_back_and_list}>
-						<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-					</View>
-					<Text style={styles.add_event_text}>Add Event</Text>
-				</View>
+				<Navbar navigator = {this.props.navigator} title={"Add Event"}></Navbar>
 
 				<FormLabel labelStyle={styles.formLabel}>Name</FormLabel>
 				<FormInput
@@ -140,7 +118,7 @@ export default class AddEventPage extends Component{
 					placeholder="Enter the location of the event"
 					onChangeText={(eventLocation) => this.setState({eventLocation: eventLocation})}></FormInput>
 
-				<FormLabel labelStyle={styles.formLabel}>Time</FormLabel>
+				<FormLabel labelStyle={styles.formLabel}>DatePicker</FormLabel>
 				<TouchableOpacity
 					onPress={() =>
 						{
@@ -156,10 +134,6 @@ export default class AddEventPage extends Component{
 				{datePicker}
 
 				{saveButton}
-
-
-				{saveButton}
-
 			</View>
 
 		)

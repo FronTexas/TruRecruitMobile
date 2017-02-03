@@ -7,7 +7,8 @@ import {
   Image,
   TextInput,
   Alert,
-  Navigator
+  Navigator,
+  TouchableOpacity
 } from 'react-native';
 
 import{
@@ -43,6 +44,19 @@ export default class Splash extends Component {
             onPress={this.gotoEvent.bind(this)}>
             Log in
         </Button>
+        </View>
+
+        <View style={{flexDirection:'row','justifyContent':'center'}}>
+          <View style={{'flexDirection':'row'}}>
+            <Text style={{color:"#FFF"}}>Don't have an account?</Text>
+            <TouchableOpacity
+              onPress={() => this.props.navigator.push({
+                id:'SignupPage'
+              })}
+            >
+              <Text style={{fontWeight:'bold',marginLeft:5,color:'#1DBB96'}}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
        
       </View>

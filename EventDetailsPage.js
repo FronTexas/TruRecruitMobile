@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EventDetailsCard from './EventDetailsCard';
 import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
+import Navbar from './Navbar';
 
 
 
@@ -62,16 +63,11 @@ export default class EventDetailsPage extends Component
 
 	render()
 	{
+		var navbar = <Navbar title={this.props.event.eventTitle} subtitle={this.props.event.eventDatek}></Navbar>
 		return(
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
-				<View style={styles.top_nav}>
-					<View style={styles.arrow_back_and_list}>
-						<BackButton navigator={this.props.navigator} style={styles.arrow_back}></BackButton>
-					</View>
-					<Text style={styles.add_event_text}>{this.props.event.eventTitle}</Text>
-				</View>
+				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.props.event.eventDate}></Navbar>
 				<ListView
-					// renderHeader={this._renderHeader.bind(this)}
 					dataSource={this.state.dataSource}
 					renderRow={(rowData) =>
 						<EventDetailsCard
@@ -98,10 +94,6 @@ export default class EventDetailsPage extends Component
 const styles = StyleSheet.create({
 	top_nav:{
 		backgroundColor: '#1DBB96',
-		paddingTop: 10,
-		paddingLeft: 10,
-		paddingRight: 10,
-		flexDirection: 'row',
 		height:75
 	},
 	add_event_text:{
@@ -114,17 +106,6 @@ const styles = StyleSheet.create({
 	list_view:{
 		backgroundColor:"#FFF",
 	},
-	// arrow_back_and_list:{
-	// 	flexDirection:"row",
-	// 	justifyContent: 'space-between',
-	// },
-	// top_nav:{
-	// 	backgroundColor: '#1DBB96',
-	// 	paddingTop: 30,
-	// 	paddingLeft: 10,
-	// 	paddingRight: 10,
-	// 	paddingBottom: 10
-	// },
 	header_title_and_action:{
 		flexDirection:'row',
 		justifyContent:'space-between',

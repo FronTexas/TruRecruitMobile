@@ -92,7 +92,8 @@ class AwesomeProject extends Component {
          <EventDetailsPage
             navigator={navigator}
             event={route.event}
-            attendees={route.attendees}/>
+            attendees={route.attendees}
+            previousPageTitle={route.previousPageTitle}/>
       )
     } 
 

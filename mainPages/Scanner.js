@@ -79,10 +79,29 @@ export default class Scanner extends Component {
           }}
           style={styles.preview}
           onBarCodeRead={this._goToAttendeeProfilePage.bind(this)}
-          barcodeTypes={['qr']}>
-
-          <View style={styles.arrowBackArea_and_EventTitle}>
-            <View style={styles.arrowBackArea}>
+          barcodeTypes={['qr']}
+          >
+          <View id="arrowBackArea_and_EventTitle" style={{
+                                                    padding:20,
+                                                    flexDirection:'row',
+                                                    justifyContent:'center'
+                                                  }}>
+              <View>
+                <Text style={[styles.textShadow,{fontSize:30,fontWeight:'bold',color:'#FFF'}]}>{this.props.event.eventTitle}</Text>
+              </View>
+          </View>
+          <View style={styles.scan_and_instruction}>
+            <Image  source={require('../img/scanner.png')} style={styles.scan}/>
+            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={[styles.textShadow,styles.instruction]}>Hold your camera up to a TR code</Text>
+          </View>
+          <View 
+              id="done_text_area"
+              style={{
+                  flexDirection:'row',
+                  justifyContent:'center',
+                  padding:20
+                }}
+              >
               <TouchableOpacity
                   onPress={()=>{
                     var attendees = this.props.attendees; 
@@ -97,12 +116,6 @@ export default class Scanner extends Component {
                 >
                   <Text id="done_text" style={[styles.textShadow,{color:"#FFF",fontSize:30,fontWeight:"600"}]}>Done</Text>
                 </TouchableOpacity>
-            </View>
-            <Text style={[styles.textShadow,styles.eventTitle]}>{this.props.event.eventTitle}</Text>
-          </View>
-          <View style={styles.scan_and_instruction}>
-            <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={[styles.textShadow,styles.instruction]}>Hold your camera up to a TR code</Text>
           </View>
         </Camera>
       </View>
