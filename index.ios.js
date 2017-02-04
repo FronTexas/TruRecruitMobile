@@ -12,6 +12,14 @@ import {
   View
 } from 'react-native';
 
+
+import AppContainer from './app/containers/AppContainer';
+import { Provider } from 'react-redux';
+import {createStore,applyMiddleware,combineReducers,compose} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import reducer from './app/reducers'
+
 import Login from './Login';
 import Splash from './Splash';
 import Signup from './Signup';
@@ -23,109 +31,24 @@ import Scanner from './mainPages/Scanner';
 import AttendeeProfilePage from './AttendeeProfilePage'
 import ResumeViewPage from './ResumeViewPage'
 
-class AwesomeProject extends Component {
-  render() {
-    return (
-      <Navigator
-          initialRoute={{id: 'SplashPage', name: 'Index'}}
-          renderScene={this.renderScene.bind(this)}
-          configureScene={(route) => {
-            if (route.sceneConfig) {
-              return route.sceneConfig;
-            }
-            return Navigator.SceneConfigs.FloatFromRight;
-          }} />
-      )
-  }
+const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
 
-  renderScene(route, navigator) {
-    var routeId = route.id;
-    if (routeId === 'SplashPage') {
-      return (
-        <Splash
-          navigator={navigator} />
-      );
-    }
-    if (routeId === 'SignupPage') {
-      return (
-        <Signup
-          navigator={navigator} />
-      );
-    }
-    if (routeId === 'LoginPage') {
-      return (
-        <Login
-          navigator={navigator} />
-      );
-    }
-    if (routeId === 'MainPage') {
-      return (
-        <Main
-          navigator={navigator} />
-      )
-    }
-
-    if (routeId === 'EventPage') {
-      return (
-         <EventPage
-          navigator={navigator}
-          events={route.events}></EventPage>
-      )
-    }
-
-    if (routeId === 'AddEventPage'){
-      return(
-        <AddEventPage
-          navigator={navigator}
-          events = {route.events}
-          onAddEventPop = {route.onAddEventPop}
-        ></AddEventPage>
-      )
-    } 
-
-    if (routeId === 'EventDetailsPage') {
-      return (
-        // <View>
-        //   <Text>{route.event.eventTitle}</Text>
-        //   <Text>{route.event.eventDate}</Text>
-        // </View>
-         <EventDetailsPage
-            navigator={navigator}
-            event={route.event}
-            attendees={route.attendees}
-            previousPageTitle={route.previousPageTitle}/>
-      )
-    } 
-
-    if (routeId === 'ScannerPage'){
-      return(
-        <Scanner
-          navigator={navigator}
-          event={route.event}
-          attendees={route.attendees}
-          onScannerPagePop = {route.onScannerPagePop}></Scanner>
-      )
-    }
-
-    if(routeId === 'AttendeeProfilePage'){
-      return(
-        <AttendeeProfilePage
-          navigator={navigator}
-          attendee={route.attendee}
-          onAttendeePop = {route.onAttendeePop}
-        >
-        </AttendeeProfilePage>
-      )
-    }   
-
-    if(routeId == 'ResumeViewPage'){
-      return(
-        <ResumeViewPage
-          navigator={navigator}>
-        </ResumeViewPage>
-      )
-    }
-  }
+function configureStore(initialState){
+  const enhancer = compose(
+    applyMiddleware(
+      thunkMiddleware,
+      loggerMiddleware
+    )
+  );
+  return createStore(reducer,initialState,enhancer);
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+const store = configureStore({});
+
+const App = () => (
+  <Provider  store={store}>
+    <AppContainer />
+  </Provider>
+)
+
+AppRegistry.registerComponent('AwesomeProject', () => App);
