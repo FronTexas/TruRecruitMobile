@@ -24,41 +24,43 @@ export default class Splash extends Component {
   render(){
     return (
       <View style={styles.container}>
-        <Image source={require('./img/scanner.png')} style={styles.picture}/>
+        <View style={{flex:0.6,justifyContent:'center'}}>
+          <Image source={require('./img/scanner.png')} style={styles.picture}/>
+        </View>
         
-        <View
-        >
-          <FormLabel>Email</FormLabel>
-          <FormInput></FormInput>
+        <View id="inputFields" style={{flex:0.4}}>
+          <View>
+            <FormLabel>Email</FormLabel>
+            <FormInput></FormInput>
 
-          <FormLabel>Password</FormLabel>
-          <FormInput></FormInput>
-        </View>
+            <FormLabel>Password</FormLabel>
+            <FormInput></FormInput>
+          </View>
 
-        <View
-          style={{paddingBottom:15,justifyContent:'center',alignItems:'center'}}
-        >
-           <Button
-            containerStyle={styles.loginButton}
-            style={{fontSize: 18, color: '#f9fafc',alignSelf:'center'}}
-            onPress={this.gotoEvent.bind(this)}>
-            Log in
-        </Button>
-        </View>
+          <View
+            style={{paddingBottom:15,justifyContent:'center',alignItems:'center'}}
+          >
+             <Button
+              containerStyle={styles.loginButton}
+              style={{fontSize: 18, color: '#f9fafc',alignSelf:'center'}}
+              onPress={this.gotoEvent.bind(this)}>
+              Log in
+          </Button>
+          </View>
 
-        <View style={{flexDirection:'row','justifyContent':'center'}}>
-          <View style={{'flexDirection':'row'}}>
-            <Text style={{color:"#FFF"}}>Don't have an account?</Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigator.push({
-                id:'SignupPage'
-              })}
-            >
-              <Text style={{fontWeight:'bold',marginLeft:5,color:'#1DBB96'}}>Sign Up</Text>
-            </TouchableOpacity>
+          <View style={{flexDirection:'row','justifyContent':'center'}}>
+            <View style={{'flexDirection':'row'}}>
+              <Text style={{color:"#FFF"}}>Don't have an account?</Text>
+              <TouchableOpacity
+                onPress={() => this.props.navigator.push({
+                  id:'SignupPage'
+                })}
+              >
+                <Text style={{fontWeight:'bold',marginLeft:5,color:'#1DBB96'}}>Sign Up</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-       
       </View>
     );
   }
@@ -83,7 +85,6 @@ export default class Splash extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: '#242628',
   },
   welcome: {
@@ -100,8 +101,8 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   picture: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     alignSelf:'center'
   },
   button: {
