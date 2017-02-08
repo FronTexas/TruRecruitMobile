@@ -1,6 +1,6 @@
 import * as types from './types';
 
-export function createNewEvent(events){
+export function dispatchNewEvent(event){
 	return (dispatch,getState) => {
 		dispatch(setNewEvent({event:event}));
 	}

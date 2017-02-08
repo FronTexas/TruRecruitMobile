@@ -16,16 +16,16 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from '../actions';
 
-import Login from '../../Login';
-import Splash from '../../Splash';
-import Signup from '../../Signup';
-import Main from '../../Main';
-import EventPage from '../../EventPage';
-import AddEventPage from '../../AddEventPage';
-import EventDetailsPage from '../../EventDetailsPage';
-import Scanner from '../../mainPages/Scanner';
-import AttendeeProfilePage from '../../AttendeeProfilePage'
-import ResumeViewPage from '../../ResumeViewPage'
+import Login from './Login';
+import Splash from './Splash';
+import Signup from './Signup';
+import Main from './Main';
+import EventPage from './EventPage';
+import AddEventPage from './AddEventPage';
+import EventDetailsPage from './EventDetailsPage';
+import Scanner from './mainPages/Scanner';
+import AttendeeProfilePage from './AttendeeProfilePage'
+import ResumeViewPage from './ResumeViewPage'
 
 
 class AppContainer extends Component {
@@ -83,8 +83,7 @@ class AppContainer extends Component {
       return(
         <AddEventPage
           navigator={navigator}
-          events = {route.events}
-          onAddEventPop = {route.onAddEventPop}
+          {...this.props}
         ></AddEventPage>
       )
     } 

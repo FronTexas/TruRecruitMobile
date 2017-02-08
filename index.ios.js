@@ -7,9 +7,6 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  Navigator,
-  Text,
-  View
 } from 'react-native';
 
 
@@ -20,16 +17,6 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import reducer from './app/reducers'
 
-import Login from './Login';
-import Splash from './Splash';
-import Signup from './Signup';
-import Main from './Main';
-import EventPage from './EventPage';
-import AddEventPage from './AddEventPage';
-import EventDetailsPage from './EventDetailsPage';
-import Scanner from './mainPages/Scanner';
-import AttendeeProfilePage from './AttendeeProfilePage'
-import ResumeViewPage from './ResumeViewPage'
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
 

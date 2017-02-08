@@ -9,6 +9,7 @@ import {
 	Button
 } from 'react-native';
 
+import {connect} from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventCard from './EventCard';
@@ -26,7 +27,7 @@ import{
 
 
 
-export default class EventPage extends Component
+class EventPage extends Component
 {
 
 	constructor(props){
@@ -76,20 +77,24 @@ export default class EventPage extends Component
 		this.setState({emailInputs:currentEmailInputs});
 	}
 
+	getDataSource(){
+		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+		return ds.cloneWithRows(this.props.events); 	
+	}
+
 	render()
 	{
 		return(
 			<View style={{flex:1}}>
 				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
 				<ListView
-					// renderHeader={this._renderHeader.bind(this)}
-					dataSource={this.state.dataSource}
+					dataSource={this.getDataSource()}
 					renderRow={(rowData) =>
 						<EventCard
 						eventTitle={rowData.eventTitle}
 						eventDate={rowData.eventDate}
 						eventLocation = {rowData.eventLocation}
-						resumeScanned={rowData.resumeScanned}
+						resumeScanned={rowData.resumeScanned}	
 						navigator={this.props.navigator}
 						onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
 						></EventCard>
@@ -228,3 +233,12 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 })
+
+function mapStateToProps(state){
+	return {
+		events: state.events
+	};
+}
+
+export default connect(mapStateToProps)(EventPage)
+

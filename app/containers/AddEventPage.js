@@ -18,7 +18,7 @@ import {
 	DatePickerField,
 	Separator
 } from 'react-native-form-generator'
-
+import {connect} from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
@@ -37,7 +37,7 @@ const monthNames = [
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default class AddEventPage extends Component{
+class AddEventPage extends Component{
 	constructor(props){
 		super(props);
 
@@ -85,15 +85,14 @@ export default class AddEventPage extends Component{
 							return month + " " + day + " " + year
 						}
 
-						var events = this.props.events;
-						events.unshift({
+						this.props.dispatchNewEvent({
 							eventTitle: this.state.eventTitle,
 							eventDate: formatDate(this.state.eventDate),
 							eventLocation: this.state.eventLocation,
 							resumeScanned: 2
-						})
-						this.props.onAddEventPop(events);
+						});
 						this.props.navigator.pop();
+
 					}
 
 				}
@@ -198,3 +197,11 @@ const styles = StyleSheet.create({
 	}
 
 })
+
+function mapStateToProps(state){
+	return {
+		events: state.events
+	};
+}
+
+export default connect(mapStateToProps)(AddEventPage);
