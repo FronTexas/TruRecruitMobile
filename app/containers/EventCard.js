@@ -22,14 +22,11 @@ export default class EventCard extends Component
 	}
 
 	_goToEventDetails(){
+		console.log(this.props.event)
+		this.props.selectEvent(this.props.event);
 		this.props.navigator.push({
 			id:"EventDetailsPage",
 			name:"Event Details Page",
-			event:{
-				eventTitle: this.props.eventTitle,
-				eventDate: this.props.eventDate
-			},
-			previousPageTitle: "Events"
 		})
 	}
 
@@ -40,12 +37,12 @@ export default class EventCard extends Component
 				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
 					<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
-							<Text style={styles.eventTitle}>{this.props.eventTitle}</Text>
-							<Text style={styles.eventDate}>{this.props.eventLocation}</Text>
-							<Text style={styles.eventDate}>{this.props.eventDate}</Text>
+							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
+							<Text style={styles.eventDate}>{this.props.event.eventLocation}</Text>
+							<Text style={styles.eventDate}>{this.props.event.eventDate}</Text>
 						</View>
 						<View style={styles.resume_scanned_container}>
-							<Text style={styles.resume_scanned_number}>{this.props.resumeScanned}</Text>
+							<Text style={styles.resume_scanned_number}>{this.props.event.resumeScanned}</Text>
 							<Text style={styles.resume_scanned_text}>Resume Scanned</Text>
 						</View>
 					</View>

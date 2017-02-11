@@ -110,7 +110,6 @@ export default class Scanner extends Component {
                         this.state.attendee
                       )
                     }
-                    this.props.onScannerPagePop(attendees);
                     this.props.navigator.pop();
                   }}
                 >

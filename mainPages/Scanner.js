@@ -103,16 +103,6 @@ export default class Scanner extends Component {
                 }}
               >
               <TouchableOpacity
-                  onPress={()=>{
-                    var attendees = this.props.attendees; 
-                    if (this.state.attendee){
-                      attendees.unshift(
-                        this.state.attendee
-                      )
-                    }
-                    this.props.onScannerPagePop(attendees);
-                    this.props.navigator.pop();
-                  }}
                 >
                   <Text id="done_text" style={[styles.textShadow,{color:"#FFF",fontSize:30,fontWeight:"600"}]}>Done</Text>
                 </TouchableOpacity>
@@ -146,7 +136,7 @@ const styles = StyleSheet.create({
   textShadow:{
     shadowOffset:{
           width:0,
-          height:0
+            height:0
         },
     shadowColor:'black',
     shadowOpacity:0.5

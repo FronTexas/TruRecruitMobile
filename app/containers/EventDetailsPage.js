@@ -7,7 +7,7 @@ import {
 	Text
 } from 'react-native';
 
-
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventDetailsCard from './EventDetailsCard';
 import ActionButton from 'react-native-action-button';
@@ -15,37 +15,10 @@ import BackButton from './BackButton';
 import Navbar from './Navbar';
 
 
-
-export default class EventDetailsPage extends Component
+class EventDetailsPage extends Component
 {
-
 	constructor(props){
 		super(props);
-		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-		this.state = {};
-		const attendees = this.props.attendees ? this.props.attendees : [
-			{
-				name:'Elon Musk',
-				summary: 'CEO at Tesla',
-				scanned: '02:42PM January 20th 2017',
-				rating:3
-
-			},
-			{
-				name:'Steve Jobs',
-				summary: 'CEO at Apple',
-				scanned: '02:42PM January 20th 2017',
-				rating:3
-			}
-
-		]
-		this.state.dataSource = ds.cloneWithRows(attendees);
-		this.state.attendees = attendees;
-	}
-
-	_handleScannerPagePop(attendees){
-		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-		this.setState({dataSource: ds.cloneWithRows(attendees),attendees:attendees})
 	}
 
 	_goToScannerPage()
@@ -54,12 +27,14 @@ export default class EventDetailsPage extends Component
 			id: 'ScannerPage',
 			name: 'Scanner Page',
 			event: this.props.event,
-			attendees: this.state.attendees,
-			onScannerPagePop: this._handleScannerPagePop.bind(this)
 		})
 	}
 
-
+	getDataSource(){
+		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
+		console.log(this.props.attendees);
+		return ds.cloneWithRows(this.props.attendees);
+	}
 
 	render()
 	{
@@ -68,7 +43,7 @@ export default class EventDetailsPage extends Component
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
 				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.props.event.eventDate}></Navbar>
 				<ListView
-					dataSource={this.state.dataSource}
+					dataSource={this.getDataSource()}
 					renderRow={(rowData) =>
 						<EventDetailsCard
 						attendee_name={rowData.name}
@@ -148,3 +123,12 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end'
 	}
 })
+
+function mapStateToProps(state){
+	return {
+		attendees:  state.attendees[state.selected_event.event_id],
+		event: state.selected_event
+	};
+}
+
+export default connect(mapStateToProps)(EventDetailsPage);

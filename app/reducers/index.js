@@ -1,6 +1,11 @@
 import { combineReducers } from 'redux';
-import * as eventsReducer from './events'
+import createReducer from '../lib/createReducer'
+import * as types from '../actions/types'
+
+import * as eventsReducer from './events';
+import * as attendeesReducer from './attendees';
 
 export default combineReducers(Object.assign(
   eventsReducer,
+  attendeesReducer
 ));

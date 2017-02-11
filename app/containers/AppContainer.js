@@ -48,13 +48,15 @@ class AppContainer extends Component {
     if (routeId === 'SplashPage') {
       return (
         <Splash
-          navigator={navigator} />
+          navigator={navigator}
+          {...this.props} />
       );
     }
     if (routeId === 'SignupPage') {
       return (
         <Signup
-          navigator={navigator} />
+          navigator={navigator}
+           />
       );
     }
     if (routeId === 'LoginPage') {
@@ -89,12 +91,14 @@ class AppContainer extends Component {
     } 
 
     if (routeId === 'EventDetailsPage') {
+      console.log("routeId = ", routeId);
       return (
          <EventDetailsPage
             navigator={navigator}
             event={route.event}
             attendees={route.attendees}
-            previousPageTitle={route.previousPageTitle}/>
+            previousPageTitle={route.previousPageTitle}
+            {...this.props}/>
       )
     } 
 
@@ -103,8 +107,7 @@ class AppContainer extends Component {
         <Scanner
           navigator={navigator}
           event={route.event}
-          attendees={route.attendees}
-          onScannerPagePop = {route.onScannerPagePop}></Scanner>
+          ></Scanner>
       )
     }
 
@@ -121,7 +124,7 @@ class AppContainer extends Component {
 
     if(routeId == 'ResumeViewPage'){
       return(
-        <ResumeViewPage
+      <ResumeViewPage
           navigator={navigator}>
         </ResumeViewPage>
       )

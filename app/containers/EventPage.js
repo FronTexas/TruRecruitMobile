@@ -79,7 +79,7 @@ class EventPage extends Component
 
 	getDataSource(){
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-		return ds.cloneWithRows(this.props.events); 	
+		return ds.cloneWithRows(this.props.events);
 	}
 
 	render()
@@ -89,15 +89,14 @@ class EventPage extends Component
 				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
 				<ListView
 					dataSource={this.getDataSource()}
-					renderRow={(rowData) =>
-						<EventCard
-						eventTitle={rowData.eventTitle}
-						eventDate={rowData.eventDate}
-						eventLocation = {rowData.eventLocation}
-						resumeScanned={rowData.resumeScanned}	
-						navigator={this.props.navigator}
-						onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
-						></EventCard>
+					renderRow={(rowData) =>{
+							return <EventCard
+							event = {rowData}
+							navigator={this.props.navigator}
+							onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
+							{...this.props}
+							></EventCard>
+						}
 					}
 					style = {styles.list_view}>
 				</ListView>

@@ -2,7 +2,16 @@ import * as types from './types';
 
 export function dispatchNewEvent(event){
 	return (dispatch,getState) => {
-		dispatch(setNewEvent({event:event}));
+		dispatch(setNewEvent({event}));
+	}
+}
+
+export function selectEvent(event){
+	return (dispatch,getState) => {
+		dispatch({
+			type:types.SELECT_EVENT,
+			event
+		});
 	}
 }
 
