@@ -11,6 +11,7 @@ import {
 	TouchableOpacity
 } from 'react-native';
 
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import StarRating from 'react-native-star-rating';
@@ -26,7 +27,7 @@ export default class AttendeeProfilePage extends Component
 		}
 	}
 
-	_onStartingPress(rating){
+	_onStarPress(rating){
 		var attendee = this.state.attendee;
 		attendee.rating = rating
 		this.setState({attendee:attendee})
@@ -37,18 +38,11 @@ export default class AttendeeProfilePage extends Component
 		return
 	}
 
-	_handlePop(){
-		if (this.props.onAttendeePop) {
-			this.props.onAttendeePop(this.state.attendee)
-		};
-		this.props.navigator.pop();
-	}
-
 	render()
 	{
 		return(
 			<View style={{flex:1}}>
-				<Navbar onBackButtonPressed = {this._handlePop.bind(this)} navigator={this.props.navigator} title={this.props.attendee.name}></Navbar>
+				<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.props.attendee.name}></Navbar>
 				<ScrollView style={{
 						backgroundColor:"#EEF1F7"
 					}}>
@@ -96,7 +90,7 @@ export default class AttendeeProfilePage extends Component
 							<StarRating
 								maxStars={5}
 								rating={this.state.attendee.rating}
-								selectedStar={(rating) => this._onStartingPress(rating)}
+								selectedStar={(rating) => this._onStarPress(rating)}
 								starSize={30}
 								starColor="#F5C87F"
 								emptyStarColor="#CCCCCC"
@@ -104,7 +98,17 @@ export default class AttendeeProfilePage extends Component
 						</View>
 					</View>
 					<TouchableOpacity
-						onPress={() => {if (this.props.onAttendeePop) {this.props.onAttendeePop(this.state.attendee)}; this.props.navigator.pop()}}
+						onPress=
+						{ () => 
+							{
+								var id = this.state.attendee.id ? this.state.attendee.id : Math.floor(Date.now() / 1000);
+								this.state.attendee.id = id;
+								var scanned = this.state.attendee.scanned? this.state.attendee.scanned : Date.now();
+								this.state.attendee.scanned = scanned;
+								this.props.dispatchNewAttendee(this.state.attendee);
+								this.props.navigator.pop();
+							}
+						}
 					>
 						<View style={styles.save_button_area}>
 							<View style={styles.save_button}>
@@ -206,3 +210,5 @@ const styles = StyleSheet.create({
 	}
 
 })
+
+

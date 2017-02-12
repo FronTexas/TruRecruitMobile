@@ -46,10 +46,7 @@ class EventDetailsPage extends Component
 					dataSource={this.getDataSource()}
 					renderRow={(rowData) =>
 						<EventDetailsCard
-						attendee_name={rowData.name}
-						attendee_summary={rowData.summary}
-						time_scanned={rowData.scanned}
-						rating={rowData.rating}
+						attendee={rowData}
 						navigator={this.props.navigator}
 						></EventDetailsCard>
 					}
@@ -124,9 +121,17 @@ const styles = StyleSheet.create({
 	}
 })
 
+
 function mapStateToProps(state){
+	getAttendeesArray = (attendees_object) => {
+		var attendees_array = [];
+		for(var key in attendees_object){
+			attendees_array.push(attendees_object[key]);
+		}
+		return attendees_array;
+	}
 	return {
-		attendees:  state.attendees[state.selected_event.event_id],
+		attendees:  getAttendeesArray(state.attendees[state.selected_event.event_id]),
 		event: state.selected_event
 	};
 }

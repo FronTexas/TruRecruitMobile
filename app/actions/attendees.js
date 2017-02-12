@@ -2,13 +2,10 @@ import * as types from './types';
 
 export function dispatchNewAttendee(attendee){
 	return (dispatch,getState) => {
-		return saveNewAttendee(attendee);
-	}
-}
-
-export function saveNewAttendee(attendee){
-	return {
-		type: types.SAVE_NEW_ATTENDEE,
-		attendee:attendee
+		dispatch({
+			type: types.SAVE_NEW_ATTENDEE,
+			attendee: attendee, 
+			event_id: getState().selected_event.event_id		
+		});
 	}
 }

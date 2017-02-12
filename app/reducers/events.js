@@ -34,9 +34,9 @@ export const events = createReducer(
     ],
 {
   [types.SET_NEW_EVENTS](state, action) {
-    return update(state,{
-      events:{$unshift:[action.event]}
-    })
+    console.log("****** ACTION IN EVENTS *******")
+    console.log(action.event);
+    return [action.event,...state.slice(0)];
   }
 }
 );

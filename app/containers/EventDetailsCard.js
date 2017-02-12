@@ -20,26 +20,47 @@ export default class EventDetailsCard extends Component
 		super(props);
 	}
 
+	formatTimeScanned(timestamp){
+		const monthNames = [
+		  "January", "February", "March",
+		  "April", "May", "June", "July",
+		  "August", "September", "October",
+		  "November", "December"
+		];
+
+		const editMinute = (minute) => {
+			return ('' + minute).length == 1 ? 0 + '' + minute : minute;
+		}
+
+		let date_object = new Date(timestamp);	
+		let hours = date_object.getHours();
+		let minute = editMinute(date_object.getMinutes());
+		let month = monthNames[date_object.getMonth()];
+		let date = date_object.getDate();
+		return 'Scanned on ' + month + ' ' + date + ' ' + hours + ':' + minute;
+	}
+
 	render()
 	{
 		return(
 			<TouchableOpacity
-				onPress={() => this.props.navigator.push({
-					id:"AttendeeProfilePage",
-					attendee:{
-						name: this.props.attendee_name,
-						summary:this.props.attendee_summary,
-					},
-					
-				})}
+				onPress={() => 
+						{	
+							console.log(this.props.attendee);
+							this.props.navigator.push({
+										id:"AttendeeProfilePage",
+										attendee:this.props.attendee
+							})
+						}
+				}
 			>
 				<View style={styles.container}>
 					<View style={{flexDirection:'row'}}>
 						<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
 						<View style={styles.attendee_scan_information}>
-							<Text style={styles.attendee_name}>{this.props.attendee_name}</Text>
-							<Text style={styles.attendee_summary}>{this.props.attendee_summary}</Text>
-							<Text style={[styles.attendee_name,styles.time_scanned]}>{this.props.time_scanned}</Text>
+							<Text style={styles.attendee_name}>{this.props.attendee.name}</Text>
+							<Text style={styles.attendee_summary}>{this.props.attendee.summary}</Text>
+							<Text style={[styles.attendee_name,styles.time_scanned]}>{this.formatTimeScanned(this.props.attendee.scanned)}</Text>
 						</View>
 					</View>
 					
@@ -68,7 +89,7 @@ export default class EventDetailsCard extends Component
 								fontSize:20,
 								fontWeight:'600'
 							}}
-						>{this.props.rating}</Text>
+						>{this.props.attendee.rating}</Text>
 					</View>
 				</View>
 			</TouchableOpacity>

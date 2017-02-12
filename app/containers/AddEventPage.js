@@ -42,8 +42,9 @@ class AddEventPage extends Component{
 		super(props);
 
 		this.state={
+			eventId: Date.now(),
 			eventTitle: null,
-			eventDate: new Date(),
+			eventDate: Date.now(),
 			eventLocation: null,
 			showDatePicker: false,
 		}
@@ -69,30 +70,14 @@ class AddEventPage extends Component{
 			<TouchableOpacity
 				onPress={() =>
 					{
-						formatDay = function(day){
-							if (day % 10 == 1)
-								return day + "st"
-							if (day % 10 == 2)
-								return day + "nd"
-							if (day % 10 == 3)
-								return day + "rd"
-							return day + "th"
-						}
-						formatDate = function(date){
-							var day = formatDay(date.getDate());
-							var month = monthNames[date.getMonth()];
-							var year = date.getFullYear();
-							return month + " " + day + " " + year
-						}
-
-						this.props.dispatchNewEvent({
+						let theEvent = {
 							eventTitle: this.state.eventTitle,
-							eventDate: formatDate(this.state.eventDate),
+							eventDate: this.state.eventDate,
 							eventLocation: this.state.eventLocation,
 							resumeScanned: 2
-						});
+						}
+						this.props.dispatchNewEvent(theEvent);
 						this.props.navigator.pop();
-
 					}
 
 				}
