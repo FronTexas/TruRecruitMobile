@@ -35,6 +35,7 @@ class EventPage extends Component
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
 		this.state.emailInputs = [];
+		this.props.listenToEventsChanges();
 	}
 
 	_handleSendEmailClick(){
@@ -54,11 +55,13 @@ class EventPage extends Component
 
 	getDataSource(){
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-		return ds.cloneWithRows(this.props.events);
+		return ds.cloneWithRows(this.state.events);
 	}
 
-	componentWillMount(){
-		this.props.fetchEvents();
+	componentWillReceiveProps(nextProps){
+		const {events} = nextProps;
+		console.log(events);
+		if(events) this.setState({events});
 	}
 
 	render()
@@ -66,7 +69,7 @@ class EventPage extends Component
 		return(
 			<View style={{flex:1}}>
 				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
-				{ !_.isEmpty(this.props.events) ? 
+				{ !_.isEmpty(this.state.events) ? 
 					<ListView
 						dataSource={this.getDataSource()}
 						renderRow={(rowData) =>{

@@ -17,7 +17,6 @@ import{
 } from 'react-native-elements';
 
 import {connect} from 'react-redux';
-import Api from '../lib/api';
 
 
 class Splash extends Component {
@@ -25,7 +24,8 @@ class Splash extends Component {
   _handlePress() {
     Alert.alert('Button has been pressed');
   }
-
+    
+  _handleLoginPress(){
     this.props.login({
       email:'forfron@gmail.com',
       password:'trurecruitlit'

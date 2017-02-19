@@ -12,6 +12,9 @@ import {
   View
 } from 'react-native';
 
+const firebase = require('firebase');
+
+
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from '../actions';
@@ -29,17 +32,32 @@ import ResumeViewPage from './ResumeViewPage'
 
 
 class AppContainer extends Component {
+
+  constructor(props){
+    super(props);
+    var config = {
+      apiKey: "AIzaSyCOwfUwf2-GqcacgkBopnwXb8-HG5Km7hY",
+      authDomain: "trurecruit-dd63b.firebaseapp.com",
+      databaseURL: "https://trurecruit-dd63b.firebaseio.com",
+      storageBucket: "trurecruit-dd63b.appspot.com",
+      messagingSenderId: "117008567602"
+    };
+    firebase.initializeApp(config);
+    this.props.setFirebaseRef(firebase);
+  }
+
   render() {
     return (
       <Navigator
           initialRoute={{id: 'SplashPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
-            if (route.sceneConfig) {
-              return route.sceneConfig;
+              if (route.sceneConfig) {
+                return route.sceneConfig;
+              }
+              return Navigator.SceneConfigs.FloatFromRight;
             }
-            return Navigator.SceneConfigs.FloatFromRight;
-          }} />
+          } />
       )
   }
 

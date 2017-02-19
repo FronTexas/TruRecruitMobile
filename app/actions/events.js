@@ -1,22 +1,47 @@
 import * as types from './types';
-import Api from '../lib/api';
 
 export function saveNewEvent(event){
 	return (dispatch,getState) => {
-		Api.saveNewEvent(event)
+		const { firebaseRef, user } = getState();
+		firebaseRef.database()
+		.ref('/recruiters/' + user.uid + '/events/')
+		.push()
+		.set(event);
+	}
+}
+
+export function listenToEventsChanges(){
+	return (dispatch,getState) => {
+		const { firebaseRef, user } = getState();
+		firebaseRef.database()
+		.ref('/recruiters/' + user.uid + '/events/')
+		.on('value', (snapshot) => {
+			dispatch(updateEvents(snapshot.val()))	
+		})
+	}
+}
+
+export function updateEvents(events){
+	return {
+		type: types.UPDATE_EVENTS,
+		events: events
 	}
 }
 
 export function fetchEvents(){
 	return (dispatch,getState) => {
-		Api.getEvents().then(
-			snap => {
-				dispatch({
-					type:types.FETCH_EVENTS,
-					events: snap.val()
-				});
-			}
-		)
+		const { firebaseRef,user } = getState();
+		if(user){
+			firebaseRef.database().ref('/recruiters/' + user.uid + '/events').once('value')
+			.then(
+				snap => {
+					dispatch({
+						type:types.UPDATE_EVENTS,
+						events: snap.val()
+					});
+				}
+			)
+		}
 	}
 }
 

@@ -1,8 +1,26 @@
 import * as types from './types';
-import Api from '../lib/api';
 
 export function login(credentials){
 	return (dispatch,getState) => {
-		Api.login(credentials,dispatch)
+		const { firebaseRef } = getState();
+		const { email, password } = credentials;
+		firebaseRef
+		.auth()
+		.signInWithEmailAndPassword(email,password)
+		.catch(
+			(error) => {
+				console.log("*** Error Logging In ***");
+			}
+		)
+
+		firebaseRef.auth().onAuthStateChanged(
+			user => {
+				dispatch({
+					type: types.USER_LOGGED_IN, 
+					user: user
+				})
+			}
+		)
 	}
+
 }
