@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
+import _ from 'underscore';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventCard from './EventCard';
@@ -18,7 +19,6 @@ import BackButton from './BackButton';
 import Navbar from './Navbar';
 
 var Modal   = require('react-native-modalbox');
-
 
 import{
 	FormLabel,FormInput
@@ -32,34 +32,8 @@ class EventPage extends Component
 
 	constructor(props){
 		super(props);
-		this.props.fetchEvents();
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
-		var events = this.props.events ? this.props.events :[
-			{
-				eventTitle:"HackTX",
-				eventLocation: "The University of Texas at Austin",
-				eventDate:"February 20th 2017",
-				resumeScanned: 2
-			},
-			{
-				eventTitle:"UT Job Fair",
-				eventLocation: "The University of Texas at Austin",
-				eventDate:"February 25th 2017",
-				resumeScanned: 2
-			},
-			{
-				eventTitle:"PennApps",
-				eventLocation: "The University of Pennsilvynia",
-				eventDate:"March 20th 2017",
-				resumeScanned: 2
-			},
-		] ;
-
-		this.state.dataSource = ds.cloneWithRows(events);
-		this.state.events = events;
-		this.state.selectedEvent = null;
-		this.state.isDisabled=false
 		this.state.emailInputs = [];
 	}
 
@@ -83,24 +57,32 @@ class EventPage extends Component
 		return ds.cloneWithRows(this.props.events);
 	}
 
+	componentWillMount(){
+		this.props.fetchEvents();
+	}
+
 	render()
 	{
 		return(
 			<View style={{flex:1}}>
 				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
-				<ListView
-					dataSource={this.getDataSource()}
-					renderRow={(rowData) =>{
-							return <EventCard
-							event = {rowData}
-							navigator={this.props.navigator}
-							onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
-							{...this.props}
-							></EventCard>
+				{ !_.isEmpty(this.props.events) ? 
+					<ListView
+						dataSource={this.getDataSource()}
+						renderRow={(rowData) =>{
+								return <EventCard
+								event = {rowData}
+								navigator={this.props.navigator}
+								onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
+								{...this.props}
+								></EventCard>
+							}
 						}
-					}
-					style = {styles.list_view}>
-				</ListView>
+						style = {styles.list_view}>
+					</ListView> 
+					: 
+					<Text>Loading</Text>
+				}
 				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
 					<View

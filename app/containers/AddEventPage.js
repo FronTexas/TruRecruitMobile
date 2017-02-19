@@ -71,12 +71,12 @@ class AddEventPage extends Component{
 				onPress={() =>
 					{
 						let theEvent = {
-							eventTitle: this.state.eventTitle,
 							eventDate: this.state.eventDate,
 							eventLocation: this.state.eventLocation,
-							resumeScanned: 2
+							eventTitle: this.state.eventTitle,
+							resumeScanned: 0
 						}
-						this.props.dispatchNewEvent(theEvent);
+						this.props.saveNewEvent(theEvent);
 						this.props.navigator.pop();
 					}
 
@@ -114,9 +114,7 @@ class AddEventPage extends Component{
 				>
 				<Text style={styles.date_text}>{this.state.eventDate? moment(this.state.eventDate).format('MM/DD/YYYY') : 'Set the date of the event'}</Text>
 				</TouchableOpacity>
-
 				{datePicker}
-
 				{saveButton}
 			</View>
 

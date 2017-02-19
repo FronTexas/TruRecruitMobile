@@ -8,7 +8,7 @@
   "dependencies": {
     "firebase": "^3.6.9",
     "moment": "^2.17.1",
-    "react": "^15.3.2",
+    "react": "~15.3.2",
     "react-dom": "^15.3.2",
     "react-native": "0.34.1",
     "react-native-action-button": "^2.0.18",
@@ -26,6 +26,7 @@
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "underscore": "^1.8.3"
   }
 }

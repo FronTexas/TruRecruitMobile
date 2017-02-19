@@ -8,9 +8,10 @@ const firebase = require('firebase');
   };
 firebase.initializeApp(config);
 _user = null;
+import * as types from '../actions/types';
 
 export default class Api{
-	static login(credentials){
+	static login(credentials,dispatch,payload){
 		let email = credentials.email;
 		let password = credentials.password;
 		firebase.auth().signInWithEmailAndPassword(email,password).catch(
@@ -19,13 +20,29 @@ export default class Api{
 				console.log(error.message)
 			}
 		)
-		return firebase.auth();
+
+		firebase.auth().onAuthStateChanged(
+			user => {
+				this._user = user
+				let payload = {
+					type: types.USER_LOGGED_IN,
+					user:user
+				}
+				if(dispatch) dispatch(payload)
+			}
+		)
+	}
+
+	static saveNewEvent(event){
+		firebase.database()
+		.ref('/recruiters/' + this._user.uid + '/events/')
+		.push()
+		.set(event);
 	}
 
 	static getEvents(){
-		_user = firebase.auth().currentUser;
-		if (_user){
-			return firebase.database().ref('/recruiters/' + _user.uid + '/events').once('value');
+		if (this._user){
+			return firebase.database().ref('/recruiters/' + this._user.uid + '/events').once('value');
 		}else{
 			console.log("**** _user is NUll ****")
 			return {};

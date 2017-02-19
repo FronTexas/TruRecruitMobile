@@ -1,12 +1,9 @@
 import * as types from './types';
 import Api from '../lib/api';
 
-export function dispatchNewEvent(event){
+export function saveNewEvent(event){
 	return (dispatch,getState) => {
-		dispatch({
-			type: types.SET_NEW_EVENTS,
-			event: event
-		});
+		Api.saveNewEvent(event)
 	}
 }
 
@@ -14,8 +11,6 @@ export function fetchEvents(){
 	return (dispatch,getState) => {
 		Api.getEvents().then(
 			snap => {
-				console.log('**** SNAP VAL ****');
-				console.log(snap.val());
 				dispatch({
 					type:types.FETCH_EVENTS,
 					events: snap.val()

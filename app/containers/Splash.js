@@ -26,26 +26,12 @@ class Splash extends Component {
     Alert.alert('Button has been pressed');
   }
 
-  _handleLoginPress(){
-    // this.props.login({
-    //   email:'forfron@gmail.com',
-    //   password: 'trurecruitlit'
-    // });
-    Api.login({
+    this.props.login({
       email:'forfron@gmail.com',
-      password: 'trurecruitlit'
-    }).onAuthStateChanged(
-      user => {
-        console.log('**** user ****');
-        console.log(user);
-        console.log(this.login_flag)
-        if(this.login_flag){
-          this.gotoEvent();
-        }
-        this.login_flag = !this.login_flag ? !this.login_flag : this.login_flag;
-      }
-    )
+      password:'trurecruitlit'
+    })
   }
+
   render(){
     return (
       <View style={styles.container}>
@@ -88,6 +74,12 @@ class Splash extends Component {
         </View>
       </View>
     );
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.user){
+      this.gotoEvent(); 
+    }
   }
 
   gotoEvent() {
