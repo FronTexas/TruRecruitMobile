@@ -1,3 +1,5 @@
+export const USER_LOGGED_IN = 'USER_LOGGED_ID';
 export const SET_NEW_EVENTS = 'SET_NEW_EVENTS';
 export const SAVE_NEW_ATTENDEE = 'SAVE_NEW_ATTENDEE';
 export const SELECT_EVENT = 'SELECT_EVENT';
+export const FETCH_EVENTS = 'FETCH_EVENTS';

@@ -4,11 +4,17 @@ import update from 'react-addons-update'; // ES6
 import Api from '../lib/api';
 
 
-export const selected_event = createReducer({},{
-  [types.SELECT_EVENT](state,action){
-    return action.event
+export const user = createReducer({},{
+  [types.USER_LOGGED_IN](state,action){
+    return action.user;
   }
-});
+})
+
+export const isLoggedIn = createReducer(false,{
+  [types.LOGIN](state,action){
+    
+  }
+})
 
 export const events = createReducer(
 {},

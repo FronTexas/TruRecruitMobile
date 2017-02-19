@@ -32,6 +32,7 @@ class EventPage extends Component
 
 	constructor(props){
 		super(props);
+		this.props.fetchEvents();
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
 		var events = this.props.events ? this.props.events :[

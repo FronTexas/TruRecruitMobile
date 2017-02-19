@@ -23,6 +23,15 @@ export default class Login extends Component {
     Alert.alert("Button has been pressed");
   }
 
+  _handleLoginPress(){
+    console.log("**** in _handleLoginPress *****")
+    this.props.login({
+      email:'forfron@gmail.com',
+      password: 'trurecruitlit'
+    })
+    this._goToEventPage()
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -46,7 +55,7 @@ export default class Login extends Component {
         <Button
           containerStyle={styles.loginButton}
           style={{fontSize: 20, color: '#f9fafc'}}
-          onPress={this._goToEventPage.bind(this)}>
+          onPress={this._handleLoginPress.bind(this)}>
           Log in
         </Button>
       </View>

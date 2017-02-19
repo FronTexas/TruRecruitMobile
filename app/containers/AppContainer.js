@@ -62,7 +62,8 @@ class AppContainer extends Component {
     if (routeId === 'LoginPage') {
       return (
         <Login
-          navigator={navigator} />
+          navigator={navigator}
+          {...this.props} />
       );
     }
     if (routeId === 'MainPage') {

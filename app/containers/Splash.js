@@ -11,16 +11,41 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+
 import{
   FormLabel,FormInput
 } from 'react-native-elements';
 
-export default class Splash extends Component {
+import {connect} from 'react-redux';
+import Api from '../lib/api';
+
+
+class Splash extends Component {
 
   _handlePress() {
     Alert.alert('Button has been pressed');
   }
 
+  _handleLoginPress(){
+    // this.props.login({
+    //   email:'forfron@gmail.com',
+    //   password: 'trurecruitlit'
+    // });
+    Api.login({
+      email:'forfron@gmail.com',
+      password: 'trurecruitlit'
+    }).onAuthStateChanged(
+      user => {
+        console.log('**** user ****');
+        console.log(user);
+        console.log(this.login_flag)
+        if(this.login_flag){
+          this.gotoEvent();
+        }
+        this.login_flag = !this.login_flag ? !this.login_flag : this.login_flag;
+      }
+    )
+  }
   render(){
     return (
       <View style={styles.container}>
@@ -43,7 +68,7 @@ export default class Splash extends Component {
              <Button
               containerStyle={styles.loginButton}
               style={{fontSize: 18, color: '#f9fafc',alignSelf:'center'}}
-              onPress={this.gotoEvent.bind(this)}>
+              onPress={this._handleLoginPress.bind(this)}>
               Log in
           </Button>
           </View>
@@ -125,3 +150,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#00d4aa',
   }
 });
+
+function mapStateToProps(state){
+  console.log("**** mapStateToProps is called");
+  console.log(state.user)
+  return {
+     user: state.user
+  }
+}
+
+export default connect(mapStateToProps)(Splash);

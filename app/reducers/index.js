@@ -4,8 +4,10 @@ import * as types from '../actions/types'
 
 import * as eventsReducer from './events';
 import * as attendeesReducer from './attendees';
+import * as recruiterReducer from './recruiter';
 
 export default combineReducers(Object.assign(
   eventsReducer,
-  attendeesReducer
+  attendeesReducer,
+  recruiterReducer
 ));
