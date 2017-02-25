@@ -132,7 +132,6 @@ class AppContainer extends Component {
         <AttendeeProfilePage
           navigator={navigator}
           attendee={route.attendee}
-          onAttendeePop = {route.onAttendeePop}
           {...this.props}
         >
         </AttendeeProfilePage>

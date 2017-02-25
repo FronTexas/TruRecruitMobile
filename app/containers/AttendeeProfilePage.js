@@ -31,7 +31,6 @@ export default class AttendeeProfilePage extends Component
 		var attendee = this.state.attendee;
 		attendee.rating = rating
 		this.setState({attendee:attendee})
-		return
 	}
 
 	_handlePress(){
@@ -101,11 +100,9 @@ export default class AttendeeProfilePage extends Component
 						onPress=
 						{ () => 
 							{
-								var id = this.state.attendee.id ? this.state.attendee.id : Math.floor(Date.now() / 1000);
-								this.state.attendee.id = id;
 								var scanned = this.state.attendee.scanned? this.state.attendee.scanned : Date.now();
 								this.state.attendee.scanned = scanned;
-								this.props.dispatchNewAttendee(this.state.attendee);
+								this.props.saveNewAttendee(this.state.attendee);
 								this.props.navigator.pop();
 							}
 						}
