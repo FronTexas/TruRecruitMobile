@@ -14,7 +14,7 @@ export function listenToAttendeesChanges(){
 	return (dispatch,getState) => {
 		const { firebaseRef, user , selected_event } = getState();
 		firebaseRef.database()
-		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.event_id)
+		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.eventId)
 		.on('value', (snapshot) => {
 			dispatch(updateAttendees(snapshot.val()))
 		})

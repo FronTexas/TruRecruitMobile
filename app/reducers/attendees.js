@@ -12,7 +12,7 @@ export const attendees = createReducer(
 		console.log(new_attendee_list);
 		return {...state,[event_id]: new_attendee_list}
 	},
-	[TYPES.UPDATE_ATTENDEES](state,action){
+	[types.UPDATE_ATTENDEES](state,action){
 		return action.attendees;
 	}
 })

@@ -19,6 +19,8 @@ class EventDetailsPage extends Component
 {
 	constructor(props){
 		super(props);
+		this.state = {};
+		this.state.attendees = {};
 	}
 
 	_goToScannerPage()
@@ -30,10 +32,18 @@ class EventDetailsPage extends Component
 		})
 	}
 
+	componentWillMount(){
+		this.props.listenToAttendeesChanges();
+	}
+	componentWillReceiveProps(nextProps){
+		const {attendees} = nextProps;
+		console.log(attendees);
+		if(attendees) this.setState({attendees});
+	}
+
 	getDataSource(){
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
-		console.log(this.props.attendees);
-		return ds.cloneWithRows(this.props.attendees);
+		return ds.cloneWithRows(this.state.attendees);
 	}
 
 	render()
@@ -123,16 +133,10 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state){
-	getAttendeesArray = (attendees_object) => {
-		var attendees_array = [];
-		for(var key in attendees_object){
-			attendees_array.push(attendees_object[key]);
-		}
-		return attendees_array;
-	}
+	const {selected_event,attendees} = state
 	return {
-		attendees:  getAttendeesArray(state.attendees[state.selected_event.event_id]),
-		event: state.selected_event
+		event: selected_event,
+		attendees: attendees
 	};
 }
 

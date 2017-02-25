@@ -60,7 +60,6 @@ class EventPage extends Component
 
 	componentWillReceiveProps(nextProps){
 		const {events} = nextProps;
-		console.log(events);
 		if(events) this.setState({events});
 	}
 
