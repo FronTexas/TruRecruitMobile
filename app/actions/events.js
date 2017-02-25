@@ -16,7 +16,11 @@ export function listenToEventsChanges(){
 		firebaseRef.database()
 		.ref('/recruiters/' + user.uid + '/events/')
 		.on('value', (snapshot) => {
-			dispatch(updateEvents(snapshot.val()))	
+			var events = snapshot.val()
+			for(let key of Object.keys(events)){
+				events[key].eventId = key
+			}
+			dispatch(updateEvents(events))	
 		})
 	}
 }

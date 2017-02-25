@@ -114,9 +114,6 @@ class AppContainer extends Component {
       return (
          <EventDetailsPage
             navigator={navigator}
-            event={route.event}
-            attendees={route.attendees}
-            previousPageTitle={route.previousPageTitle}
             {...this.props}/>
       )
     } 

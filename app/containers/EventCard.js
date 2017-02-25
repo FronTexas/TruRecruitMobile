@@ -22,7 +22,6 @@ export default class EventCard extends Component
 	}
 
 	_goToEventDetails(){
-		console.log(this.props.event)
 		this.props.selectEvent(this.props.event);
 		this.props.navigator.push({
 			id:"EventDetailsPage",

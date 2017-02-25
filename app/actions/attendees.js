@@ -9,3 +9,21 @@ export function dispatchNewAttendee(attendee){
 		});
 	}
 }
+
+export function listenToAttendeesChanges(){
+	return (dispatch,getState) => {
+		const { firebaseRef, user , selected_event } = getState();
+		firebaseRef.database()
+		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.event_id)
+		.on('value', (snapshot) => {
+			dispatch(updateAttendees(snapshot.val()))
+		})
+	}
+}
+
+export function updateAttendees(attendees){
+	return {
+		type: types.UPDATE_ATTENDEES,
+		attendees: attendees
+	}
+}
