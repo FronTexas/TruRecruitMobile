@@ -2,13 +2,14 @@
   "recruiters" : {
     "GbK6lqk0sAWPz3q1aaHsMxxpTtI2" : {
       "attendees" : {
-         "-KdODXxCBX4V8lPbng8W" :{
-            "12345" : {
-            "id" : 5,
-            "name" : "Fahran Kamili",
-            "rating" : 3,
+        "-KdODXxCBX4V8lPbng8W" : {
+          "6" : {
+            "id" : 6,
+            "name" : "Jesse Harrick",
+            "notes" : "",
+            "rating" : 2,
             "scanned" : 10000000,
-            "summary" : "CEO at Tesla"
+            "summary" : "CEO at Apple"
           },
           "6789" : {
             "id" : 6,
@@ -16,8 +17,15 @@
             "rating" : 3,
             "scanned" : 10000000,
             "summary" : "CEO at Apple"
+          },
+          "-KdrTZY6gyfFa64ZKMys" : {
+            "id" : "-KdrTZY6gyfFa64ZKMys",
+            "name" : "Fahran Kamili",
+            "rating" : 1,
+            "scanned" : 1488063187163,
+            "summary" : "Graduating May 2017"
           }
-         },
+        },
         "hacktx" : [ null, {
           "id" : 1,
           "name" : "Fahran Kamili",
@@ -69,12 +77,20 @@
       "events" : {
         "-KdODXxCBX4V8lPbng8W" : {
           "eventDate" : 1488073819654,
+          "eventId" : "-KdODXxCBX4V8lPbng8W",
           "eventLocation" : "Georgia Tech",
           "eventTitle" : "GTHack\t",
+          "resumeScanned" : 3
+        },
+        "-KdsQ8oawlArWrXrPi-1" : {
+          "eventDate" : 1488079056920,
+          "eventLocation" : "Georgia Tech",
+          "eventTitle" : "Twitter",
           "resumeScanned" : 0
         },
         "hacktx" : {
           "eventDate" : 1488073819654,
+          "eventId" : "hacktx",
           "eventLocation" : "The University of Texas at Austin",
           "eventTitle" : "HackTX",
           "event_id" : "hacktx",
@@ -82,6 +98,7 @@
         },
         "pennapps" : {
           "eventDate" : 1488073819654,
+          "eventId" : "pennapps",
           "eventLocation" : "The University of Pennsilvynia",
           "eventTitle" : "PennApps",
           "event_id" : "pennapps",
@@ -89,6 +106,7 @@
         },
         "utjobfair" : {
           "eventDate" : 1488073819654,
+          "eventId" : "utjobfair",
           "eventLocation" : "The University of Texas at Austin",
           "eventTitle" : "UT Job Fair",
           "event_id" : "utjobfair",
@@ -96,6 +114,13 @@
         }
       },
       "name" : "Fahran Kamili"
+    }
+  },
+  "attendees":{
+    "-KdrTZY6gyfFa64ZKMys" : {
+            "id" : "-KdrTZY6gyfFa64ZKMys",
+            "name" : "Fahran Kamili",
+            "summary" : "Graduating May 2017",
     }
   }
 }
