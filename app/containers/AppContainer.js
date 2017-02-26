@@ -123,6 +123,7 @@ class AppContainer extends Component {
         <Scanner
           navigator={navigator}
           event={route.event}
+          {...this.props}
           ></Scanner>
       )
     }
@@ -131,7 +132,6 @@ class AppContainer extends Component {
       return(
         <AttendeeProfilePage
           navigator={navigator}
-          attendee={route.attendee}
           {...this.props}
         >
         </AttendeeProfilePage>
@@ -141,7 +141,8 @@ class AppContainer extends Component {
     if(routeId == 'ResumeViewPage'){
       return(
       <ResumeViewPage
-          navigator={navigator}>
+          navigator={navigator}
+          {...this.props}>
         </ResumeViewPage>
       )
     }

@@ -1,5 +1,20 @@
 import * as types from './types';
 
+export function saveNotes(notes){
+	return (dispatch,getState) => {
+		const { firebaseRef, user, selected_event, selectedAttendee } = getState();
+		selectedAttendee["notes"] = notes 
+		var updates = {}
+		updates['/recruiters/' 
+		+ user.uid 
+		+ '/attendees/'
+		+ selected_event.eventId 
+		+ '/' 
+		+ selectedAttendee.id] = selectedAttendee	
+		firebaseRef.database().ref().update(updates)
+	}	
+}
+
 export function saveNewAttendee(attendee){
 	return (dispatch,getState) => {
 		const { firebaseRef, user, selected_event } = getState();
@@ -37,5 +52,14 @@ export function updateAttendees(attendees){
 	return {
 		type: types.UPDATE_ATTENDEES,
 		attendees: attendees
+	}
+}
+
+export function selectAttendee(attendee){
+	return (dispatch,getState) => {
+		dispatch({
+			type:types.SELECT_ATTENDEE,
+			attendee
+		});
 	}
 }

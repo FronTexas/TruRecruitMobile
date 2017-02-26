@@ -58,6 +58,7 @@ class EventDetailsPage extends Component
 						<EventDetailsCard
 						attendee={rowData}
 						navigator={this.props.navigator}
+						{...this.props}
 						></EventDetailsCard>
 					}
 					style = {styles.list_view}

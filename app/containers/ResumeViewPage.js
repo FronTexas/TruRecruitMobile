@@ -14,17 +14,19 @@ import {
 	LayoutAnimation
 } from 'react-native';
 
+import {connect} from 'react-redux';
 import PDFView from 'react-native-pdf-view';
-import ActionButton from 'react-native-action-button'
+import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export default class ResumeViewPage extends Component{
+class ResumeViewPage extends Component{
 
 	constructor(props){
 		super(props);
 		this.state = 
 		{
-			isNoteTakingMode : false
+			isNoteTakingMode : false,
+			notes: this.props.attendee.notes ? this.props.attendee.notes : ''
 		}
 	}
 
@@ -32,6 +34,12 @@ export default class ResumeViewPage extends Component{
 		LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
 		this.setState({isNoteTakingMode:!this.state.isNoteTakingMode})
 	}
+
+	_handleDonePress(){
+		this.props.saveNotes(this.state.notes);
+		this.props.navigator.pop();
+	}
+
 	render(){
 		scrollViewNoteTakingStyle = this.state.isNoteTakingMode? 
 		{
@@ -79,8 +87,8 @@ export default class ResumeViewPage extends Component{
 					</View>
 					<TextInput
 			        	style={[textInputNoteTakingStyle , {width: Dimensions.get('window').width ,color: "#FFF", fontSize: 30, fontWeight: "600",top:35}]}
-				        onChangeText={(text) => this.setState({text})}
-				        value={this.state.text}
+				        onChangeText={(notes) => this.setState({notes})}
+				        value={this.state.notes}
 				        multiline={true}
 				        placeholder={'Starts Typing Here'}
 				        placeholderTextColor="white"
@@ -117,7 +125,7 @@ export default class ResumeViewPage extends Component{
 				}
 			>
 				<TouchableOpacity
-					onPress={() => this.props.navigator.pop()}
+					onPress={this._handleDonePress.bind(this)}
 				>
 					<Text style={
 					{
@@ -194,3 +202,11 @@ const styles = StyleSheet.create({
 	}
 
 })
+
+function mapStateToProps(state){
+	return {
+		attendee: state.selectedAttendee
+	}
+}
+
+export default connect(mapStateToProps)(ResumeViewPage)

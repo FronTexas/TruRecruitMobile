@@ -18,7 +18,7 @@ import StarRating from 'react-native-star-rating';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 
-export default class AttendeeProfilePage extends Component
+class AttendeeProfilePage extends Component
 {
 	constructor(props){
 		super(props);
@@ -207,5 +207,13 @@ const styles = StyleSheet.create({
 	}
 
 })
+
+function mapStateToProps(state){
+	return{
+		attendee: state.selectedAttendee
+	}
+}
+
+export default connect(mapStateToProps)(AttendeeProfilePage)
 
 

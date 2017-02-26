@@ -56,18 +56,19 @@ export default class Scanner extends Component {
 
     if(!this.state.qrReadAlready){
       this.setState({qrReadAlready:true})
-        this.props.navigator.push({
-      id:"AttendeeProfilePage",
-      name:"Attendee Profile Page",
-      attendee: {
-        name: 'Fahran Kamili',
-        summary: 'Graduating May 2017',
-      },
-      onAttendeePop: handleAttendeePop.bind(this)
-    })
+      const attendee = {
+          "id" : "-KdrTZY6gyfFa64ZKMys",
+          "name" : "Fahran Kamili",
+          "rating" : 5,
+          "scanned" : 1488063187163,
+          "summary" : "Graduating May 2017"
+      }
+      this.props.selectAttendee(attendee);
+      this.props.navigator.push({
+          id:"AttendeeProfilePage",
+          name:"Attendee Profile Page",
+        })
     }
-
-  
   }
 
   render() {
