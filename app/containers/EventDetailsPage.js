@@ -7,6 +7,7 @@ import {
 	Text
 } from 'react-native';
 
+import _ from 'underscore';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventDetailsCard from './EventDetailsCard';
@@ -46,13 +47,43 @@ class EventDetailsPage extends Component
 		return ds.cloneWithRows(this.state.attendees);
 	}
 
+	formatTimeScanned(timestamp){
+		const monthNames = [
+		  "January", "February", "March",
+		  "April", "May", "June", "July",
+		  "August", "September", "October",
+		  "November", "December"
+		];
+
+		const editDate = (date) => {
+			var date_str = '' + date;
+			var last_char = date_str[date_str.length - 1];
+			switch(last_char){
+				case '1': 
+					return date_str + 'st'
+				case '2':
+					return date_str + 'nd'
+				case '3': 
+					return date_str + 'rd'
+				default: 
+					return date_str + 'th' 
+			}
+ 		}
+
+		let date_object = new Date(timestamp);	
+		let year = date_object.getUTCFullYear();
+		let month = monthNames[date_object.getMonth()];
+		let date = editDate(date_object.getDate());
+		return month + ' ' + date + ' ' + year
+	}
+
 	render()
 	{
-		var navbar = <Navbar title={this.props.event.eventTitle} subtitle={this.props.event.eventDatek}></Navbar>
 		return(
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
-				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.props.event.eventDate}></Navbar>
-				<ListView
+				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.formatTimeScanned(this.props.event.eventDate)}></Navbar>
+				{!_.isEmpty(this.state.attendees) ? 
+					<ListView
 					dataSource={this.getDataSource()}
 					renderRow={(rowData) =>
 						<EventDetailsCard
@@ -62,7 +93,11 @@ class EventDetailsPage extends Component
 						></EventDetailsCard>
 					}
 					style = {styles.list_view}
-				></ListView>
+					></ListView>
+					:
+					<Text>Loading</Text>
+				}
+				
 				<ActionButton
 					buttonColor="rgba(0,188,150,1)"
 					icon={<Icon name="ios-qr-scanner" style={{color:"#FFF"}} size={30}></Icon>}
@@ -85,8 +120,7 @@ const styles = StyleSheet.create({
 		fontWeight:"bold",
 		fontSize: 30,
 		marginLeft: 105,
-	},
-	list_view:{
+},
 		backgroundColor:"#FFF",
 	},
 	header_title_and_action:{

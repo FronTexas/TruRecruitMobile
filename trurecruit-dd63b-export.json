@@ -68,27 +68,27 @@
       "email" : "forfron@gmail.com",
       "events" : {
         "-KdODXxCBX4V8lPbng8W" : {
-          "eventDate" : 1487555656060,
+          "eventDate" : 1488073819654,
           "eventLocation" : "Georgia Tech",
           "eventTitle" : "GTHack\t",
           "resumeScanned" : 0
         },
         "hacktx" : {
-          "eventDate" : "February 20th 2017",
+          "eventDate" : 1488073819654,
           "eventLocation" : "The University of Texas at Austin",
           "eventTitle" : "HackTX",
           "event_id" : "hacktx",
           "resumeScanned" : 2
         },
         "pennapps" : {
-          "eventDate" : "March 20th 2017",
+          "eventDate" : 1488073819654,
           "eventLocation" : "The University of Pennsilvynia",
           "eventTitle" : "PennApps",
           "event_id" : "pennapps",
           "resumeScanned" : 2
         },
         "utjobfair" : {
-          "eventDate" : "February 25th 2017",
+          "eventDate" : 1488073819654,
           "eventLocation" : "The University of Texas at Austin",
           "eventTitle" : "UT Job Fair",
           "event_id" : "utjobfair",

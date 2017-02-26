@@ -21,6 +21,36 @@ export default class EventCard extends Component
 		}
 	}
 
+	formatTimeScanned(timestamp){
+		const monthNames = [
+		  "January", "February", "March",
+		  "April", "May", "June", "July",
+		  "August", "September", "October",
+		  "November", "December"
+		];
+
+		const editDate = (date) => {
+			var date_str = '' + date;
+			var last_char = date_str[date_str.length - 1];
+			switch(last_char){
+				case '1': 
+					return date_str + 'st'
+				case '2':
+					return date_str + 'nd'
+				case '3': 
+					return date_str + 'rd'
+				default: 
+					return date_str + 'th' 
+			}
+ 		}
+
+		let date_object = new Date(timestamp);	
+		let year = date_object.getUTCFullYear();
+		let month = monthNames[date_object.getMonth()];
+		let date = editDate(date_object.getDate());
+		return month + ' ' + date + ' ' + year
+	}
+
 	_goToEventDetails(){
 		this.props.selectEvent(this.props.event);
 		this.props.navigator.push({
@@ -38,7 +68,7 @@ export default class EventCard extends Component
 						<View style={styles.eventInfoContainer}>
 							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
 							<Text style={styles.eventDate}>{this.props.event.eventLocation}</Text>
-							<Text style={styles.eventDate}>{this.props.event.eventDate}</Text>
+							<Text style={styles.eventDate}>{this.formatTimeScanned(this.props.event.eventDate)}</Text>
 						</View>
 						<View style={styles.resume_scanned_container}>
 							<Text style={styles.resume_scanned_number}>{this.props.event.resumeScanned}</Text>

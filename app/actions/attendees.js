@@ -32,7 +32,7 @@ export function saveNewAttendee(attendee){
 		+ selected_event.eventId 
 		+ '/' 
 		+ attendee_generated_id] = attendee
-
+		
 		firebaseRef.database().ref().update(updates)
 	}
 }
@@ -43,8 +43,16 @@ export function listenToAttendeesChanges(){
 		firebaseRef.database()
 		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.eventId)
 		.on('value', (snapshot) => {
+			var attendees = snapshot.val();
+			var resumeScanned = Object.keys(attendees).length;
+
+			selected_event.resumeScanned = resumeScanned
+			var updates = {}
+			updates['/recruiters/' + user.uid + '/events/' + selected_event.eventId] = selected_event
+			firebaseRef.database().ref().update(updates)
 			dispatch(updateAttendees(snapshot.val()))
 		})
+
 	}
 }
 

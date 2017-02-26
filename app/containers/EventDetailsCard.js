@@ -32,11 +32,26 @@ export default class EventDetailsCard extends Component
 			return ('' + minute).length == 1 ? 0 + '' + minute : minute;
 		}
 
+		const editDate = (date) => {
+			var date_str = '' + date;
+			var last_char = date_str[date_str.length - 1];
+			switch(last_char){
+				case '1': 
+					return date_str + 'st'
+				case '2':
+					return date_str + 'nd'
+				case '3': 
+					return date_str + 'rd'
+				default: 
+					return date_str + 'th' 
+			}
+ 		}
+
 		let date_object = new Date(timestamp);	
 		let hours = date_object.getHours();
 		let minute = editMinute(date_object.getMinutes());
 		let month = monthNames[date_object.getMonth()];
-		let date = date_object.getDate();
+		let date = editDate(date_object.getDate());
 		return 'Scanned on ' + month + ' ' + date + ' ' + hours + ':' + minute;
 	}
 
