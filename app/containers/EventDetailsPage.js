@@ -104,7 +104,6 @@ class EventDetailsPage extends Component
 					onPress={this._goToScannerPage.bind(this)}
 				></ActionButton>
 			</View>
-
 		)
 	}
 }
@@ -120,7 +119,8 @@ const styles = StyleSheet.create({
 		fontWeight:"bold",
 		fontSize: 30,
 		marginLeft: 105,
-},
+	},
+	list_view:{
 		backgroundColor:"#FFF",
 	},
 	header_title_and_action:{

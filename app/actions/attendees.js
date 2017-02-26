@@ -44,8 +44,9 @@ export function listenToAttendeesChanges(){
 		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.eventId)
 		.on('value', (snapshot) => {
 			var attendees = snapshot.val();
-			var resumeScanned = Object.keys(attendees).length;
+			if(!attendees) return 
 
+			var resumeScanned = Object.keys(attendees).length;
 			selected_event.resumeScanned = resumeScanned
 			var updates = {}
 			updates['/recruiters/' + user.uid + '/events/' + selected_event.eventId] = selected_event
