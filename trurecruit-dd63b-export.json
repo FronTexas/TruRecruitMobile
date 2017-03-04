@@ -121,6 +121,11 @@
             "id" : "-KdrTZY6gyfFa64ZKMys",
             "name" : "Fahran Kamili",
             "summary" : "Graduating May 2017",
+            "email":"fahran.kamili@utexas.edu",
+            "links" : {
+              "linkedin":"linkedin.com/in/fahrankamili",
+              "github":"github.com/frontexas"
+            }
     }
   }
 }

@@ -25,48 +25,26 @@ export default class Scanner extends Component {
   constructor(props){
     super(props);
     this.state ={
-      qrReadAlready:false
+      qrReadAlready:false,
+      attendeeID:'-KdrTZY6gyfFa64ZKMys'
     };
   }
 
-  _goToAttendeeProfilePage(){
-    handleAttendeePop = function(attendee) {
-      formatDay = function(day){
-            if (day % 10 == 1)
-              return day + "st"
-            if (day % 10 == 2)
-              return day + "nd"
-            if (day % 10 == 3)
-              return day + "rd"
-            return day + "th"
-          }
-      formatDate = function(date){
-        var day = formatDay(date.getDate());
-        var month = monthNames[date.getMonth()];
-        var year = date.getFullYear();
-        var hour = date.getHours();
-        var meridiem = hour >= 12 ? "PM" : "AM";
-        var minutes = ("" + date.getMinutes()).length == 1 ? ("0" + date.getMinutes()) : "" + date.getMinutes();
-        currentTime = ((hour + 11) % 12 + 1) + ":" + minutes + meridiem;
-        return currentTime + " " + month + " " + day + " " + year
-      }
-      attendee.scanned = formatDate(new Date())
-      this.setState({qrReadAlready:false,attendee:attendee})
-    }
+  _handleBarcodeReadFake(){
+    this._goToAttendeeProfilePage('-KdrTZY6gyfFa64ZKMys');
+  }
 
+  _handleBarcodeRead(attendeeID){
+    this._goToAttendeeProfilePage(attendeeID);
+  }
+
+  _goToAttendeeProfilePage(attendeeID){
     if(!this.state.qrReadAlready){
       this.setState({qrReadAlready:true})
-      const attendee = {
-          "id" : "-KdrTZY6gyfFa64ZKMys",
-          "name" : "Fahran Kamili",
-          "rating" : 5,
-          "scanned" : 1488063187163,
-          "summary" : "Graduating May 2017"
-      }
-      this.props.selectAttendee(attendee);
       this.props.navigator.push({
           id:"AttendeeProfilePage",
           name:"Attendee Profile Page",
+          attendeeID,
         })
     }
   }
@@ -79,7 +57,7 @@ export default class Scanner extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          onBarCodeRead={this._goToAttendeeProfilePage.bind(this)}
+          onBarCodeRead={(qrObject) => this._handleBarcodeRead(qrObject.data)}
           barcodeTypes={['qr']}
           >
           <View id="arrowBackArea_and_EventTitle" style={{
@@ -93,7 +71,7 @@ export default class Scanner extends Component {
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._goToAttendeeProfilePage.bind(this)} style={[styles.textShadow,styles.instruction]}>Hold your camera up to a TR code</Text>
+            <Text onPress={this._handleBarcodeReadFake.bind(this)} style={[styles.textShadow,styles.instruction]}>{this.state.attendeeID}</Text>
           </View>
           <View 
               id="done_text_area"

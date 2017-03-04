@@ -2,37 +2,45 @@ import * as types from './types';
 
 export function saveNotes(notes){
 	return (dispatch,getState) => {
-		const { firebaseRef, user, selected_event, selectedAttendee } = getState();
-		selectedAttendee["notes"] = notes 
-		var updates = {}
-		updates['/recruiters/' 
-		+ user.uid 
-		+ '/attendees/'
-		+ selected_event.eventId 
-		+ '/' 
-		+ selectedAttendee.id] = selectedAttendee	
-		firebaseRef.database().ref().update(updates)
+		const { user, selected_event, selectedAttendee } = getState();
+		var modifiedSelectedAttendee = {...selectedAttendee};
+		modifiedSelectedAttendee["notes"] = notes; 
+		dispatch({
+			type:types.SELECT_ATTENDEE,
+			attendee: modifiedSelectedAttendee
+		});
 	}	
+}
+
+export function fetchSelectedAttendee(attendeeID){
+	return (dispatch,getState) => {
+		const {firebaseRef} = getState();
+		firebaseRef.database()
+		.ref('/attendees/' + attendeeID)
+		.on('value', (snapshot) => {
+			if (!snapshot) return
+			dispatch(selectAttendee(snapshot.val()))
+		});
+	}
+}
+
+export function setSelectedAttendeeId(id){
+		return {
+			type: types.SELECT_SELECTED_ATTENDEE_ID, 
+			selectedAttendeeId: id
+		}
 }
 
 export function saveNewAttendee(attendee){
 	return (dispatch,getState) => {
 		const { firebaseRef, user, selected_event } = getState();
-
-		const attendee_generated_id = attendee.id ? attendee.id : firebaseRef.database()
-		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.eventId)
-		.push().key
-
-		attendee.id = attendee_generated_id;
-
 		var updates = {}
 		updates['/recruiters/' 
 		+ user.uid 
 		+ '/attendees/'
 		+ selected_event.eventId 
 		+ '/' 
-		+ attendee_generated_id] = attendee
-		
+		+ attendee.id] = attendee
 		firebaseRef.database().ref().update(updates)
 	}
 }

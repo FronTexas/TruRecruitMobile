@@ -10,6 +10,13 @@ export const selectedAttendee = createReducer(null,
 }
 )
 
+export const selectedAttendeeId = createReducer(null, 
+{
+	[types.SELECT_SELECTED_ID](state,action){
+		return action.selectedAttendeeId;
+	}
+})
+
 export const attendees = createReducer(
 {}
 ,{

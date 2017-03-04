@@ -35,7 +35,6 @@ class EventPage extends Component
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
 		this.state.emailInputs = [];
-		this.props.listenToEventsChanges();
 	}
 
 	_handleSendEmailClick(){
@@ -44,6 +43,10 @@ class EventPage extends Component
 
 	closeModal(){
 		this.refs.send_email_modal.close()
+	}
+
+	componentWillMount(){
+		this.props.listenToEventsChanges();
 	}
 
 	addEmailInput(){

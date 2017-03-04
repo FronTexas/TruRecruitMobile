@@ -23,25 +23,37 @@ class AttendeeProfilePage extends Component
 	constructor(props){
 		super(props);
 		this.state = {
-			attendee: this.props.attendee,
+			attendee: {
+				name: 'Loading',
+				summary: 'Loading'
+			},
+			rating: 0
 		}
 	}
 
 	_onStarPress(rating){
-		var attendee = this.state.attendee;
-		attendee.rating = rating
-		this.setState({attendee:attendee})
+		this.setState({rating})
 	}
 
-	_handlePress(){
-		return
+	componentWillMount(){
+		// Existence of attendeeID implies that this attendee is aquired through QR scanned 
+		if(this.props.attendeeID){
+			this.props.fetchSelectedAttendee(this.props.attendeeID);
+		}
+	}
+
+	componentWillReceiveProps(props){
+		console.log("*** in componentWillReceiveProps AttendeeProfilePage ***");
+		console.log(props);
+		const { attendee } = props;
+		this.setState({attendee});
 	}
 
 	render()
 	{
-		return(
+		return (
 			<View style={{flex:1}}>
-				<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.props.attendee.name}></Navbar>
+				<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
 				<ScrollView style={{
 						backgroundColor:"#EEF1F7"
 					}}>
@@ -51,8 +63,8 @@ class AttendeeProfilePage extends Component
 						}}
 						>
 							<Icon name="ios-contact" size={80} style={styles.profpic}></Icon>
-							<Text style={styles.name}>{this.props.attendee.name}</Text>
-							<Text style={styles.graduation}>{this.props.attendee.summary}</Text>
+							<Text style={styles.name}>{this.state.attendee.name}</Text>
+							<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
 					</View>
 					<View id="links-and-resume" style={{
 							flex: 1,
@@ -88,7 +100,7 @@ class AttendeeProfilePage extends Component
 						<View style={{width:200}}>
 							<StarRating
 								maxStars={5}
-								rating={this.state.attendee.rating}
+								rating={this.state.rating}
 								selectedStar={(rating) => this._onStarPress(rating)}
 								starSize={30}
 								starColor="#F5C87F"
@@ -100,9 +112,11 @@ class AttendeeProfilePage extends Component
 						onPress=
 						{ () => 
 							{
-								var scanned = this.state.attendee.scanned? this.state.attendee.scanned : Date.now();
-								this.state.attendee.scanned = scanned;
-								this.props.saveNewAttendee(this.state.attendee);
+								var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
+								var aboutToBeSavedAttendee = {...this.state.attendee};
+								aboutToBeSavedAttendee.scanned = scanned;
+								aboutToBeSavedAttendee.rating = this.state.rating;
+								this.props.saveNewAttendee(aboutToBeSavedAttendee);
 								this.props.navigator.pop();
 							}
 						}
@@ -115,7 +129,6 @@ class AttendeeProfilePage extends Component
 					</TouchableOpacity>
 				</ScrollView>
 			</View>
-
 		)
 	}
 }
@@ -209,8 +222,11 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state){
+	const {selectedAttendee} = state;
+	console.log("*** in mapStateToProps ***");
+	console.log(selectedAttendee)
 	return{
-		attendee: state.selectedAttendee
+		attendee: selectedAttendee
 	}
 }
 
