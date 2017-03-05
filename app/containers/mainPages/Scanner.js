@@ -71,7 +71,7 @@ export default class Scanner extends Component {
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._handleBarcodeReadFake.bind(this)} style={[styles.textShadow,styles.instruction]}>{this.state.attendeeID}</Text>
+            <Text onPress={this._handleBarcodeReadFake.bind(this)} style={[styles.textShadow,styles.instruction]}>Place the QR code in the middle of TruRecruit Logo</Text>
           </View>
           <View 
               id="done_text_area"
