@@ -22,13 +22,14 @@ class AttendeeProfilePage extends Component
 {
 	constructor(props){
 		super(props);
-		this.state = {
-			attendee: {
-				name: 'Loading',
-				summary: 'Loading'
-			},
-			rating: 0
+		this.state = {};
+		this.state.attendee = this.props.scannedAttendee ? this.props.scannedAttendee : null
+		this.state.attendee = this.props.attendee ? this.props.attendee : {
+			name: 'Loading',
+			summary: 'Loading'
 		}
+		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
+
 	}
 
 	_onStarPress(rating){
@@ -38,15 +39,13 @@ class AttendeeProfilePage extends Component
 	componentWillMount(){
 		// Existence of attendeeID implies that this attendee is aquired through QR scanned 
 		if(this.props.attendeeID){
-			this.props.fetchSelectedAttendee(this.props.attendeeID);
+			this.props.setSelectedAttendee(this.props.attendeeID);
 		}
 	}
 
-	componentWillReceiveProps(props){
-		console.log("*** in componentWillReceiveProps AttendeeProfilePage ***");
-		console.log(props);
-		const { attendee } = props;
-		this.setState({attendee});
+	componentWillReceiveProps(nextProps){
+		const { scannedAttendee } = nextProps;
+		if (scannedAttendee) this.setState({attendee:scannedAttendee});
 	}
 
 	render()
@@ -223,13 +222,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
 	const {selectedAttendee} = state;
-	console.log("*** in mapStateToProps ***");
-	console.log(selectedAttendee)
 	return{
-		attendee: selectedAttendee
+		scannedAttendee: selectedAttendee
 	}
 }
 
-export default connect(mapStateToProps)(AttendeeProfilePage)
-
-
+export default connect(mapStateToProps)(AttendeeProfilePage);

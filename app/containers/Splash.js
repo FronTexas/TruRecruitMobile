@@ -33,8 +33,6 @@ class Splash extends Component {
   }
 
   render(){
-    console.log("*** DAAAAATE *****")
-    console.log(Date.now())
     return (
       <View style={styles.container}>
         <View style={{flex:0.6,justifyContent:'center'}}>
@@ -146,8 +144,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-  console.log("**** mapStateToProps is called");
-  console.log(state.user)
   return {
      user: state.user
   }

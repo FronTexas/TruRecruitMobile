@@ -63,7 +63,8 @@ export default class EventDetailsCard extends Component
 						{	
 							this.props.selectAttendee(this.props.attendee)
 							this.props.navigator.push({
-										id:"AttendeeProfilePage",
+								id:"AttendeeProfilePage",
+								attendee: this.props.attendee
 							})
 						}
 				}
@@ -145,6 +146,4 @@ const styles = StyleSheet.create({
 		color:"#CCCCCC",
 		fontSize:12
 	}
-
-	
 })

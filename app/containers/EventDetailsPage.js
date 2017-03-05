@@ -38,7 +38,6 @@ class EventDetailsPage extends Component
 	}
 	componentWillReceiveProps(nextProps){
 		const {attendees} = nextProps;
-		console.log(attendees);
 		if(attendees) this.setState({attendees});
 	}
 

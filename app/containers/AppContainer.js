@@ -110,7 +110,6 @@ class AppContainer extends Component {
     } 
 
     if (routeId === 'EventDetailsPage') {
-      console.log("routeId = ", routeId);
       return (
          <EventDetailsPage
             navigator={navigator}
@@ -133,6 +132,7 @@ class AppContainer extends Component {
         <AttendeeProfilePage
           navigator={navigator}
           attendeeID = {route.attendeeID}
+          attendee = {route.attendee}
           {...this.props}
         >
         </AttendeeProfilePage>

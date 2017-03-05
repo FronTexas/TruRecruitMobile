@@ -5,10 +5,9 @@ import * as types from '../actions/types'
 export const selectedAttendee = createReducer(null,
 {
 	[types.SELECT_ATTENDEE](state,action){
-		return action.attendee
+		return action.attendee;
 	}
-}
-)
+})
 
 export const selectedAttendeeId = createReducer(null, 
 {
@@ -17,9 +16,8 @@ export const selectedAttendeeId = createReducer(null,
 	}
 })
 
-export const attendees = createReducer(
-{}
-,{
+export const attendees = createReducer({},
+{
 	[types.UPDATE_ATTENDEES](state,action){
 		return action.attendees;
 	}

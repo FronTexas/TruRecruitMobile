@@ -12,23 +12,19 @@ export function saveNotes(notes){
 	}	
 }
 
-export function fetchSelectedAttendee(attendeeID){
+export function setSelectedAttendee(attendeeID){
 	return (dispatch,getState) => {
 		const {firebaseRef} = getState();
 		firebaseRef.database()
 		.ref('/attendees/' + attendeeID)
 		.on('value', (snapshot) => {
 			if (!snapshot) return
-			dispatch(selectAttendee(snapshot.val()))
+			dispatch({
+				type:types.SELECT_ATTENDEE,
+				attendee:snapshot.val()
+			});	
 		});
 	}
-}
-
-export function setSelectedAttendeeId(id){
-		return {
-			type: types.SELECT_SELECTED_ATTENDEE_ID, 
-			selectedAttendeeId: id
-		}
 }
 
 export function saveNewAttendee(attendee){
@@ -59,6 +55,7 @@ export function listenToAttendeesChanges(){
 			var updates = {}
 			updates['/recruiters/' + user.uid + '/events/' + selected_event.eventId] = selected_event
 			firebaseRef.database().ref().update(updates)
+			
 			dispatch(updateAttendees(snapshot.val()))
 		})
 
@@ -73,10 +70,8 @@ export function updateAttendees(attendees){
 }
 
 export function selectAttendee(attendee){
-	return (dispatch,getState) => {
-		dispatch({
-			type:types.SELECT_ATTENDEE,
-			attendee
-		});
-	}
+	return {
+		type:types.SELECT_ATTENDEE,
+		attendee
+	};
 }

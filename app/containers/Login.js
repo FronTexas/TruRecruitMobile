@@ -24,7 +24,6 @@ export default class Login extends Component {
   }
 
   _handleLoginPress(){
-    console.log("**** in _handleLoginPress *****")
     this.props.login({
       email:'forfron@gmail.com',
       password: 'trurecruitlit'
