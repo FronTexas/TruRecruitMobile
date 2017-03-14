@@ -116,13 +116,7 @@ class ResumeViewPage extends Component{
 		return(
 		<View style={{flex:1,backgroundColor:"#EEF1F7"}}>
 			<PDFView
-				ref={(pdf)=>{this.pdfView = pdf;}}
 				src={this.state.attendeePDFLocation}
-				onLoadComplete={(pageCount)=>{
-					this.pdfView.setNativeProps({
-						zoom:1
-					});
-				}}
 				style={{flex:1}}
 			/>
 			<View

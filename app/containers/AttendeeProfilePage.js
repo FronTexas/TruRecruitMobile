@@ -93,13 +93,7 @@ class AttendeeProfilePage extends Component
 							style={styles.shadow}
 						>
 							<PDFView
-								ref={(pdf)=>{this.pdfView = pdf;}}
 								src={this.state.attendeePDFLocation}
-								onLoadComplete={(pageCount)=>{
-									this.pdfView.setNativeProps({
-										zoom:1
-									});
-								}}
 								style={styles.resume_preview}
 							>
 							</PDFView>
