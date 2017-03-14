@@ -1,15 +1,36 @@
 import * as types from './types';
+var RNFS = require('react-native-fs');
 
-export function saveNotes(notes){
+export function downloadResume(){
 	return (dispatch,getState) => {
-		const { user, selected_event, selectedAttendee } = getState();
-		var modifiedSelectedAttendee = {...selectedAttendee};
-		modifiedSelectedAttendee["notes"] = notes; 
-		dispatch({
-			type:types.SELECT_ATTENDEE,
-			attendee: modifiedSelectedAttendee
-		});
-	}	
+		const {firebaseRef, selectedAttendee} = getState();
+		var selectedAttendeeID = selectedAttendee.id
+		var storageRef = firebaseRef.storage().ref();
+		var attendeeResumesRef = storageRef.child('attendees/' + selectedAttendeeID + '/resume.pdf');
+		
+		attendeeResumesRef.getDownloadURL()
+		.then(
+			(url) => {
+				var pdfLocation = RNFS.DocumentDirectoryPath + '/resume.pdf' 
+				var downloadOptions = {
+					fromUrl: url,
+					toFile: pdfLocation
+				}
+				RNFS.downloadFile(downloadOptions).promise.then(
+					(downloadResult) => {
+						dispatch({
+							type: types.RESUME_DOWNLOADED,
+							pdfLocation
+						})
+					}
+				)
+			}).catch(
+				(error)=>{
+					console.log(error)
+				}
+			)
+
+	}
 }
 
 export function setSelectedAttendee(attendeeID){
@@ -67,6 +88,18 @@ export function updateAttendees(attendees){
 		type: types.UPDATE_ATTENDEES,
 		attendees: attendees
 	}
+}
+
+export function saveNotes(notes){
+	return (dispatch,getState) => {
+		const { user, selected_event, selectedAttendee } = getState();
+		var modifiedSelectedAttendee = {...selectedAttendee};
+		modifiedSelectedAttendee["notes"] = notes; 
+		dispatch({
+			type:types.SELECT_ATTENDEE,
+			attendee: modifiedSelectedAttendee
+		});
+	}	
 }
 
 export function selectAttendee(attendee){

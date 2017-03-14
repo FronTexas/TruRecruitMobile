@@ -17,6 +17,7 @@ import IconFa from 'react-native-vector-icons/FontAwesome';
 import StarRating from 'react-native-star-rating';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
+import PDFView from 'react-native-pdf-view';
 
 class AttendeeProfilePage extends Component
 {
@@ -29,7 +30,7 @@ class AttendeeProfilePage extends Component
 			summary: 'Loading'
 		}
 		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
-
+		this.state.attendeePDFLocation = this.props.attendeePDFLocation
 	}
 
 	_onStarPress(rating){
@@ -37,16 +38,18 @@ class AttendeeProfilePage extends Component
 	}
 
 	componentWillMount(){
-		// Existence of attendeeID implies that this attendee is aquired through QR scanned 
+		// Existence of attendeeID implies that this attendee is aquired through scanning a QR code
 		if(this.props.attendeeID){
 			this.props.setSelectedAttendee(this.props.attendeeID);
 		}
+		this.props.downloadResume();
 	}
 
 	componentWillReceiveProps(nextProps){
-		const { scannedAttendee } = nextProps;
+		const { scannedAttendee,attendeePDFLocation } = nextProps;
 		if (scannedAttendee) this.setState({attendee:scannedAttendee});
-	}
+		if (attendeePDFLocation) this.setState({attendeePDFLocation})
+	}			 	  	 	   	 	  	  		 	 	 	
 
 	render()
 	{
@@ -88,9 +91,20 @@ class AttendeeProfilePage extends Component
 								id: "ResumeViewPage",
 							}) }
 							style={styles.shadow}
+						>
+							<PDFView
+								ref={(pdf)=>{this.pdfView = pdf;}}
+								src={this.state.attendeePDFLocation}
+								onLoadComplete={(pageCount)=>{
+									this.pdfView.setNativeProps({
+										zoom:1
+									});
+								}}
+								style={styles.resume_preview}
 							>
-							<Image style={styles.resume_preview} source={require("./img/fron_resume.jpg")}></Image>
+							</PDFView>
 						</TouchableOpacity>
+						
 					</View>
 					<View style={styles.rate_area}>
 						<Text style={styles.rate_text}>
@@ -189,7 +203,6 @@ const styles = StyleSheet.create({
 	resume_preview:{
 		width: 335,
 		height:423.34,
-		borderRadius: 3,
 	},
 	rate_area:{
 		alignItems:'center',
@@ -221,9 +234,10 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state){
-	const {selectedAttendee} = state;
+	const {selectedAttendee, attendeePDFLocation} = state;
 	return{
-		scannedAttendee: selectedAttendee
+		scannedAttendee: selectedAttendee,
+		attendeePDFLocation: attendeePDFLocation
 	}
 }
 

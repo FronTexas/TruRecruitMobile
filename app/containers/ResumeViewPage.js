@@ -26,7 +26,8 @@ class ResumeViewPage extends Component{
 		this.state = 
 		{
 			isNoteTakingMode : false,
-			notes: this.props.attendee.notes ? this.props.attendee.notes : ''
+			notes: this.props.attendee.notes ? this.props.attendee.notes : '',
+			attendeePDFLocation: this.props.attendeePDFLocation
 		}
 	}
 
@@ -38,6 +39,13 @@ class ResumeViewPage extends Component{
 	_handleDonePress(){
 		this.props.saveNotes(this.state.notes);
 		this.props.navigator.pop();
+	}
+
+	componentWillReceiveProps(nextProps){
+		const {attendeePDFLocation} = nextProps;
+		if (attendeePDFLocation){
+			this.setState({attendeePDFLocation})
+		}
 	}
 
 	render(){
@@ -107,13 +115,18 @@ class ResumeViewPage extends Component{
 
 		return(
 		<View style={{flex:1,backgroundColor:"#EEF1F7"}}>
-			<WebView 
-				source={{uri:'resume.pdf'}}
-				scalesPageToFit={true}
-				style={{backgroundColor:"#EEF1F7"}}
-			>
-			</WebView>
+			<PDFView
+				ref={(pdf)=>{this.pdfView = pdf;}}
+				src={this.state.attendeePDFLocation}
+				onLoadComplete={(pageCount)=>{
+					this.pdfView.setNativeProps({
+						zoom:1
+					});
+				}}
+				style={{flex:1}}
+			/>
 			<View
+				id="doneButtonContainer"
 				style={
 					{
 						position:'absolute',
@@ -204,8 +217,10 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state){
+	const {selectedAttendee,attendeePDFLocation} = state
 	return {
-		attendee: state.selectedAttendee
+		attendee: selectedAttendee,
+		attendeePDFLocation: attendeePDFLocation
 	}
 }
 

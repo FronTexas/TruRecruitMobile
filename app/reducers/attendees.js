@@ -16,9 +16,16 @@ export const selectedAttendeeId = createReducer(null,
 	}
 })
 
+export const attendeePDFLocation = createReducer(null,{
+	[types.RESUME_DOWNLOADED](state,action){
+		return action.pdfLocation;
+	}
+})
+
 export const attendees = createReducer({},
 {
 	[types.UPDATE_ATTENDEES](state,action){
 		return action.attendees;
 	}
 })
+
