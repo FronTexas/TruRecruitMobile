@@ -37,8 +37,10 @@ class EventPage extends Component
 		this.state.emailInputs = [];
 	}
 
-	_handleSendEmailClick(){
-		this.refs.send_email_modal.open();
+	sendResumesToEmail(focusedEvent){
+		this.props.zipAndEmailResumes({
+			event: focusedEvent,
+		});
 	}
 
 	closeModal(){
@@ -51,7 +53,7 @@ class EventPage extends Component
 
 	addEmailInput(){
 		var currentEmailInputs = this.state.emailInputs.splice();
-		const newFormInput = <FormInput placeholder="Enter email" onPress={this.addEmailInput.bind(this)}></FormInput>
+		const newFormInput = <FormInput placeholder="Enter email" onPress={this.addEmailInput.bind(this)}></FormInput>;
 		currentEmailInputs.push(newFormInput);
 		this.setState({emailInputs:currentEmailInputs});
 	}
@@ -78,7 +80,7 @@ class EventPage extends Component
 								return <EventCard
 								event = {rowData}
 								navigator={this.props.navigator}
-								onSendEmailClick={() => this._handleSendEmailClick.bind(this)}
+								onSendEmailClick={() => this.sendResumesToEmail(rowData)}
 								{...this.props}
 								></EventCard>
 							}
@@ -97,7 +99,7 @@ class EventPage extends Component
 						}}
 					>
 						<FormLabel>Email</FormLabel>
-						<FormInput placeholder="Enter email" onFocus={this.addEmailInput.bind(this)}></FormInput>
+						<FormInput placeholder="Enter email" onChangeText={(emailAddress) => this.setState({emailAddress})} onFocus={this.addEmailInput.bind(this)}></FormInput>
 						<View
 							style={{flex:1,justifyContent:'flex-end',padding:20}}
 						>
@@ -118,7 +120,10 @@ class EventPage extends Component
 									</View>
 							</TouchableOpacity>
 
-							<TouchableOpacity onPress={this.closeModal.bind(this)}>
+							<TouchableOpacity onPress={() => {
+								this.sendResumesToEmail();
+								this.closeModal();
+							}}>
 									<View
 										id="send-button"
 										style={[styles.shadow,{

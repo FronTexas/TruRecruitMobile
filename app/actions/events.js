@@ -1,4 +1,78 @@
 import * as types from './types';
+import {zip} from 'react-native-zip-archive';
+var Mailer = require('NativeModules').RNMail;
+var RNFS = require('react-native-fs');
+
+export function zipAndEmailResumes({event}){
+	return (dispatch,getState) => {
+		const {firebaseRef,user} = getState();
+		firebaseRef.database()
+		.ref('/recruiters/' + user.uid + '/attendees/' + event.eventId)
+		.on('value', (snapshot) => {
+			var listOfAttendees = []
+			snapshot.forEach((child) => {
+				listOfAttendees.push({
+					id: child.key,
+					name: child.val().name
+				});
+			});
+			var storageRef = firebaseRef.storage().ref();
+			var listOfAttendeesLength = listOfAttendees.length;
+			var counterOfDownloadedResumes = 0;
+			var rootLocation = RNFS.DocumentDirectoryPath 
+				+ '/' + event.eventId + '_Resumes/' 
+			RNFS.mkdir(rootLocation,{
+				NSURLIsExcludedFromBackupKey: false	
+			})
+
+			listOfAttendees.forEach((attendee) => {
+				var attendeeResumesRef = storageRef
+					.child('attendees/' + attendee.id + '/resume.pdf');
+				attendeeResumesRef.getDownloadURL()
+					.then(
+						(url) => {
+							var pdfLocation = rootLocation 
+							+ attendee.name + '.pdf'
+							var downloadOptions = {
+								fromUrl: url,
+								toFile: pdfLocation
+							}
+							RNFS.downloadFile(downloadOptions).promise
+								.then((res) => {
+									counterOfDownloadedResumes += 1
+									if(counterOfDownloadedResumes == listOfAttendeesLength){
+										var sourcePath = rootLocation;
+										var targetPath = rootLocation + '/resumes.zip';
+										zip(sourcePath,targetPath)
+											.then((path)=>{
+												Mailer.mail({
+													subject: 'Resumes for ' + event.eventTitle,
+													recipients:['fahran.kamili@utexas.edu'],
+													attachment:{
+														path,
+														type: 'zip',
+														name: 'resumes.zip'
+													}
+												}, (error,event) => {
+													if(error){
+														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
+													}
+												})
+
+											})
+											.catch((error)=>{console.log(error)})
+									}
+								})
+								.catch(error => console.log(error))
+
+						}
+					)
+
+			})
+
+		})
+	}
+}
 
 export function saveNewEvent(event){
 	return (dispatch,getState) => {

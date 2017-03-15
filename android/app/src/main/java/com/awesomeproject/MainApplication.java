@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.chirag.RNMail.RNMail;
+import com.rnziparchive.RNZipArchivePackage;
 import com.rnfs.RNFSPackage;
 import com.keyee.pdfview.PDFView;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
@@ -28,6 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNMail(),
+            new RNZipArchivePackage(),
             new RNFSPackage(),
             new PDFView(),
             new RCTCameraPackage(),

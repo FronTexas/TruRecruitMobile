@@ -78,7 +78,7 @@ export default class EventCard extends Component
 				</TouchableOpacity>
 				<View style={{alignItems:'flex-start',marginTop:-30}}>
 					<TouchableOpacity
-						onPress={this.props.onSendEmailClick()}
+						onPress={ () => this.props.onSendEmailClick()}
 					>
 								<View id="send_email_button" style={[styles.shadow,{
 												backgroundColor:"#1DBB96",

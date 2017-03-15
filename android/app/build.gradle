@@ -126,6 +126,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-mail')
+    compile project(':react-native-zip-archive')
     compile project(':react-native-fs')
     compile project(':react-native-pdf-view')
     compile project(':react-native-camera')
