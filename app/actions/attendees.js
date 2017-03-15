@@ -3,8 +3,7 @@ var RNFS = require('react-native-fs');
 
 export function downloadResume(){
 	return (dispatch,getState) => {
-		const {firebaseRef, selectedAttendee} = getState();
-		var selectedAttendeeID = selectedAttendee.id
+		const {firebaseRef, selectedAttendeeID} = getState();
 		var storageRef = firebaseRef.storage().ref();
 		var attendeeResumesRef = storageRef.child('attendees/' + selectedAttendeeID + '/resume.pdf');
 		
@@ -35,6 +34,10 @@ export function downloadResume(){
 
 export function setSelectedAttendee(attendeeID){
 	return (dispatch,getState) => {
+		dispatch({
+			type:types.SELECT_SELECTED_ATTENDEE_ID, 
+			selectedAttendeeID: attendeeID
+		})
 		const {firebaseRef} = getState();
 		firebaseRef.database()
 		.ref('/attendees/' + attendeeID)
@@ -47,6 +50,7 @@ export function setSelectedAttendee(attendeeID){
 		});
 	}
 }
+
 
 export function saveNewAttendee(attendee){
 	return (dispatch,getState) => {

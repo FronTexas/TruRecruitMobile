@@ -16,59 +16,69 @@ export function zipAndEmailResumes({event}){
 					name: child.val().name
 				});
 			});
+
 			var storageRef = firebaseRef.storage().ref();
 			var listOfAttendeesLength = listOfAttendees.length;
 			var counterOfDownloadedResumes = 0;
 			var rootLocation = RNFS.DocumentDirectoryPath 
 				+ '/' + event.eventId + '_Resumes/' 
-			RNFS.mkdir(rootLocation,{
-				NSURLIsExcludedFromBackupKey: false	
-			})
-
-			listOfAttendees.forEach((attendee) => {
-				var attendeeResumesRef = storageRef
-					.child('attendees/' + attendee.id + '/resume.pdf');
-				attendeeResumesRef.getDownloadURL()
-					.then(
-						(url) => {
-							var pdfLocation = rootLocation 
-							+ attendee.name + '.pdf'
-							var downloadOptions = {
-								fromUrl: url,
-								toFile: pdfLocation
-							}
-							RNFS.downloadFile(downloadOptions).promise
-								.then((res) => {
-									counterOfDownloadedResumes += 1
-									if(counterOfDownloadedResumes == listOfAttendeesLength){
-										var sourcePath = rootLocation;
-										var targetPath = rootLocation + '/resumes.zip';
-										zip(sourcePath,targetPath)
-											.then((path)=>{
-												Mailer.mail({
-													subject: 'Resumes for ' + event.eventTitle,
-													recipients:['fahran.kamili@utexas.edu'],
-													attachment:{
-														path,
-														type: 'zip',
-														name: 'resumes.zip'
-													}
-												}, (error,event) => {
-													if(error){
-														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
-													}
-												})
-
-											})
-											.catch((error)=>{console.log(error)})
+			RNFS.unlink(rootLocation).then(
+				() => {
+					RNFS.mkdir(rootLocation,{
+						NSURLIsExcludedFromBackupKey: false	
+					});
+					
+					listOfAttendees.forEach((attendee) => {
+						var attendeeResumesRef = storageRef
+							.child('attendees/' + attendee.id + '/resume.pdf');
+						attendeeResumesRef.getDownloadURL()
+							.then(
+								(url) => {
+									var pdfLocation = rootLocation 
+									+ attendee.name + '_' + Date.now() + '.pdf'
+									var downloadOptions = {
+										fromUrl: url,
+										toFile: pdfLocation
 									}
-								})
-								.catch(error => console.log(error))
+									RNFS.downloadFile(downloadOptions).promise
+										.then((res) => {
+											counterOfDownloadedResumes += 1
+											if(counterOfDownloadedResumes == listOfAttendeesLength){
+												var sourcePath = rootLocation;
+												var targetPath = RNFS.DocumentDirectoryPath + '/resumes.zip';
+											
+												zip(sourcePath,targetPath)
+													.then((path)=>{
+														console.log(path);
+														Mailer.mail({
+															subject: 'Resumes for ' + event.eventTitle,
+															recipients:[''],
+															attachment:{
+																path,
+																type: 'zip',
+																name: 'resumes.zip'
+															}
+														}, (error,event) => {
+															if(error){
+																AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
+															}
+														})
 
-						}
-					)
+													})
+													.catch((error)=>{console.log(error)})
+											}
+										})
+										.catch(error => console.log(error))
 
-			})
+								}
+							)
+
+						})
+				}
+			)
+			
+
+		
 
 		})
 	}
