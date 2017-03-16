@@ -14,11 +14,16 @@ export default class Navbar extends Component{
 	}
 
 	render(){
+		var {title} = this.props;
+		var fontSize = 25
+		if(title.length > 12){
+			fontSize = Math.ceil(400 / title.length);
+		}
 		var titleStyle = {
 							alignSelf:'center',
 							fontWeight: 'bold',
 							color:'#FFF',
-							fontSize:25,
+							fontSize
 						}
 		var title = 
 		<Text style={titleStyle}>{this.props.title}</Text>;

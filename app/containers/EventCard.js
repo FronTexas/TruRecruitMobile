@@ -59,14 +59,23 @@ export default class EventCard extends Component
 		})
 	}
 
+
 	render()
 	{
+		var TextDynamic = (props)=>{
+			var {eventTitle} = this.props.event;
+			var modifiedFontSize = {};
+			if(eventTitle.length > 12){
+				modifiedFontSize["fontSize"] = Math.ceil(400 / eventTitle.length);
+			}
+			return <Text style={[styles.eventTitle,modifiedFontSize]}>{this.props.event.eventTitle}</Text>
+		}
 		return(
 			<View>
 				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
 					<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
-							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
+							<TextDynamic></TextDynamic>
 							<Text style={styles.eventDate}>{this.props.event.eventLocation}</Text>
 							<Text style={styles.eventDate}>{this.formatTimeScanned(this.props.event.eventDate)}</Text>
 						</View>

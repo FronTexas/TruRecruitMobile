@@ -69,7 +69,6 @@ export function zipAndEmailResumes({event}){
 											}
 										})
 										.catch(error => console.log(error))
-
 								}
 							)
 
