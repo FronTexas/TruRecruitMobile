@@ -42,9 +42,8 @@ class AddEventPage extends Component{
 		super(props);
 
 		this.state={
-			eventId: Date.now(),
 			eventTitle: null,
-			eventDate: Date.now(),
+			eventDate: new Date(),
 			eventLocation: null,
 			showDatePicker: false,
 		}
@@ -54,7 +53,7 @@ class AddEventPage extends Component{
 		<View style={styles.datePicker_area}>
 			<DatePickerIOS
 				date={this.state.eventDate}
-				onDateChange={(eventDate) => this.setState({eventDate:eventDate})}
+				onDateChange={(eventDate) => this.setState({eventDate})}
 				mode="date">
 			</DatePickerIOS>
 			<TouchableOpacity
@@ -71,7 +70,7 @@ class AddEventPage extends Component{
 				onPress={() =>
 					{
 						let theEvent = {
-							eventDate: this.state.eventDate,
+							eventDate: this.state.eventDate.getTime(),
 							eventLocation: this.state.eventLocation,
 							eventTitle: this.state.eventTitle,
 							resumeScanned: 0
@@ -107,7 +106,7 @@ class AddEventPage extends Component{
 					onPress={() =>
 						{
 							dismissKeyboard();
-							this.setState({showDatePicker: !this.state.showDatePicker})
+							this.setState({showDatePicker: true})
 						}
 				}
 					style={styles.set_date_touchable}

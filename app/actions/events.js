@@ -76,10 +76,6 @@ export function zipAndEmailResumes({event}){
 						})
 				}
 			)
-			
-
-		
-
 		})
 	}
 }
