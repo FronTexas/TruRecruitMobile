@@ -47,7 +47,7 @@ class EventPage extends Component
 		this.refs.send_email_modal.close()
 	}
 
-	componentWillMount(){
+	componentDidMount(){
 		this.props.listenToEventsChanges();
 	}
 
@@ -85,7 +85,9 @@ class EventPage extends Component
 								></EventCard>
 							}
 						}
-						style = {styles.list_view}>
+						style = {styles.list_view}
+						removeClippedSubviews={false}
+						>
 					</ListView> 
 					: 
 					<Text>Loading</Text>

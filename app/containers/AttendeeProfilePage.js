@@ -8,7 +8,9 @@ import {
 	Image,
 	Dimensions,
 	Button,
-	TouchableOpacity
+	TouchableOpacity,
+	WebView,
+	Linking
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -31,16 +33,18 @@ class AttendeeProfilePage extends Component
 		}
 		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
 		this.state.attendeePDFLocation = this.props.attendeePDFLocation
+		this.state.linkToOpen = null;
 	}
 
 	_onStarPress(rating){
 		this.setState({rating})
 	}
 
-	componentWillMount(){
+	componentDidMount(){
 		// Existence of attendeeID implies that this attendee is aquired through scanning a QR code
+		this.props.removeDownloadedResume()
 		if(this.props.attendeeID){
-			this.props.setSelectedAttendee(this.props.attendeeID);
+ 			this.props.setSelectedAttendee(this.props.attendeeID);
 		}
 		this.props.downloadResume();
 	}
@@ -48,94 +52,147 @@ class AttendeeProfilePage extends Component
 	componentWillReceiveProps(nextProps){
 		const { scannedAttendee,attendeePDFLocation } = nextProps;
 		if (scannedAttendee) this.setState({attendee:scannedAttendee});
-		if (attendeePDFLocation) this.setState({attendeePDFLocation})
+		if (attendeePDFLocation) this.setState({attendeePDFLocation});
 	}			 	  	 	   	 	  	  		 	 	 	
 
 	render()
 	{
-		return (
-			<View style={{flex:1}}>
-				<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
-				<ScrollView style={{
-						backgroundColor:"#EEF1F7"
-					}}>
-					<View id='attendee-profile' 
-						style={{
-							alignItems: 'center'
-						}}
-						>
-							<Icon name="ios-contact" size={80} style={styles.profpic}></Icon>
-							<Text style={styles.name}>{this.state.attendee.name}</Text>
-							<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
-					</View>
-					<View id="links-and-resume" style={{
-							flex: 1,
-							backgroundColor:"#EEF1F7",
-							paddingLeft:20,
-							paddingTop:10,
-							paddingRight:20
-						}}
-						>
-						<View id='links'>
-							<View style={styles.link}>
-								<IconFa style={[styles.link_icon,styles.github_icon]} size={25} name="github"></IconFa>
-								<Text style={styles.link_text}>github.com/frontexas</Text>
-							</View>
-							<View style={styles.link}>
-								<IconFa style={[styles.link_icon,styles.linkedin_icon]} size={25} name="linkedin"></IconFa>
-								<Text style={styles.link_text}>linkedin.com/in/fahrankamili</Text>
-							</View>
-						</View>
-						<TouchableOpacity
-							onPress={() => this.props.navigator.push({
-								id: "ResumeViewPage",
-							}) }
-							style={styles.shadow}
-						>
-							<PDFView
-								src={this.state.attendeePDFLocation}
-								style={styles.resume_preview}
+		var links = this.state.attendee.links;
+		var linkTags = []
+		var linkTags = links ? 
+			Object.keys(links).map((key)=>{
+					var iconStyleDict = {
+						"github": styles.github_icon,
+						"linkedin": styles.linkedin_icon
+					}
+
+					console.log(`link = ${links[key]}`)
+		
+					var iconLinkStyle = key in iconStyleDict ? iconStyleDict[key] :  styles.default_icon;
+					var iconName = key in iconStyleDict ? key : 'external-link'
+		
+					return (
+						<View key={key} style={styles.link}>
+							<IconFa style={[styles.link_icon,iconLinkStyle]} size={25} name={iconName}></IconFa>
+							<TouchableOpacity
+								onPress={() => {
+									Linking.openURL(links[key]).catch(err => console.error('An error occurred', err));
+								}}
 							>
-							</PDFView>
-						</TouchableOpacity>
-						
-					</View>
-					<View style={styles.rate_area}>
-						<Text style={styles.rate_text}>
-							Rate the candidate
-						</Text>
-						<View style={{width:200}}>
-							<StarRating
-								maxStars={5}
-								rating={this.state.rating}
-								selectedStar={(rating) => this._onStarPress(rating)}
-								starSize={30}
-								starColor="#F5C87F"
-								emptyStarColor="#CCCCCC"
-								></StarRating>
+								<Text style={styles.link_text}>{links[key]}</Text>
+							</TouchableOpacity>
 						</View>
-					</View>
-					<TouchableOpacity
-						onPress=
-						{ () => 
-							{
-								var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
-								var aboutToBeSavedAttendee = {...this.state.attendee};
-								aboutToBeSavedAttendee.scanned = scanned;
-								aboutToBeSavedAttendee.rating = this.state.rating;
-								this.props.saveNewAttendee(aboutToBeSavedAttendee);
-								this.props.navigator.pop();
-							}
-						}
-					>
-						<View style={styles.save_button_area}>
-							<View style={styles.save_button}>
-						    	<Text style={styles.save_text}>Save</Text>
-						    </View>
-						</View>
-					</TouchableOpacity>
-				</ScrollView>
-			</View>
+					)
+			})
+			:
+			<View></View>
+
+		var AttendeeScrollView = (props) => 
+			{
+				return (		
+						<View style={{flex:1}}>
+							<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
+							<ScrollView style={{
+										backgroundColor:"#EEF1F7"
+									}}>
+									<View id='attendee-profile' 
+										style={{
+											alignItems: 'center'
+										}}
+										>
+											<Icon name="ios-contact" size={80} style={styles.profpic}></Icon>
+											<Text style={styles.name}>{this.state.attendee.name}</Text>
+											<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
+									</View>
+									<View id="links-and-resume" style={{
+											flex: 1,
+											backgroundColor:"#EEF1F7",
+											paddingLeft:20,
+											paddingTop:10,
+											paddingRight:20
+										}}
+										>
+										<View id='links'>
+											{
+												linkTags
+											}
+										</View>
+										<TouchableOpacity
+											onPress={() => this.props.navigator.push({
+												id: "ResumeViewPage",
+											}) }
+											style={styles.shadow}
+										>
+											<PDFView
+												src={this.state.attendeePDFLocation}
+												style={styles.resume_preview}
+												zoom={1}
+											>
+											</PDFView>
+										</TouchableOpacity>
+										
+									</View>
+									<View style={styles.rate_area}>
+										<Text style={styles.rate_text}>
+											Rate the candidate
+										</Text>
+										<View style={{width:200}}>
+											<StarRating
+												maxStars={5}
+												rating={this.state.rating}
+												selectedStar={(rating) => this._onStarPress(rating)}
+												starSize={30}
+												starColor="#F5C87F"
+												emptyStarColor="#CCCCCC"
+												></StarRating>
+										</View>
+									</View>
+									<TouchableOpacity
+										onPress=
+										{ () => 
+											{
+												var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
+												var aboutToBeSavedAttendee = {...this.state.attendee};
+												aboutToBeSavedAttendee.scanned = scanned;
+												aboutToBeSavedAttendee.rating = this.state.rating;
+												this.props.saveNewAttendee(aboutToBeSavedAttendee);
+												this.props.navigator.pop();
+											}
+										}
+									>
+										<View style={styles.save_button_area}>
+											<View style={styles.save_button}>
+										    	<Text style={styles.save_text}>Save</Text>
+										    </View>
+										</View>
+									</TouchableOpacity>
+							</ScrollView>
+						</View>		
+					)
+			}
+
+		var MainView = (props) => {
+			if(!this.state.linkToOpen){
+				return <AttendeeScrollView/>
+			}else{
+				return (<WebView
+									ref={(ref)=>{this.webview = ref;}}
+									source = {{uri: this.state.linkToOpen}}
+									onNavigationStateChange={
+										(event) => {
+											if (event.url !== this.state.linkToOpen){
+												this.webview.stopLoading();
+												Linking.openURL(event.url);
+											}
+										}
+									}
+								>
+						</WebView>)
+			}
+		}
+
+		return (
+				<MainView/>
 		)
 	}
 }
@@ -182,6 +239,9 @@ const styles = StyleSheet.create({
 	},
 	link_icon:{
 		marginRight:5
+	},
+	default_icon:{
+		color:"#000000"
 	},
 	github_icon:{
 		color: "#000000"

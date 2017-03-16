@@ -1,6 +1,15 @@
 import * as types from './types';
 var RNFS = require('react-native-fs');
 
+
+export function removeDownloadedResume(){
+	return (dispatch,getState) => {
+		dispatch({
+			type:types.REMOVE_DOWNLOADED_RESUME,
+		})
+	}	
+}
+
 export function downloadResume(){
 	return (dispatch,getState) => {
 		const {firebaseRef, selectedAttendeeID} = getState();
@@ -10,19 +19,25 @@ export function downloadResume(){
 		attendeeResumesRef.getDownloadURL()
 		.then(
 			(url) => {
-				var pdfLocation = RNFS.DocumentDirectoryPath + '/resume.pdf' 
-				var downloadOptions = {
-					fromUrl: url,
-					toFile: pdfLocation
-				}
-				RNFS.downloadFile(downloadOptions).promise.then(
-					(downloadResult) => {
-						dispatch({
-							type: types.RESUME_DOWNLOADED,
-							pdfLocation
-						})
-					}
-				)
+				var rootLocation = RNFS.DocumentDirectoryPath + '/attendeePageResume/';
+				RNFS.unlink(rootLocation).catch((error)=>{console.log(error)});
+				RNFS.mkdir(rootLocation,{
+					NSURLIsExcludedFromBackupKey: false	
+				}).then(() => {
+					var pdfLocation = rootLocation + `resume_${Date.now()}.pdf`
+					var downloadOptions = {
+						fromUrl: url,
+						toFile: pdfLocation
+					};
+					RNFS.downloadFile(downloadOptions).promise.then(
+						(downloadResult) => {
+							dispatch({
+								type: types.RESUME_DOWNLOADED,
+								pdfLocation
+							})
+						}
+				)	;
+				})						
 			}).catch(
 				(error)=>{
 					console.log(error)
@@ -35,9 +50,9 @@ export function downloadResume(){
 export function setSelectedAttendee(attendeeID){
 	return (dispatch,getState) => {
 		dispatch({
-			type:types.SELECT_SELECTED_ATTENDEE_ID, 
+			type: types.SELECT_SELECTED_ATTENDEE_ID, 
 			selectedAttendeeID: attendeeID
-		})
+		});
 		const {firebaseRef} = getState();
 		firebaseRef.database()
 		.ref('/attendees/' + attendeeID)
@@ -80,7 +95,6 @@ export function listenToAttendeesChanges(){
 			var updates = {}
 			updates['/recruiters/' + user.uid + '/events/' + selected_event.eventId] = selected_event
 			firebaseRef.database().ref().update(updates)
-			
 			dispatch(updateAttendees(snapshot.val()))
 		})
 
@@ -107,8 +121,11 @@ export function saveNotes(notes){
 }
 
 export function selectAttendee(attendee){
-	return {
-		type:types.SELECT_ATTENDEE,
-		attendee
-	};
+	return (dispatch,getState) => 
+	{
+		dispatch({
+			type:types.SELECT_ATTENDEE,
+			attendee
+		});
+	}
 }

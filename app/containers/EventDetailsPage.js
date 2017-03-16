@@ -92,6 +92,7 @@ class EventDetailsPage extends Component
 						></EventDetailsCard>
 					}
 					style = {styles.list_view}
+					removeClippedSubviews={false}
 					></ListView>
 					:
 					<Text>Loading</Text>
