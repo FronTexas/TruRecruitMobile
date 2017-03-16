@@ -26,7 +26,6 @@ class AttendeeProfilePage extends Component
 	constructor(props){
 		super(props);
 		this.state = {};
-		this.state.attendee = this.props.scannedAttendee ? this.props.scannedAttendee : null
 		this.state.attendee = this.props.attendee ? this.props.attendee : {
 			name: 'Loading',
 			summary: 'Loading'
@@ -41,17 +40,14 @@ class AttendeeProfilePage extends Component
 	}
 
 	componentDidMount(){
-		// Existence of attendeeID implies that this attendee is aquired through scanning a QR code
 		this.props.removeDownloadedResume()
-		if(this.props.attendeeID){
- 			this.props.setSelectedAttendee(this.props.attendeeID);
-		}
+ 		this.props.setSelectedAttendee(this.props.attendeeID);
 		this.props.downloadResume();
 	}
 
 	componentWillReceiveProps(nextProps){
-		const { scannedAttendee,attendeePDFLocation } = nextProps;
-		if (scannedAttendee) this.setState({attendee:scannedAttendee});
+		const { attendee,attendeePDFLocation } = nextProps;
+		if (attendee) this.setState({attendee});
 		if (attendeePDFLocation) this.setState({attendeePDFLocation});
 	}			 	  	 	   	 	  	  		 	 	 	
 
@@ -290,7 +286,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state){
 	const {selectedAttendee, attendeePDFLocation} = state;
 	return{
-		scannedAttendee: selectedAttendee,
+		attendee: selectedAttendee,
 		attendeePDFLocation: attendeePDFLocation
 	}
 }

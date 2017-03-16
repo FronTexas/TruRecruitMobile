@@ -31,7 +31,17 @@ export const attendeePDFLocation = createReducer(null,{
 export const attendees = createReducer({},
 {
 	[types.UPDATE_ATTENDEES](state,action){
-		return action.attendees;
+		var {attendees,recruitersAttendees} = action;
+		var newAttendees = {...attendees,...recruitersAttendees};
+		Object.keys(newAttendees).forEach((attendeeID) => {
+			if (attendeeID in attendees)
+			{
+				newAttendees[attendeeID] = {...newAttendees[attendeeID],...attendees[attendeeID]}
+			}else{
+				newAttendees[attendeeID] = attendees[attendeeID];
+			}
+		});	
+		return newAttendees;
 	}
 })
 

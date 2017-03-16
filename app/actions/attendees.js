@@ -87,24 +87,37 @@ export function listenToAttendeesChanges(){
 		firebaseRef.database()
 		.ref('/recruiters/' + user.uid + '/attendees/' + selected_event.eventId)
 		.on('value', (snapshot) => {
-			var attendees = snapshot.val();
-			if(!attendees) return 
+			var recruitersAttendees = snapshot.val();
+			if(!recruitersAttendees) return 
 
-			var resumeScanned = Object.keys(attendees).length;
+			var resumeScanned = Object.keys(recruitersAttendees).length;
 			selected_event.resumeScanned = resumeScanned
 			var updates = {}
 			updates['/recruiters/' + user.uid + '/events/' + selected_event.eventId] = selected_event
 			firebaseRef.database().ref().update(updates)
-			dispatch(updateAttendees(snapshot.val()))
+
+			var attendeeIDs = Object.keys(recruitersAttendees);
+			var attendees = {}
+			attendeeIDs.forEach((attendeeID) => {
+				firebaseRef.database()
+				.ref('/attendees/' + attendeeID)
+				.on('value', (snap) => {
+					attendees[attendeeID] = snap.val();
+					if(Object.keys(attendees).length == attendeeIDs.length){
+						dispatch(updateAttendees(attendees,recruitersAttendees))
+					}
+				});
+			});
 		})
 
 	}
 }
 
-export function updateAttendees(attendees){
+export function updateAttendees(attendees,recruitersAttendees){
 	return {
 		type: types.UPDATE_ATTENDEES,
-		attendees: attendees
+		attendees: attendees,
+		recruitersAttendees
 	}
 }
 

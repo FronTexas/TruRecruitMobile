@@ -61,10 +61,9 @@ export default class EventDetailsCard extends Component
 			<TouchableOpacity
 				onPress={() => 
 						{	
-							this.props.selectAttendee(this.props.attendee)
 							this.props.navigator.push({
 								id:"AttendeeProfilePage",
-								attendee: this.props.attendee
+								attendeeID: this.props.attendee.id
 							})
 						}
 				}
