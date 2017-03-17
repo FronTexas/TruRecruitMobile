@@ -31,7 +31,7 @@ class AttendeeProfilePage extends Component
 			summary: 'Loading'
 		}
 		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
-		this.state.attendeePDFLocation = this.props.attendeePDFLocation
+		this.state.attendeePDFLocation = null;
 		this.state.linkToOpen = null;
 	}
 
@@ -61,8 +61,6 @@ class AttendeeProfilePage extends Component
 						"github": styles.github_icon,
 						"linkedin": styles.linkedin_icon
 					}
-
-					console.log(`link = ${links[key]}`)
 		
 					var iconLinkStyle = key in iconStyleDict ? iconStyleDict[key] :  styles.default_icon;
 					var iconName = key in iconStyleDict ? key : 'external-link'
@@ -82,11 +80,8 @@ class AttendeeProfilePage extends Component
 			})
 			:
 			<View></View>
-
-		var AttendeeScrollView = (props) => 
-			{
-				return (		
-						<View style={{flex:1}}>
+		return (
+				<View style={{flex:1}}>
 							<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
 							<ScrollView style={{
 										backgroundColor:"#EEF1F7"
@@ -164,31 +159,6 @@ class AttendeeProfilePage extends Component
 									</TouchableOpacity>
 							</ScrollView>
 						</View>		
-					)
-			}
-
-		var MainView = (props) => {
-			if(!this.state.linkToOpen){
-				return <AttendeeScrollView/>
-			}else{
-				return (<WebView
-									ref={(ref)=>{this.webview = ref;}}
-									source = {{uri: this.state.linkToOpen}}
-									onNavigationStateChange={
-										(event) => {
-											if (event.url !== this.state.linkToOpen){
-												this.webview.stopLoading();
-												Linking.openURL(event.url);
-											}
-										}
-									}
-								>
-						</WebView>)
-			}
-		}
-
-		return (
-				<MainView/>
 		)
 	}
 }
