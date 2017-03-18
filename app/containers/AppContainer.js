@@ -74,6 +74,7 @@ class AppContainer extends Component {
       return (
         <Signup
           navigator={navigator}
+          {...this.props}
            />
       );
     }

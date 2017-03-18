@@ -9,18 +9,63 @@ import {
   Alert,
   Navigator,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  AlertIOS
 } from 'react-native';
 import {
   FormInput,
   FormLabel,
   Icon
 } from 'react-native-elements';
+import {connect} from 'react-redux';
 
-export default class Signup extends Component {
+class Signup extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      email:'',
+      password:'',
+      confirmedPassword:''
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    var {user} = nextProps;
+    if(user) {
+      this.props.navigator.push({
+          id: 'EventPage',
+          name: 'Login',
+        });
+    }
+  }
 
   _handlePress() {
-    Alert.alert("Button has been pressed");
+    // var {email,password,confirmedPassword} = this.state;
+
+    // const validateEmail =(email) =>{
+    //       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   return email.length>0 && re.test(email);
+    // }
+
+    // const validatePassword = (password,confirmedPassword) =>{
+    //   return password.length > 0 && confirmedPassword.length>0 && password == confirmedPassword
+    // }
+
+    // if (!validateEmail(email)){
+    //   AlertIOS.alert('Email is invalid')
+    //   return
+    // }
+
+    // if(!validatePassword(password,confirmedPassword)){
+    //   AlertIOS.alert(`Password does not match the confirm password`)
+    //   return
+    // }
+
+    var email = "fahran.kamili@utexas.edu";
+    var password = "password"
+
+    this.props.createNewUser(email,password);
   }
 
   render() {
@@ -34,21 +79,28 @@ export default class Signup extends Component {
             </View>
           </TouchableHighlight>
         </View>
-        <FormLabel>Username</FormLabel>
-        <FormInput
-          containerStyle={styles.form}
-          />
         <FormLabel>Email</FormLabel>
         <FormInput
           containerStyle={styles.form}
+          onChangeText={(email)=>{
+            this.setState({email})
+          }}
           />
         <FormLabel>Password</FormLabel>
         <FormInput
           containerStyle={styles.form}
+          onChangeText={(password)=>{
+            this.setState({password})
+          }}
+          secureTextEntry={true}
           />
         <FormLabel>Confirm Password</FormLabel>
         <FormInput
           containerStyle={styles.form}
+          onChangeText={(confirmedPassword)=>{
+            this.setState({confirmedPassword})
+          }}
+          secureTextEntry={true}
           />
         <Button
           containerStyle={styles.button}
@@ -117,3 +169,12 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
+
+function mapStateToProps(state){
+  var {user} = state;
+  return {
+    user
+  }
+}
+
+export default connect(mapStateToProps)(Signup)

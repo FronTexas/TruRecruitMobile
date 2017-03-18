@@ -28,7 +28,7 @@ export const attendeePDFLocation = createReducer(null,{
 	}
 })
 
-export const attendees = createReducer({},
+export const attendees = createReducer(null,
 {
 	[types.UPDATE_ATTENDEES](state,action){
 		var {attendees,recruitersAttendees} = action;

@@ -22,13 +22,9 @@ export function zipAndEmailResumes({event}){
 			var counterOfDownloadedResumes = 0;
 			var rootLocation = RNFS.DocumentDirectoryPath 
 				+ '/' + event.eventId + '_Resumes/' 
-			RNFS.unlink(rootLocation).then(
-				() => {
-					RNFS.mkdir(rootLocation,{
-						NSURLIsExcludedFromBackupKey: false	
-					});
-					
-					listOfAttendees.forEach((attendee) => {
+			
+			var downloadZipAndThenMail = () => {
+				listOfAttendees.forEach((attendee) => {
 						var attendeeResumesRef = storageRef
 							.child('attendees/' + attendee.id + '/resume.pdf');
 						attendeeResumesRef.getDownloadURL()
@@ -73,8 +69,29 @@ export function zipAndEmailResumes({event}){
 							)
 
 						})
+			}
+			RNFS.exists(rootLocation).then(
+				(exists) =>{
+					if (exists){
+						RNFS.unlink(rootLocation).then(
+							() => {
+								RNFS.mkdir(rootLocation,{
+									NSURLIsExcludedFromBackupKey: false	
+								});
+								downloadZipAndThenMail()
+							}
+							).catch(error =>{
+								console.log(`error = ${error}`)
+						})
+					}else{
+						RNFS.mkdir(rootLocation,{
+								NSURLIsExcludedFromBackupKey: false	
+							});
+						downloadZipAndThenMail()
+					}
 				}
 			)
+			
 		})
 	}
 }
@@ -96,6 +113,10 @@ export function listenToEventsChanges(){
 		.ref('/recruiters/' + user.uid + '/events/')
 		.on('value', (snapshot) => {
 			var events = snapshot.val()
+			if(!events){
+				dispatch(updateEvents({}));
+				return;
+			}
 			for(let key of Object.keys(events)){
 				events[key].eventId = key
 			}

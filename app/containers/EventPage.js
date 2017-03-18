@@ -13,7 +13,7 @@ import {
 import {connect} from 'react-redux';
 import _ from 'underscore';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import IconFa from 'react-native-vector-icons/FontAwesome';
 import EventCard from './EventCard';
 import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
@@ -71,11 +71,9 @@ class EventPage extends Component
 
 	render()
 	{
-		return(
-			<View style={{flex:1}}>
-				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
-				{ !_.isEmpty(this.state.events) ? 
-					<ListView
+		var body = null;
+		if (this.state.events && !_.isEmpty(this.state.events)){
+			body = <ListView
 						dataSource={this.getDataSource()}
 						renderRow={(rowData) =>{
 								return <EventCard
@@ -90,8 +88,19 @@ class EventPage extends Component
 						removeClippedSubviews={false}
 						>
 					</ListView> 
-					: 
-					<ActivityIndicator
+		}else if(this.state.events){
+			body = 
+				<View style={{flex:1,justifyContent:'center',marginTop:-50,alignItems:'center'}}>
+					<View style={{flexDirection:"row"}}>
+						<IconFa style={{color:"#7f8c8d",alignSelf:"center"}} size={80} name="calendar-o"></IconFa>
+						<View style={{alignSelf:"flex-end",marginLeft:10}}>
+							<Text style={{fontWeight:"600", fontSize:35,color:"#7f8c8d"}}>No events</Text>
+							<Text style={{fontWeight:"600", fontSize:35,color:"#7f8c8d"}}>created yet</Text>
+						</View>
+					</View>
+				</View>
+		}else{
+			body = <ActivityIndicator
 						style={{
 						    alignItems: 'center',
 						    justifyContent: 'center',
@@ -100,7 +109,11 @@ class EventPage extends Component
 						  size="large"
 					>
 					</ActivityIndicator>
-				}
+		}
+		return(
+			<View style={{flex:1}}>
+				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
+				{body}
 				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
 					<View

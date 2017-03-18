@@ -10,6 +10,7 @@ import {
 
 import _ from 'underscore';
 import {connect} from 'react-redux';
+import IconFa from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EventDetailsCard from './EventDetailsCard';
 import ActionButton from 'react-native-action-button';
@@ -79,11 +80,8 @@ class EventDetailsPage extends Component
 
 	render()
 	{
-		return(
-			<View style={{flex:1,backgroundColor:"#FFF"}}>
-				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.formatTimeScanned(this.props.event.eventDate)}></Navbar>
-				{!_.isEmpty(this.state.attendees) ? 
-					<ListView
+		if (this.state.attendees && !_.isEmpty(this.state.attendees)){
+			body = <ListView
 					dataSource={this.getDataSource()}
 					renderRow={(rowData) =>
 						<EventDetailsCard
@@ -95,8 +93,19 @@ class EventDetailsPage extends Component
 					style = {styles.list_view}
 					removeClippedSubviews={false}
 					></ListView>
-					:
-					<ActivityIndicator
+		}else if(this.state.attendees){
+			body = 
+				<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+					<View style={{flexDirection:"row",margin:-40}}>
+						<IconFa style={{color:"#7f8c8d",alignSelf:"center"}} size={80} name="file-text-o"></IconFa>
+						<View style={{alignSelf:"flex-end",marginLeft:10}}>
+							<Text style={{fontWeight:"600", fontSize:35,color:"#7f8c8d"}}>No resume</Text>
+							<Text style={{fontWeight:"600", fontSize:35,color:"#7f8c8d"}}>scanned yet</Text>
+						</View>
+					</View>
+				</View>
+		}else{
+			body = <ActivityIndicator
 						style={{
 						    alignItems: 'center',
 						    justifyContent: 'center',
@@ -105,8 +114,11 @@ class EventDetailsPage extends Component
 						  size="large"
 					>
 					</ActivityIndicator>
-				}
-				
+		}
+		return(
+			<View style={{flex:1,backgroundColor:"#FFF"}}>
+				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.formatTimeScanned(this.props.event.eventDate)}></Navbar>
+				{body}
 				<ActionButton
 					buttonColor="rgba(0,188,150,1)"
 					icon={<Icon name="ios-qr-scanner" style={{color:"#FFF"}} size={30}></Icon>}
