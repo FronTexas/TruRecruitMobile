@@ -6,7 +6,8 @@ import {
 	View,
 	Text,
 	TouchableOpacity,
-	Button
+	Button,
+	ActivityIndicator
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -90,7 +91,15 @@ class EventPage extends Component
 						>
 					</ListView> 
 					: 
-					<Text>Loading</Text>
+					<ActivityIndicator
+						style={{
+						    alignItems: 'center',
+						    justifyContent: 'center',
+						    flex:1
+						  }}
+						  size="large"
+					>
+					</ActivityIndicator>
 				}
 				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>

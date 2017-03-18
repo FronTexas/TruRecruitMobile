@@ -4,7 +4,8 @@ import {
 	ScrollView,
 	ListView,
 	View,
-	Text
+	Text,
+	ActivityIndicator
 } from 'react-native';
 
 import _ from 'underscore';
@@ -95,7 +96,15 @@ class EventDetailsPage extends Component
 					removeClippedSubviews={false}
 					></ListView>
 					:
-					<Text>Loading</Text>
+					<ActivityIndicator
+						style={{
+						    alignItems: 'center',
+						    justifyContent: 'center',
+						    flex:1
+						  }}
+						  size="large"
+					>
+					</ActivityIndicator>
 				}
 				
 				<ActionButton

@@ -10,7 +10,8 @@ import {
 	Button,
 	TouchableOpacity,
 	WebView,
-	Linking
+	Linking,
+	ActivityIndicator
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -114,12 +115,24 @@ class AttendeeProfilePage extends Component
 											}) }
 											style={styles.shadow}
 										>
-											<PDFView
-												src={this.state.attendeePDFLocation}
-												style={styles.resume_preview}
-												zoom={1}
-											>
-											</PDFView>
+											{
+												this.state.attendeePDFLocation ?
+												<PDFView
+													src={this.state.attendeePDFLocation}
+													style={styles.resume_preview}
+													zoom={1}
+												>
+												</PDFView>
+												:
+												<ActivityIndicator
+													style={[{
+															    alignItems: 'center',
+															    justifyContent: 'center',
+															    flex:1
+															  },styles.resume_preview]}
+												>
+												</ActivityIndicator>
+											}
 										</TouchableOpacity>
 										
 									</View>

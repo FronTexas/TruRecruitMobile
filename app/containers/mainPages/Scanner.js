@@ -50,6 +50,14 @@ export default class Scanner extends Component {
   }
 
   render() {
+    var {eventTitle} = this.props.event;
+    var fontSize = 30;
+    if(eventTitle.length > 12){
+      fontSize = Math.ceil(400 / eventTitle.length);
+    }
+    var title = <Text style={[styles.textShadow,{fontSize,fontWeight:'bold',color:'#FFF'}]}>{eventTitle}</Text>
+
+
     return (
       <View style={styles.container}>
         <Camera
@@ -66,7 +74,7 @@ export default class Scanner extends Component {
                                                     justifyContent:'center'
                                                   }}>
               <View>
-                <Text style={[styles.textShadow,{fontSize:30,fontWeight:'bold',color:'#FFF'}]}>{this.props.event.eventTitle}</Text>
+                {title}
               </View>
           </View>
           <View style={styles.scan_and_instruction}>
