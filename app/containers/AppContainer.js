@@ -132,9 +132,8 @@ class AppContainer extends Component {
       return(
         <AttendeeProfilePage
           navigator={navigator}
-          attendeeID = {route.attendeeID}
-          attendee = {route.attendee}
           {...this.props}
+          {...route}
         >
         </AttendeeProfilePage>
       )

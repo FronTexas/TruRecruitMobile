@@ -34,6 +34,7 @@ class AttendeeProfilePage extends Component
 		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
 		this.state.attendeePDFLocation = null;
 		this.state.linkToOpen = null;
+		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
 	}
 
 	_onStarPress(rating){
@@ -44,6 +45,7 @@ class AttendeeProfilePage extends Component
 		this.props.removeDownloadedResume()
  		this.props.setSelectedAttendee(this.props.attendeeID);
 		this.props.downloadResume();
+
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -83,7 +85,8 @@ class AttendeeProfilePage extends Component
 			<View></View>
 		return (
 				<View style={{flex:1}}>
-							<Navbar onBackButtonPressed = {() => {this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
+							<Navbar onBackButtonPressed = {() => { if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
+this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
 							<ScrollView style={{
 										backgroundColor:"#EEF1F7"
 									}}>
@@ -160,6 +163,7 @@ class AttendeeProfilePage extends Component
 												aboutToBeSavedAttendee.scanned = scanned;
 												aboutToBeSavedAttendee.rating = this.state.rating;
 												this.props.saveNewAttendee(aboutToBeSavedAttendee);
+												if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
 												this.props.navigator.pop();
 											}
 										}

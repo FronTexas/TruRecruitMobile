@@ -69,6 +69,15 @@ class AddEventPage extends Component{
 			<TouchableOpacity
 				onPress={() =>
 					{
+						if (this.state.eventTitle.length == 0){
+							AlertIOS.alert('Title cannot be empty');
+							return 
+						}
+
+						if (this.state.eventLocation.length == 0){
+							AlertIOS.alert('Location cannot be empty');
+						}
+
 						let theEvent = {
 							eventDate: this.state.eventDate.getTime(),
 							eventLocation: this.state.eventLocation,
@@ -101,7 +110,7 @@ class AddEventPage extends Component{
 					placeholder="Enter the location of the event"
 					onChangeText={(eventLocation) => this.setState({eventLocation: eventLocation})}></FormInput>
 
-				<FormLabel labelStyle={styles.formLabel}>DatePicker</FormLabel>
+				<FormLabel labelStyle={styles.formLabel}>Date</FormLabel>
 				<TouchableOpacity
 					onPress={() =>
 						{

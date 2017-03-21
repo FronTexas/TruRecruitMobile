@@ -12,6 +12,7 @@ import {
 import Camera from 'react-native-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '.././BackButton'
+import _ from 'lodash';
 
 const monthNames = [
   "January", "February", "March",
@@ -41,10 +42,16 @@ export default class Scanner extends Component {
   _goToAttendeeProfilePage(attendeeID){
     if(!this.state.qrReadAlready){
       this.setState({qrReadAlready:true})
+
+      toggleScannerPagesQRReadAlready = () => {
+        this.state.qrReadAlready = false;
+      }
+
       this.props.navigator.push({
           id:"AttendeeProfilePage",
           name:"Attendee Profile Page",
           attendeeID,
+          toggleScannerPagesQRReadAlready
         })
     }
   }
