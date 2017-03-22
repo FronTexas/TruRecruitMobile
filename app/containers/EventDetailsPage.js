@@ -23,7 +23,7 @@ class EventDetailsPage extends Component
 	constructor(props){
 		super(props);
 		this.state = {};
-		this.state.attendees = {};
+		this.state.attendees = null;
 	}
 
 	_goToScannerPage()

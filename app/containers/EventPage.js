@@ -36,6 +36,7 @@ class EventPage extends Component
 		const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
 		this.state = {};
 		this.state.emailInputs = [];
+		this.state.events = null;
 	}
 
 	sendResumesToEmail(focusedEvent){
