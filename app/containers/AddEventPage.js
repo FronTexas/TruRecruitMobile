@@ -42,9 +42,9 @@ class AddEventPage extends Component{
 		super(props);
 
 		this.state={
-			eventTitle: null,
+			eventTitle: "",
 			eventDate: new Date(),
-			eventLocation: null,
+			eventLocation: "",
 			showDatePicker: false,
 		}
 	}

@@ -117,10 +117,19 @@ export function listenToEventsChanges(){
 				dispatch(updateEvents({}));
 				return;
 			}
+
+
 			for(let key of Object.keys(events)){
 				events[key].eventId = key
 			}
-			dispatch(updateEvents(events))	
+			
+			var eventKeySorted = Object.keys(events).sort((a,b)=>{return events[b]["eventDate"] - events[a]["eventDate"]})
+
+			var eventsSorted = [];
+			eventKeySorted.forEach((key)=>{
+				eventsSorted.push(events[key]);
+			})
+			dispatch(updateEvents(eventsSorted))	
 		})
 	}
 }

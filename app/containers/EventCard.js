@@ -62,20 +62,12 @@ export default class EventCard extends Component
 
 	render()
 	{
-		var TextDynamic = (props)=>{
-			var {eventTitle} = this.props.event;
-			var modifiedFontSize = {};
-			if(eventTitle.length > 12){
-				modifiedFontSize["fontSize"] = Math.ceil(400 / eventTitle.length);
-			}
-			return <Text style={[styles.eventTitle,modifiedFontSize]}>{this.props.event.eventTitle}</Text>
-		}
 		return(
 			<View>
 				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
 					<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
-							<TextDynamic></TextDynamic>
+							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
 							<Text style={styles.eventDate}>{this.props.event.eventLocation}</Text>
 							<Text style={styles.eventDate}>{this.formatTimeScanned(this.props.event.eventDate)}</Text>
 						</View>
@@ -147,7 +139,7 @@ const styles = StyleSheet.create({
 	},
 	eventTitle:{
 		fontWeight:'bold',
-		fontSize:25,
+		fontSize:15,
 		color:'#535455'
 	},
 	eventDate:{
