@@ -81,6 +81,7 @@ class EventPage extends Component
 								event = {rowData}
 								navigator={this.props.navigator}
 								onSendEmailClick={() => this.sendResumesToEmail(rowData)}
+								onLongPress = {() => {this.setState({eventIdToDelete:rowData.eventId}); this.refs.send_email_modal.open()}}
 								{...this.props}
 								></EventCard>
 							}
@@ -121,16 +122,19 @@ class EventPage extends Component
 						id="modal-container"
 						style={{
 							flex:1,
+							paddingTop:30
 						}}
 					>
-						<FormLabel>Email</FormLabel>
-						<FormInput placeholder="Enter email" onChangeText={(emailAddress) => this.setState({emailAddress})} onFocus={this.addEmailInput.bind(this)}></FormInput>
+						<Text style={{alignSelf:'center', fontWeight:'bold', fontSize:20}}>Delete the event?</Text>
 						<View
 							style={{flex:1,justifyContent:'flex-end',padding:20}}
 						>
 
 						<View style={{flexDirection:'row',justifyContent:'space-around'}}>
-							<TouchableOpacity onPress={this.closeModal.bind(this)}>
+							<TouchableOpacity onPress={() => {
+								this.props.deleteEvent(this.state.eventIdToDelete);
+								this.closeModal();
+							}}>
 									<View
 										id="cancel-button"
 										style={[styles.shadow,{
@@ -141,12 +145,11 @@ class EventPage extends Component
 																				alignItems:'center'
 																			}]}
 									>
-										<Text style={{color:"#FFF",fontWeight:'600'}}>Cancel</Text>
+										<Text style={{color:"#FFF",fontWeight:'600'}}>Yes</Text>
 									</View>
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={() => {
-								this.sendResumesToEmail();
 								this.closeModal();
 							}}>
 									<View
@@ -159,7 +162,7 @@ class EventPage extends Component
 																				alignItems:'center'
 																			}]}
 									>
-										<Text style={{color:"#FFF",fontWeight:'600'}}>Send</Text>
+										<Text style={{color:"#FFF",fontWeight:'600'}}>No</Text>
 									</View>
 							</TouchableOpacity>
 						</View>

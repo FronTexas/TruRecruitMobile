@@ -3,6 +3,15 @@ import {zip} from 'react-native-zip-archive';
 var Mailer = require('NativeModules').RNMail;
 var RNFS = require('react-native-fs');
 
+
+export function deleteEvent(eventId){
+	console.log(`About to delete ${eventId}`);
+	return(dispatch,getState) => {
+		const {firebaseRef,user} = getState();
+		firebaseRef.database().ref('/recruiters/' + user.uid + '/events/' + eventId).remove();
+	}
+}
+
 export function zipAndEmailResumes({event}){
 	return (dispatch,getState) => {
 		const {firebaseRef,user} = getState();

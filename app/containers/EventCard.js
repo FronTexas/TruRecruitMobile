@@ -64,7 +64,12 @@ export default class EventCard extends Component
 	{
 		return(
 			<View>
-				<TouchableOpacity onPress={this._goToEventDetails.bind(this)}>
+				<TouchableOpacity 
+					onPress={this._goToEventDetails.bind(this)}
+					onLongPress={(e)=>{
+						this.props.onLongPress();
+					}}
+					>
 					<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
 							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
