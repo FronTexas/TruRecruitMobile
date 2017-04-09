@@ -124,34 +124,31 @@ class ResumeViewPage extends Component{
 				style={
 					{
 						position:'absolute',
-						top:30,
+						bottom:35,
 						width: Dimensions.get('window').width,
 						paddingRight:20,
-						alignItems:'flex-end'
+						alignItems:'center'
 					}
 				}
 			>
-				<TouchableOpacity
+					<TouchableOpacity
 					onPress={this._handleDonePress.bind(this)}
-				>
-					<Text style={
-					{
-						fontSize:30,
-						fontWeight:'600',
-						color:"#FFF",
-						backgroundColor:'rgba(52,52,52,0)',
-						shadowOffset:{
-							width:0,
-							height:0
-						},
-						shadowColor:'black',
-						shadowOpacity:0.5
-					}
-					}>Done</Text>
+					>
+					<View style={{
+					}}>
+						<View style={{
+							backgroundColor:"#1DBB96",
+							padding:15,
+							width:150,
+							alignItems:'center',
+							borderRadius:30,
+							marginTop:15
+						}}>
+					    	<Text style={styles.done_text}>Done</Text>
+					    </View>
+					</View>
 				</TouchableOpacity>
-			
 			</View>
-			
 			{noteTakingView}	
 			{actionButton}
 		</View>
@@ -161,6 +158,23 @@ class ResumeViewPage extends Component{
 }
 
 const styles = StyleSheet.create({
+	done_button_area:{
+		alignItems:'center',
+		marginBottom:30
+	},
+	done_button:{
+		backgroundColor:"#1DBB96",
+		padding:15,
+		width:150,
+		alignItems:'center',
+		borderRadius:30,
+		marginTop:15
+	},
+	done_text:{
+		color:"#FFF",
+		fontWeight:"600",
+		fontSize:25
+	},
 	takeNoteIcon:{
 		color:"#FFF"
 	},
