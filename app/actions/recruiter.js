@@ -1,4 +1,15 @@
 import * as types from './types';
+import {AsyncStorage} from 'react-native';
+
+export function setUser(user){
+	return (dispatch,getState)=>{
+		dispatch({
+			type: types.USER_LOGGED_IN, 
+			user: user
+		})
+	}
+}
+
 
 export function createNewUser(email,password){
 	return (dispatch,getState) => {
@@ -53,6 +64,7 @@ export function login(credentials){
 					type: types.USER_LOGGED_IN, 
 					user: user
 				})
+				AsyncStorage.setItem('user',JSON.stringify(user));
 			}
 		)
 	}

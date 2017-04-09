@@ -8,7 +8,8 @@ import {
   TextInput,
   Alert,
   Navigator,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 
 
@@ -24,62 +25,29 @@ class Splash extends Component {
   _handlePress() {
     Alert.alert('Button has been pressed');
   }
-    
-  _handleLoginPress(){
-    this.props.login({
-      email:'forfron@gmail.com',
-      password:'trurecruitlit'
-    })
+
+  componentDidMount(){
+    AsyncStorage.getItem('user').then(
+      userJson => {
+        if(userJson){
+          let user = JSON.parse(userJson);
+          this.props.setUser(user);
+          this.gotoEvent();
+          return;
+        }
+        this.gotoLogin();
+      }
+    )
   }
 
   render(){
     return (
       <View style={styles.container}>
-        <View style={{flex:0.6,justifyContent:'center'}}>
+        <View style={{flex:1,justifyContent:'center'}}>
           <Image source={require('./img/scanner.png')} style={styles.picture}/>
-        </View>
-        
-        <View id="inputFields" style={{flex:0.4}}>
-          <View>
-            <FormLabel>Email</FormLabel>
-            <FormInput></FormInput>
-
-            <FormLabel>Password</FormLabel>
-            <FormInput></FormInput>
-          </View>
-
-          <View
-            style={{paddingBottom:15,justifyContent:'center',alignItems:'center'}}
-          >
-             <Button
-              containerStyle={styles.loginButton}
-              style={{fontSize: 18, color: '#f9fafc',alignSelf:'center'}}
-              onPress={this._handleLoginPress.bind(this)}>
-              Log in
-          </Button>
-          </View>
-
-          <View style={{flexDirection:'row','justifyContent':'center'}}>
-            <View style={{'flexDirection':'row'}}>
-              <Text style={{color:"#FFF"}}>Don't have an account?</Text>
-              <TouchableOpacity
-                onPress={() => this.props.navigator.push({
-                  id:'SignupPage'
-                })}
-              >
-                <Text style={{fontWeight:'bold',marginLeft:5,color:'#1DBB96'}}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
         </View>
       </View>
     );
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.user){
-      this.gotoEvent(); 
-    }
   }
 
   gotoEvent() {
@@ -89,7 +57,11 @@ class Splash extends Component {
     });
   }
 
-
+  gotoLogin(){
+    this.props.navigator.push({
+      id:'LoginPage'
+    })
+  }
 
   gotoSignup() {
     this.props.navigator.push({

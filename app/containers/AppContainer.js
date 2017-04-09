@@ -9,7 +9,8 @@ import {
   AppRegistry,
   Navigator,
   Text,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 
 const firebase = require('firebase');
@@ -49,7 +50,7 @@ class AppContainer extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id: 'SplashPage', name: 'Index'}}
+          initialRoute={{id:'SplashPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
               if (route.sceneConfig) {
