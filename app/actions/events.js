@@ -2,6 +2,7 @@ import * as types from './types';
 import {zip} from 'react-native-zip-archive';
 var Mailer = require('NativeModules').RNMail;
 var RNFS = require('react-native-fs');
+import RNHTMLToPDF from 'react-native-html-to-pdf';
 
 
 export function deleteEvent(eventId){
@@ -22,7 +23,9 @@ export function zipAndEmailResumes({event}){
 			snapshot.forEach((child) => {
 				listOfAttendees.push({
 					id: child.key,
-					name: child.val().name
+					name: child.val().name,
+					rating: child.val().rating,
+					notes: child.val().notes ? child.val().notes : ''
 				});
 			});
 
@@ -39,11 +42,25 @@ export function zipAndEmailResumes({event}){
 						attendeeResumesRef.getDownloadURL()
 							.then(
 								(url) => {
-									var pdfLocation = rootLocation 
-									+ attendee.name + '_' + Date.now() + '.pdf'
+									var pdfAndRecruiterCommentLocation = `${rootLocation}/${attendee.name}_${Date.now()}/`;
+									var resumeLocation = `${pdfAndRecruiterCommentLocation}/resume.pdf`;
+
+									var ratingAndnotesHTML = `<h1>Rating: ${attendee.rating}</h1>`
+									if (attendee.notes){
+										ratingAndnotesHTML += `\n<h1>Notes: ${attendee.notes}</h1>`
+									}
+									var options = {
+										html: ratingAndnotesHTML,
+										fileName: 'notes',
+										directory: pdfAndRecruiterCommentLocation
+									}
+									RNHTMLToPDF.convert(options).then( data => {
+										console.log("Rating and notes has been created");
+									})
+									
 									var downloadOptions = {
 										fromUrl: url,
-										toFile: pdfLocation
+										toFile: resumeLocation
 									}
 									RNFS.downloadFile(downloadOptions).promise
 										.then((res) => {
