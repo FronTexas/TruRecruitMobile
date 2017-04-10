@@ -33,68 +33,94 @@ export function zipAndEmailResumes({event}){
 			var listOfAttendeesLength = listOfAttendees.length;
 			var counterOfDownloadedResumes = 0;
 			var rootLocation = RNFS.DocumentDirectoryPath 
-				+ '/' + event.eventId + '_Resumes/' 
-			
-			var downloadZipAndThenMail = () => {
-				listOfAttendees.forEach((attendee) => {
-						var attendeeResumesRef = storageRef
-							.child('attendees/' + attendee.id + '/resume.pdf');
-						attendeeResumesRef.getDownloadURL()
-							.then(
-								(url) => {
-									var pdfAndRecruiterCommentLocation = `${rootLocation}/${attendee.name}_${Date.now()}/`;
-									var resumeLocation = `${pdfAndRecruiterCommentLocation}/resume.pdf`;
+				+ '/' + event.eventId + '_Resumes/';
 
-									var ratingAndnotesHTML = `<h1>Rating: ${attendee.rating}</h1>`
-									if (attendee.notes){
-										ratingAndnotesHTML += `\n<h1>Notes: ${attendee.notes}</h1>`
-									}
-									var options = {
-										html: ratingAndnotesHTML,
-										fileName: 'notes',
-										directory: pdfAndRecruiterCommentLocation
-									}
-									RNHTMLToPDF.convert(options).then( data => {
-										console.log("Rating and notes has been created");
-									})
+			var downloadZipAndThenMail = (parentLocationForResume,attendee) => {
+				var resumeLocation = `${parentLocationForResume}resume.pdf`;
+				var attendeeResumesRef = storageRef
+					.child('attendees/' + attendee.id + '/resume.pdf');
+				attendeeResumesRef.getDownloadURL()
+					.then(
+						(url) => {
+							var ratingAndnotesHTML = `<h1>Rating: ${attendee.rating}</h1>`
+							if (attendee.notes){
+								ratingAndnotesHTML += `\n<h1>Notes: ${attendee.notes}</h1>`
+							}
+							console.log(`parentLocationForResume = ${parentLocationForResume}`)
+							var ratingAndNotesDirectory = parentLocationForResume.replace(`${RNFS.DocumentDirectoryPath}/`,'');
+							ratingAndNotesDirectory = ratingAndNotesDirectory + 'note'
+							console.log(`ratingAndNotesDirectory = ${ratingAndNotesDirectory}`)
+							var options = {
+								html: ratingAndnotesHTML,
+								fileName: ratingAndNotesDirectory,
+								directory: 'docs'
+							}
+							RNHTMLToPDF.convert(options).then( data => {
+								console.log("Rating and notes has been created");
+								console.log(JSON.stringify(data));
+							})
+							var downloadOptions = {
+								fromUrl: url,
+								toFile: resumeLocation
+							}
+							RNFS.downloadFile(downloadOptions).promise
+								.then((res) => {
+									counterOfDownloadedResumes += 1
+									if(counterOfDownloadedResumes == listOfAttendeesLength){
+										var sourcePath = rootLocation;
+										var targetPath = RNFS.DocumentDirectoryPath + '/resumes.zip';
 									
-									var downloadOptions = {
-										fromUrl: url,
-										toFile: resumeLocation
+										zip(sourcePath,targetPath)
+											.then((path)=>{
+												Mailer.mail({
+													subject: 'Resumes for ' + event.eventTitle,
+													recipients:[''],
+													attachment:{
+														path,
+														type: 'zip',
+														name: 'resumes.zip'
+													}
+												}, (error,event) => {
+													if(error){
+														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
+													}
+												})
+
+											})
+											.catch((error)=>{console.log(error)})
 									}
-									RNFS.downloadFile(downloadOptions).promise
-										.then((res) => {
-											counterOfDownloadedResumes += 1
-											if(counterOfDownloadedResumes == listOfAttendeesLength){
-												var sourcePath = rootLocation;
-												var targetPath = RNFS.DocumentDirectoryPath + '/resumes.zip';
-											
-												zip(sourcePath,targetPath)
-													.then((path)=>{
-														console.log(path);
-														Mailer.mail({
-															subject: 'Resumes for ' + event.eventTitle,
-															recipients:[''],
-															attachment:{
-																path,
-																type: 'zip',
-																name: 'resumes.zip'
-															}
-														}, (error,event) => {
-															if(error){
-																AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
-															}
-														})
-
-													})
-													.catch((error)=>{console.log(error)})
-											}
-										})
-										.catch(error => console.log(error))
-								}
-							)
-
-						})
+								})
+								.catch(error => console.log(error))
+						}
+					)
+			}
+			
+			var loopingThroughAttendees = (listOfAttendees) => {
+				listOfAttendees.forEach((attendee) => {
+					var pdfAndRecruiterCommentLocation = `${rootLocation}${attendee.name}_${Date.now()}/`;
+					RNFS.exists(pdfAndRecruiterCommentLocation).then(
+						exists => {
+							if(exists){	
+								RNFS.unlink(pdfAndRecruiterCommentLocation).then(
+									() => {
+										RNFS.mkdir(pdfAndRecruiterCommentLocation,{
+											NSURLIsExcludedFromBackupKey: false	
+										});
+										downloadZipAndThenMail(pdfAndRecruiterCommentLocation,attendee);
+									}
+									).catch(error =>{
+										console.log(`error = ${error}`)
+									})
+							}else{
+								// When folder for each attendee does not exist
+								RNFS.mkdir(pdfAndRecruiterCommentLocation,{
+											NSURLIsExcludedFromBackupKey: false	
+								});
+								downloadZipAndThenMail(pdfAndRecruiterCommentLocation,attendee);
+							}
+						}	
+					)
+				})
 			}
 			RNFS.exists(rootLocation).then(
 				(exists) =>{
@@ -104,16 +130,16 @@ export function zipAndEmailResumes({event}){
 								RNFS.mkdir(rootLocation,{
 									NSURLIsExcludedFromBackupKey: false	
 								});
-								downloadZipAndThenMail()
+								loopingThroughAttendees(listOfAttendees);
 							}
 							).catch(error =>{
 								console.log(`error = ${error}`)
-						})
+							})
 					}else{
 						RNFS.mkdir(rootLocation,{
 								NSURLIsExcludedFromBackupKey: false	
-							});
-						downloadZipAndThenMail()
+						});
+						loopingThroughAttendees();
 					}
 				}
 			)
