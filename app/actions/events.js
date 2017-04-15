@@ -6,7 +6,6 @@ import RNHTMLToPDF from 'react-native-html-to-pdf';
 
 
 export function deleteEvent(eventId){
-	console.log(`About to delete ${eventId}`);
 	return(dispatch,getState) => {
 		const {firebaseRef,user} = getState();
 		firebaseRef.database().ref('/recruiters/' + user.uid + '/events/' + eventId).remove();
@@ -46,19 +45,14 @@ export function zipAndEmailResumes({event}){
 							if (attendee.notes){
 								ratingAndnotesHTML += `\n<h1>Notes: ${attendee.notes}</h1>`
 							}
-							console.log(`parentLocationForResume = ${parentLocationForResume}`)
 							var ratingAndNotesDirectory = parentLocationForResume.replace(`${RNFS.DocumentDirectoryPath}/`,'');
 							ratingAndNotesDirectory = ratingAndNotesDirectory + 'note'
-							console.log(`ratingAndNotesDirectory = ${ratingAndNotesDirectory}`)
 							var options = {
 								html: ratingAndnotesHTML,
 								fileName: ratingAndNotesDirectory,
 								directory: 'docs'
 							}
-							RNHTMLToPDF.convert(options).then( data => {
-								console.log("Rating and notes has been created");
-								console.log(JSON.stringify(data));
-							})
+							RNHTMLToPDF.convert(options)
 							var downloadOptions = {
 								fromUrl: url,
 								toFile: resumeLocation
