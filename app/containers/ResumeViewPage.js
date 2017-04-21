@@ -20,13 +20,12 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 class ResumeViewPage extends Component{
-
 	constructor(props){
 		super(props);
 		this.state = 
 		{
 			isNoteTakingMode : false,
-			notes: this.props.attendee.notes ? this.props.attendee.notes : '',
+			notes:this.props.attendee.notes ? this.props.attendee.notes : '',
 			attendeePDFLocation: this.props.attendeePDFLocation
 		}
 	}
@@ -42,9 +41,9 @@ class ResumeViewPage extends Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		const {attendeePDFLocation} = nextProps;
+		const {attendeePDFLocation,attendee} = nextProps;
 		if (attendeePDFLocation){
-			this.setState({attendeePDFLocation})
+			this.setState({attendeePDFLocation,notes: attendee.notes ? attendee.notes : ''})
 		}
 	}
 
@@ -228,7 +227,7 @@ function mapStateToProps(state){
 	const {selectedAttendee,attendeePDFLocation} = state
 	return {
 		attendee: selectedAttendee,
-		attendeePDFLocation: attendeePDFLocation
+		attendeePDFLocation: attendeePDFLocation,
 	}
 }
 

@@ -49,19 +49,45 @@ export function downloadResume(){
 
 export function setSelectedAttendee(attendeeID){
 	return (dispatch,getState) => {
+		const {firebaseRef,user,selected_event} = getState();
+
 		dispatch({
 			type: types.SELECT_SELECTED_ATTENDEE_ID, 
 			selectedAttendeeID: attendeeID
 		});
-		const {firebaseRef} = getState();
+
 		firebaseRef.database()
 		.ref('/attendees/' + attendeeID)
 		.on('value', (snapshot) => {
-			if (!snapshot) return
-			dispatch({
-				type:types.SELECT_ATTENDEE,
-				attendee:snapshot.val()
-			});	
+			if (!snapshot) return;
+			var sourceAttendee = snapshot.val();
+			sourceAttendee.id = attendeeID
+			firebaseRef.database()
+			.ref(`/recruiters/${user.uid}/attendees/${selected_event.eventId}/${attendeeID}`)
+			.on('value',(snapshot)=>{
+				if (!snapshot){
+					dispatch({
+						type:types.SELECT_ATTENDEE,
+						attendee:sourceAttendee
+					});
+					return;
+				}
+				var recruiterAttendee = snapshot.val();
+				var mergedAttendee = {
+					email: sourceAttendee.email,
+					name: sourceAttendee.name,
+					links: sourceAttendee.links,
+					summary: sourceAttendee.summary,
+					notes: recruiterAttendee.notes,
+					rating: recruiterAttendee.rating,
+					scanned: recruiterAttendee.scanned,
+					id: attendeeID
+				}
+				dispatch({
+					type: types.SELECT_ATTENDEE,
+					attendee: mergedAttendee
+				})
+			})
 		});
 	}
 }
@@ -134,14 +160,4 @@ export function saveNotes(notes){
 			attendee: modifiedSelectedAttendee
 		});
 	}	
-}
-
-export function selectAttendee(attendee){
-	return (dispatch,getState) => 
-	{
-		dispatch({
-			type:types.SELECT_ATTENDEE,
-			attendee
-		});
-	}
 }

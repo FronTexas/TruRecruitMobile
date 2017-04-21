@@ -31,21 +31,30 @@ class AttendeeProfilePage extends Component
 			name: 'Loading',
 			summary: 'Loading'
 		}
-		this.state.rating = this.props.attendee && this.props.attendee.rating ? this.props.attendee.rating : 0;
 		this.state.attendeePDFLocation = null;
 		this.state.linkToOpen = null;
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
 	}
 
 	_onStarPress(rating){
-		this.setState({rating})
+		var modifiedAttendee = {...this.state.attendee};
+		modifiedAttendee.rating = rating;
+		this.setState({attendee:modifiedAttendee})
+	}
+
+	_handleSave(){
+		var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
+		var aboutToBeSavedAttendee = {...this.state.attendee};
+		aboutToBeSavedAttendee.scanned = scanned;
+		this.props.saveNewAttendee(aboutToBeSavedAttendee);
+		if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
+		this.props.navigator.pop();
 	}
 
 	componentDidMount(){
-		this.props.removeDownloadedResume()
+		this.props.removeDownloadedResume();
  		this.props.setSelectedAttendee(this.props.attendeeID);
 		this.props.downloadResume();
-
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -137,7 +146,6 @@ this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.
 												</ActivityIndicator>
 											}
 										</TouchableOpacity>
-										
 									</View>
 									<View style={styles.rate_area}>
 										<Text style={styles.rate_text}>
@@ -146,7 +154,7 @@ this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.
 										<View style={{width:200}}>
 											<StarRating
 												maxStars={5}
-												rating={this.state.rating}
+												rating={this.state.attendee.rating}
 												selectedStar={(rating) => this._onStarPress(rating)}
 												starSize={30}
 												starColor="#F5C87F"
@@ -158,13 +166,7 @@ this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.
 										onPress=
 										{ () => 
 											{
-												var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
-												var aboutToBeSavedAttendee = {...this.state.attendee};
-												aboutToBeSavedAttendee.scanned = scanned;
-												aboutToBeSavedAttendee.rating = this.state.rating;
-												this.props.saveNewAttendee(aboutToBeSavedAttendee);
-												if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-												this.props.navigator.pop();
+												this._handleSave();
 											}
 										}
 									>
