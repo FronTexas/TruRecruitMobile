@@ -50,7 +50,7 @@ class AppContainer extends Component {
   render() {
     return (
       <Navigator
-          initialRoute={{id:'SplashPage', name: 'Index'}}
+          initialRoute={{id:'LoginPage', name: 'Index'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
               if (route.sceneConfig) {

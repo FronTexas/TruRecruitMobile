@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-linear-gradient')
     compile project(':react-native-html-to-pdf')
     compile project(':react-native-mail')
     compile project(':react-native-zip-archive')

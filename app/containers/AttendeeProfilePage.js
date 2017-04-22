@@ -95,7 +95,7 @@ class AttendeeProfilePage extends Component
 		return (
 				<View style={{flex:1}}>
 							<Navbar onBackButtonPressed = {() => { if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
+								this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
 							<ScrollView style={{
 										backgroundColor:"#EEF1F7"
 									}}>
