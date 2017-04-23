@@ -85,9 +85,9 @@ export function setSelectedAttendee(attendeeID){
 					name: sourceAttendee.name,
 					links: sourceAttendee.links,
 					summary: sourceAttendee.summary,
-					notes: recruiterAttendee.notes,
-					rating: recruiterAttendee.rating,
-					scanned: recruiterAttendee.scanned,
+					notes: recruiterAttendee.notes ? recruiterAttendee.notes : null,
+					rating: recruiterAttendee.rating ? recruiterAttendee.rating : 0,
+					scanned: recruiterAttendee.scanned ? recruiterAttendee.scanned : 0,
 					id: attendeeID
 				}
 				dispatch({
