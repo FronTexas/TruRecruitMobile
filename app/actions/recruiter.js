@@ -11,18 +11,17 @@ export function setUser(user){
 }
 
 
-export function createNewUser(email,password){
+export function createNewUser({email,password,firstName,lastName,company}){
 	return (dispatch,getState) => {
 		const {firebaseRef} = getState();
 		firebaseRef.auth().createUserWithEmailAndPassword(email,password)
-		.then(user=>{
-			console.log(`user = ${JSON.stringify(user)}`);
+		.then(user =>{
 			firebaseRef.database().ref(`recruiters/${user.uid}`).set({
+				email,
+				name:`${firstName} ${lastName}`,
+				company,
 				attendees:{},
-				company:"",
-				email:user.email,
 				events:{},
-				name:""
 			},error=>{
 				if(error){
 					console.log(error)
@@ -57,7 +56,6 @@ export function login(credentials){
 				console.log("*** Error Logging In ***");
 			}
 		)
-
 		firebaseRef.auth().onAuthStateChanged(
 			user => {
 				dispatch({

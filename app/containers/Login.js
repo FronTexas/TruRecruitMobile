@@ -9,9 +9,9 @@ import {
   Alert,
   Navigator,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
-  findNodeHandle
+  findNodeHandle,
+  ActivityIndicator
 } from 'react-native';
 
 
@@ -22,6 +22,8 @@ import{
 import {connect} from 'react-redux';
 
 import LinearGradient from 'react-native-linear-gradient';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 class Login extends Component {
 
@@ -29,7 +31,8 @@ class Login extends Component {
     super(props);
     this.state={
       email:"",
-      password:""
+      password:"",
+      isWaitingForLoginProccess:false
     }
   }
   _handlePress() {
@@ -38,6 +41,7 @@ class Login extends Component {
     
   _handleLoginPress(){
     // pass: trurecruitlit
+    this.setState({isWaitingForLoginProccess:true})
     this.props.login({
       email:this.state.email,
       password: this.state.password
@@ -46,6 +50,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.user){
+      this.setState({isWaitingForLoginProccess:false})
       this.gotoEvent(); 
     }
   }
@@ -64,20 +69,29 @@ class Login extends Component {
     });
   }
 
-  inputFocused(ref) {
-    var refs = {
-      "emailField" : this.emailField,
-      "passwordField": this.passwordField
-    }
-    setTimeout(()=>{
-      let scrollResponder = this.loginPageScrollView.getScrollResponder();
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        findNodeHandle(refs[ref]),
-        true
-      )
-    },50)
-  }
   render(){
+    var loginButtonContent = this.state.isWaitingForLoginProccess ?  
+      <ActivityIndicator
+            style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex:1,
+              }}
+              size="small"
+              color="white"
+          >
+        </ActivityIndicator> : 
+        <Text 
+          id="LoginText"
+          style={{
+            color:"white",
+            fontSize:20,
+            alignSelf:'center',
+            fontWeight:'bold'
+          }}
+        >
+          Login
+        </Text>
     return (
       <LinearGradient
         colors={['#00a170','#03d2b9']}
@@ -85,7 +99,7 @@ class Login extends Component {
           flex:1
         }}
       >
-      <ScrollView 
+      <KeyboardAwareScrollView
         id="LoginPageScrollView"
         ref={(component) => this.loginPageScrollView = component}
       >
@@ -136,16 +150,16 @@ class Login extends Component {
                     textInputRef={(component) => this.emailField = component}
                     placeholder="jsmith@example.com" 
                     returnKeyType='next'
-                    onFocus={this.inputFocused.bind(this,"emailField")}
                     onSubmitEditing={() => {this.passwordField.focus()}}
                     onChangeText={(text) => this.setState({email:text})}
+                    keyboardType="email-address"
                     ></FormInput>
 
                   <FormLabel>Password</FormLabel>
                   <FormInput 
                     textInputRef={(component) => this.passwordField = component} 
-                    secureTextEntry={true} placeholder="Enter Password" 
-                    onFocus={this.inputFocused.bind(this,"passwordField")}
+                    secureTextEntry={true} 
+                    placeholder="Enter Password" 
                     returnKeyType='done'
                     onChangeText={(text) => this.setState({password:text})}></FormInput>
                 </View>
@@ -175,17 +189,7 @@ class Login extends Component {
                           backgroundColor:"#03d2b9"
                         },styles.shadow]}
                     >
-                      <Text 
-                        id="LoginText"
-                        style={{
-                          color:"white",
-                          fontSize:20,
-                          alignSelf:'center',
-                          fontWeight:'bold'
-                        }}
-                      >
-                        Login
-                      </Text>
+                      {loginButtonContent}
                     </View>
                   </TouchableOpacity>
                   
@@ -216,7 +220,7 @@ class Login extends Component {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       </LinearGradient>
     );
   }

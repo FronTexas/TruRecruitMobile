@@ -73,6 +73,13 @@ export function setSelectedAttendee(attendeeID){
 					return;
 				}
 				var recruiterAttendee = snapshot.val();
+				if(!recruiterAttendee){
+					dispatch({
+						type:types.SELECT_ATTENDEE,
+						attendee:sourceAttendee
+					});
+					return;
+				}
 				var mergedAttendee = {
 					email: sourceAttendee.email,
 					name: sourceAttendee.name,

@@ -10,14 +10,21 @@ import {
   Navigator,
   TouchableHighlight,
   TouchableOpacity,
-  AlertIOS
+  AlertIOS,
+  Dimensions,
+  findNodeHandle,
+  ActivityIndicator
 } from 'react-native';
 import {
   FormInput,
-  FormLabel,
-  Icon
+  FormLabel
 } from 'react-native-elements';
 import {connect} from 'react-redux';
+
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 class Signup extends Component {
 
@@ -25,14 +32,30 @@ class Signup extends Component {
     super(props);
     this.state = {
       email:'',
+      firstName:'',
+      lastName:'',
+      company:'',
       password:'',
-      confirmedPassword:''
+      confirmedPassword:'',
+      isEmailValid:true,
+      isPasswordValid:true,
+      isConfirmPasswordValid:true,
+      isPasswordIdentical:true,
+    }
+  }
+
+  _handleSignUpPress() {
+    this.setState({isWaitingForSignUpProccess:true})
+    var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
+    if (this.validateEmail(email) && this.validatePassword(password) && password == confirmedPassword){
+      this.props.createNewUser(this.state);
     }
   }
 
   componentWillReceiveProps(nextProps){
     var {user} = nextProps;
     if(user) {
+      this.setState({isWaitingForSignUpProccess:false})
       this.props.navigator.push({
           id: 'EventPage',
           name: 'Login',
@@ -40,75 +63,227 @@ class Signup extends Component {
     }
   }
 
-  _handlePress() {
-    // var {email,password,confirmedPassword} = this.state;
-
-    // const validateEmail =(email) =>{
-    //       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //   return email.length>0 && re.test(email);
-    // }
-
-    // const validatePassword = (password,confirmedPassword) =>{
-    //   return password.length > 0 && confirmedPassword.length>0 && password == confirmedPassword
-    // }
-
-    // if (!validateEmail(email)){
-    //   AlertIOS.alert('Email is invalid')
-    //   return
-    // }
-
-    // if(!validatePassword(password,confirmedPassword)){
-    //   AlertIOS.alert(`Password does not match the confirm password`)
-    //   return
-    // }
-
-    var email = "fahran.kamili@utexas.edu";
-    var password = "password"
-
-    this.props.createNewUser(email,password);
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return email.length>0 && re.test(email);
   }
 
+  validatePassword(password){
+    var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+    return re.test(password);
+  }
+
+ 
+
   render() {
+
+    var emailValidationMessage = !this.state.isEmailValid ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >Email is invalid</Text> : <View></View>
+
+    var passwordRequirementMessageString = "Password must be minimum 8 characters and at least have 1 Alphabet and 1 Number"
+    var passwordValidationMessage = !this.state.isPasswordValid ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >{passwordRequirementMessageString}</Text> : <View></View>
+
+    var confirmPasswordValidationMessage = !this.state.isConfirmPasswordValid ?
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >{passwordRequirementMessageString}</Text> : <View></View>    
+
+    var passwordIdenticalValidationMessage = !this.state.isPasswordIdentical ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >Password does not match</Text> : <View></View> 
+
+    var signUpButtonContent = this.state.isWaitingForSignUpProccess ?  
+      <ActivityIndicator
+            style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex:1,
+              }}
+              size="small"
+              color="white"
+          >
+        </ActivityIndicator> : 
+        <Text
+            style={{
+              color:"white",
+              alignSelf:'center',
+              fontSize:20,
+              fontWeight:'bold'
+            }}
+          >Sign Up</Text>
     return (
-      <View style={styles.container}>
-        <View style={styles.nav}>
-          <TouchableHighlight
-            onPress={this.gotoSplash.bind(this)}>
-            <View style={styles.close}>
-             <Icon name='close'/>
+    <LinearGradient
+        colors={['#00a170','#03d2b9']}
+        style={{
+          flex:1
+        }}
+      >
+        <KeyboardAwareScrollView
+          ref={(component) => this.signUpPageScrollView = component}
+        >
+          <View 
+          style={{
+            paddingTop:100,
+            paddingBottom:20,
+            paddingLeft:20,
+            paddingRight:20
+          }}>
+            <View
+              id="SignUpBox"
+              style={[{
+                  flex:1,
+                  backgroundColor:'white',
+                  borderRadius:25,
+                },styles.shadow]}
+            >
+                <View
+                  id="SignUpField"
+                  style={{
+                    paddingTop:45
+                  }}
+                >
+                  <FormLabel>Email</FormLabel>
+                  <FormInput 
+                    textInputRef={(component) => this.emailField = component}
+                    placeholder="Put your email address"
+                    returnKeyType="next"
+                    keyboardType="email-address"
+                    onSubmitEditing={() => {this.firstNameField.focus()}}
+                    onChangeText={(email)=>{
+                      this.setState({email})
+                    }}
+                    onBlur={()=> {
+                      this.setState({isEmailValid: this.validateEmail(this.state.email) ? true : false})
+                    }}
+                    ></FormInput>
+                  {emailValidationMessage}
+
+                  <FormLabel>First Name</FormLabel>
+                  <FormInput 
+                    textInputRef={(component) => this.firstNameField = component}
+                    placeholder="First Name"
+                    returnKeyType="next"
+                    onSubmitEditing={() => {this.lastNameField.focus()}}
+                    onChangeText={(firstName)=>{
+                      this.setState({firstName})
+                    }}
+                    ></FormInput>
+
+                  <FormLabel>Last Name</FormLabel>
+                  <FormInput 
+                    textInputRef={(component) => this.lastNameField = component}
+                    placeholder="Last Name"
+                    returnKeyType="next"
+                    onSubmitEditing={() => {this.companyField.focus()}}
+                    onChangeText={(lastName)=>{
+                      this.setState({lastName})
+                    }}
+                    ></FormInput>
+
+                  <FormLabel>Company</FormLabel>
+                  <FormInput 
+                    textInputRef={(component) => this.companyField = component}
+                    placeholder="Company where you work"
+                    returnKeyType="next"
+                    onSubmitEditing={() => {this.passwordField.focus()}}
+                    onChangeText={(company)=>{
+                      this.setState({company})
+                    }}
+                    ></FormInput>
+
+                  <FormLabel>Password</FormLabel>
+                  <FormInput 
+                    textInputRef={(component) => this.passwordField = component}
+                    placeholder="Put your password"
+                    returnKeyType="next"
+                    onSubmitEditing={() => {this.confirmPasswordField.focus()}}
+                    onChangeText={(password) => {
+                      this.setState({password})
+                      console.log(`isPasswordIdentical = ${password == this.state.confirmedPassword}`)
+                      this.setState({isPasswordIdentical: password == this.state.confirmedPassword})
+                    }}
+                    onBlur={()=> {
+                      this.setState({isPasswordValid: this.validatePassword(this.state.password)})
+                      this.setState({isPasswordIdentical: this.state.password == this.state.confirmedPassword})
+                    }}
+                    secureTextEntry={true} 
+                    ></FormInput>
+                  {passwordValidationMessage}
+
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormInput
+                    textInputRef={(component) => this.confirmPasswordField = component}
+                    placeholder="Confirm your password"
+                    returnKeyType="done"
+                    onChangeText={(confirmedPassword)=> 
+                      {
+                        this.setState({confirmedPassword})
+                        this.setState({isPasswordIdentical: this.state.password == confirmedPassword ? true : false})
+                      }
+                    }
+                    onBlur={()=> {
+                      this.setState({isConfirmPasswordValid: this.validatePassword(this.state.confirmedPassword)})
+                      this.setState({isPasswordIdentical: this.state.password == this.state.confirmedPassword ? true : false})
+                    }}
+                    secureTextEntry={true} 
+                  ></FormInput>
+                   {confirmPasswordValidationMessage}
+                   {passwordIdenticalValidationMessage}
+                </View>
+                <View
+                  id="SignUpButtonArea"
+                  style={{
+                    paddingTop:20,
+                    paddingBottom:20,
+                    paddingLeft:50,
+                    paddingRight:50,
+                    justifyContent:'center'
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{
+                      height:60
+                    }}
+                    onPress={()=>{
+                      this._handleSignUpPress();
+                    }}
+                  >
+                    <View
+                      style={[{
+                                flex:1,
+                                backgroundColor:'#03d2b9',
+                                borderRadius:15,
+                                justifyContent:'center'
+                              },styles.shadow]}>
+                      {signUpButtonContent}
+                    </View>
+                  </TouchableOpacity>
+                </View>
             </View>
-          </TouchableHighlight>
+          </View>
+        </KeyboardAwareScrollView>
+        <View
+              id="BackButtonArea"
+              style={{
+                height: Dimensions.get('window').height * 0.3,
+                position:'absolute',
+                top:35,
+                paddingLeft:20
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => this.props.navigator.pop()}
+              >
+                  <Icon name="ios-arrow-back" size={50} color="#FFF"/>
+              </TouchableOpacity>
         </View>
-        <FormLabel>Email</FormLabel>
-        <FormInput
-          containerStyle={styles.form}
-          onChangeText={(email)=>{
-            this.setState({email})
-          }}
-          />
-        <FormLabel>Password</FormLabel>
-        <FormInput
-          containerStyle={styles.form}
-          onChangeText={(password)=>{
-            this.setState({password})
-          }}
-          secureTextEntry={true}
-          />
-        <FormLabel>Confirm Password</FormLabel>
-        <FormInput
-          containerStyle={styles.form}
-          onChangeText={(confirmedPassword)=>{
-            this.setState({confirmedPassword})
-          }}
-          secureTextEntry={true}
-          />
-        <Button
-          containerStyle={styles.button}
-          style={{fontSize: 17, color: '#f9fafc'}}
-          onPress={() => this._handlePress()}>
-          Sign Up
-        </Button>
-      </View>
+      </LinearGradient>
     );
   }
 
@@ -121,6 +296,14 @@ class Signup extends Component {
 }
 
 const styles = StyleSheet.create({
+  shadow: {
+     shadowOffset:{
+        width:0,
+        height:0
+      },
+    shadowColor:'black',
+    shadowOpacity:0.2
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',
