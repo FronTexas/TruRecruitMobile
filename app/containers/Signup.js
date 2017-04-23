@@ -39,17 +39,36 @@ class Signup extends Component {
       confirmedPassword:'',
       isEmailValid:true,
       isPasswordValid:true,
-      isConfirmPasswordValid:true,
       isPasswordIdentical:true,
+      isEmailFieldPristine:true,
+      isPasswordFieldPristine:true,
+      isConfirmPasswordFieldPristine:true
     }
   }
 
   _handleSignUpPress() {
-    this.setState({isWaitingForSignUpProccess:true})
+
     var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
-    if (this.validateEmail(email) && this.validatePassword(password) && password == confirmedPassword){
-      this.props.createNewUser(this.state);
+    var proceed = true;
+    if (!this.validateEmail(email)) {
+      this.setState({isEmailValid:false});
+      proceed = false;
     }
+    if (!this.validatePassword(password)) {
+      this.setState({isPasswordValid:false}) 
+      proceed = false;
+    }
+    if (password != confirmedPassword) {
+      this.setState({isPasswordIdentical:false}) 
+      proceed = false
+    }
+
+    if(!proceed){
+      return;
+    }
+
+    this.setState({isWaitingForSignUpProccess:true})
+    this.props.createNewUser(this.state);
   }
 
   componentWillReceiveProps(nextProps){
@@ -73,8 +92,6 @@ class Signup extends Component {
     return re.test(password);
   }
 
- 
-
   render() {
 
     var emailValidationMessage = !this.state.isEmailValid ? 
@@ -83,15 +100,11 @@ class Signup extends Component {
       >Email is invalid</Text> : <View></View>
 
     var passwordRequirementMessageString = "Password must be minimum 8 characters and at least have 1 Alphabet and 1 Number"
+    console.log(`isPasswordValid = ${this.state.isPasswordValid}`)
     var passwordValidationMessage = !this.state.isPasswordValid ? 
       <Text
         style={{color:"red",marginLeft:20,marginTop:10}}
       >{passwordRequirementMessageString}</Text> : <View></View>
-
-    var confirmPasswordValidationMessage = !this.state.isConfirmPasswordValid ?
-      <Text
-        style={{color:"red",marginLeft:20,marginTop:10}}
-      >{passwordRequirementMessageString}</Text> : <View></View>    
 
     var passwordIdenticalValidationMessage = !this.state.isPasswordIdentical ? 
       <Text
@@ -157,8 +170,10 @@ class Signup extends Component {
                     onSubmitEditing={() => {this.firstNameField.focus()}}
                     onChangeText={(email)=>{
                       this.setState({email})
+                      this.setState({isEmailValid: !this.state.isEmailFieldPristine && this.validateEmail(email) ? true : this.state.isEmailValid})
                     }}
                     onBlur={()=> {
+                      this.setState({isEmailFieldPristine:false})
                       this.setState({isEmailValid: this.validateEmail(this.state.email) ? true : false})
                     }}
                     ></FormInput>
@@ -205,12 +220,13 @@ class Signup extends Component {
                     onSubmitEditing={() => {this.confirmPasswordField.focus()}}
                     onChangeText={(password) => {
                       this.setState({password})
-                      console.log(`isPasswordIdentical = ${password == this.state.confirmedPassword}`)
-                      this.setState({isPasswordIdentical: password == this.state.confirmedPassword})
+                      this.setState({isPasswordValid: !this.state.isPasswordFieldPristine && this.validatePassword(password) ? true : this.state.isPasswordValid})
+                      this.setState({isPasswordIdentical: !this.state.isPasswordFieldPristine && password == this.state.confirmedPassword ? true : this.state.isPasswordIdentical})
                     }}
                     onBlur={()=> {
+                      this.setState({isPasswordFieldPristine:false})
                       this.setState({isPasswordValid: this.validatePassword(this.state.password)})
-                      this.setState({isPasswordIdentical: this.state.password == this.state.confirmedPassword})
+                      this.setState({isPasswordIdentical: !this.state.isConfirmPasswordFieldPristine && this.state.password == this.state.confirmedPassword ? true : this.state.isPasswordIdentical})
                     }}
                     secureTextEntry={true} 
                     ></FormInput>
@@ -224,16 +240,15 @@ class Signup extends Component {
                     onChangeText={(confirmedPassword)=> 
                       {
                         this.setState({confirmedPassword})
-                        this.setState({isPasswordIdentical: this.state.password == confirmedPassword ? true : false})
+                        this.setState({isPasswordIdentical: !this.state.isConfirmPasswordFieldPristine && this.state.password == confirmedPassword ? true : this.state.isPasswordIdentical})
                       }
                     }
                     onBlur={()=> {
-                      this.setState({isConfirmPasswordValid: this.validatePassword(this.state.confirmedPassword)})
+                      this.setState({isConfirmPasswordFieldPristine:false})
                       this.setState({isPasswordIdentical: this.state.password == this.state.confirmedPassword ? true : false})
                     }}
                     secureTextEntry={true} 
                   ></FormInput>
-                   {confirmPasswordValidationMessage}
                    {passwordIdenticalValidationMessage}
                 </View>
                 <View

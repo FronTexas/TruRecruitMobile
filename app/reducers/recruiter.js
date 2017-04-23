@@ -11,6 +11,15 @@ export const isFailedSignup = createReducer(false,{
 	}
 })
 
+export const loginError = createReducer(null,{
+	[types.FAILED_TO_LOGIN](state,action){
+		return action.error
+	},
+	[types.USER_LOGGED_IN](state,action){
+		return null;
+	}
+})
+
 export const user = createReducer({},{
   [types.USER_LOGGED_IN](state,action){
     return action.user;

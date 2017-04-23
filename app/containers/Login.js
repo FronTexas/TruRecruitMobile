@@ -32,15 +32,31 @@ class Login extends Component {
     this.state={
       email:"",
       password:"",
-      isWaitingForLoginProccess:false
+      isWaitingForLoginProccess:false,
+      isEmailValid:true,
+      isPasswordValid:true,
+      isEmailFieldPristine:true,
+      isPasswordFieldPristine:true
     }
   }
-  _handlePress() {
-    Alert.alert('Button has been pressed');
-  }
+
     
   _handleLoginPress(){
-    // pass: trurecruitlit
+    const {email,password} = this.state;
+    var proceed = true;
+    if (!this.validateEmail(email)) {
+      this.setState({isEmailValid:false}) 
+      proceed = false;
+    }
+    if (!this.validatePassword(password)) {
+      this.setState({isPasswordValid:false}) 
+      proceed = false;
+    }
+
+    if(!proceed){
+      return;
+    }
+
     this.setState({isWaitingForLoginProccess:true})
     this.props.login({
       email:this.state.email,
@@ -49,8 +65,17 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.user){
+    const {user,loginError} = nextProps;
+    
+    if(loginError){
       this.setState({isWaitingForLoginProccess:false})
+      this.setState({loginError})
+      return;
+    }
+
+    if(user){
+      this.setState({isWaitingForLoginProccess:false})
+      this.setState({loginError:null})
       this.gotoEvent(); 
     }
   }
@@ -69,7 +94,30 @@ class Login extends Component {
     });
   }
 
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return email.length>0 && re.test(email);
+  }
+
+  validatePassword(password){
+    return password.length > 0;
+  }
+
   render(){
+    var loginErrorMessageText = this.state.loginError ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >{this.state.loginError.message}</Text> : <View></View>
+
+    var emailValidationMessage = !this.state.isEmailValid ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >Email is invalid</Text> : <View></View>
+
+    var passwordValidationMessage = !this.state.isPasswordValid ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >Password Cannot be empty</Text> : <View></View>
     var loginButtonContent = this.state.isWaitingForLoginProccess ?  
       <ActivityIndicator
             style={{
@@ -92,6 +140,7 @@ class Login extends Component {
         >
           Login
         </Text>
+
     return (
       <LinearGradient
         colors={['#00a170','#03d2b9']}
@@ -110,7 +159,7 @@ class Login extends Component {
               height:Dimensions.get('window').height * 0.45,
               justifyContent: 'center',
             }}
-          >
+            >
             <Image 
               source={require('./img/trurecruit_text_logo.png')}
               style={{
@@ -124,7 +173,6 @@ class Login extends Component {
           <View
             id="LoginBoxArea"
             style={[{
-              height:Dimensions.get('window').height * 0.45,
               paddingTop:10,
               paddingBottom:10,
               paddingRight:30,
@@ -141,9 +189,6 @@ class Login extends Component {
             >
                 <View
                   id="LoginField"
-                  style={{
-                    flex:0.7,
-                  }}
                 >
                   <FormLabel>Email</FormLabel>
                   <FormInput 
@@ -151,9 +196,17 @@ class Login extends Component {
                     placeholder="jsmith@example.com" 
                     returnKeyType='next'
                     onSubmitEditing={() => {this.passwordField.focus()}}
-                    onChangeText={(text) => this.setState({email:text})}
+                    onChangeText={(email) => {
+                      this.setState({email})
+                      this.setState({isEmailValid: !this.state.isEmailFieldPristine && this.validateEmail(email) ? true : this.state.isEmailValid})
+                    }}
                     keyboardType="email-address"
+                    onBlur={()=> {
+                      this.setState({isEmailFieldPristine:false})
+                      this.setState({isEmailValid: this.validateEmail(this.state.email) ? true : false})
+                    }}
                     ></FormInput>
+                    {emailValidationMessage}
 
                   <FormLabel>Password</FormLabel>
                   <FormInput 
@@ -161,21 +214,30 @@ class Login extends Component {
                     secureTextEntry={true} 
                     placeholder="Enter Password" 
                     returnKeyType='done'
-                    onChangeText={(text) => this.setState({password:text})}></FormInput>
+                    onChangeText={(password) => {
+                      this.setState({password})
+                      this.setState({isPasswordValid: !this.state.isPasswordFieldPristine && this.validatePassword(password) ? true : this.state.isPasswordValid})
+                    }}
+                    onBlur={()=> {
+                      this.setState({isPasswordFieldPristine:false})
+                      this.setState({isPasswordValid: this.validatePassword(this.state.password) ? true : false})
+                    }}
+                    ></FormInput>
+                    {passwordValidationMessage}
+                    {loginErrorMessageText}
                 </View>
                 <View
                   id="LoginButtonArea"
                   style={{
-                    flex:0.3,
                     paddingLeft:50,
                     paddingRight:50,
-                    paddingTop:25,
+                    paddingTop:40,
                     paddingBottom:25,
                   }}
                 >
                   <TouchableOpacity
                     style={{
-                      flex:1,
+                      height:60,
                     }}
                     onPress={() => this._handleLoginPress()}
                   >
@@ -281,8 +343,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
+  const {user,loginError} = state;
   return {
-     user: state.user
+     user,
+     loginError
   }
 }
 

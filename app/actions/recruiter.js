@@ -48,23 +48,34 @@ export function login(credentials){
 	return (dispatch,getState) => {
 		const { firebaseRef } = getState();
 		const { email, password } = credentials;
-		firebaseRef
-		.auth()
-		.signInWithEmailAndPassword(email,password)
-		.catch(
-			(error) => {
-				console.log("*** Error Logging In ***");
-			}
-		)
-		firebaseRef.auth().onAuthStateChanged(
+		
+		firebaseRef.auth().signOut().then(()=>{
+			firebaseRef
+			.auth()
+			.signInWithEmailAndPassword(email,password)
+			.catch(
+				(error) => {
+					dispatch({
+						type:types.FAILED_TO_LOGIN, 
+						error
+					})
+				}
+			)
+			firebaseRef.auth().onAuthStateChanged(
 			user => {
-				dispatch({
-					type: types.USER_LOGGED_IN, 
-					user: user
-				})
-				AsyncStorage.setItem('user',JSON.stringify(user));
+				if(user){
+					dispatch({
+						type: types.USER_LOGGED_IN, 
+						user: user
+					})
+					AsyncStorage.setItem('user',JSON.stringify(user));
+				}
 			}
 		)
+
+		})
+
+		
 	}
 
 }
