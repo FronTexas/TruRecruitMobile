@@ -1,6 +1,29 @@
 import * as types from './types';
 var RNFS = require('react-native-fs');
 
+export function downloadProfilePic(attendeeID){
+	return (dispatch,getState) => {
+		const {firebaseRef} = getState();
+
+		var storageRef = firebaseRef.storage().ref();
+		var profPicRef = storageRef.child(`/attendees/${attendeeID}/profilePicture.jpg`);
+
+		profPicRef.getDownloadURL()
+		.then(
+			(url) => {
+				dispatch({
+					type: types.PROFILE_PICTURE_DOWNLOADED,
+					id:attendeeID,
+					url
+				})
+			}
+		)
+		.catch((error) =>
+		{
+			console.log(`error = ${JSON.stringify(error)}`);
+		})
+	}
+}
 
 export function removeDownloadedResume(){
 	return (dispatch,getState) => {

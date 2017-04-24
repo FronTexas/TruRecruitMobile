@@ -2,6 +2,16 @@ import createReducer from '../lib/createReducer';
 import * as types from '../actions/types'
 
 
+export const profilePictureURLDictionary = createReducer({},
+{
+	[types.PROFILE_PICTURE_DOWNLOADED](state,action){
+		const {id,url} = action;
+		var modifiedState = {...state};
+		modifiedState[id] = url
+		return modifiedState;
+	}
+})
+
 export const selectedAttendee = createReducer(null,
 {
 	[types.SELECT_ATTENDEE](state,action){

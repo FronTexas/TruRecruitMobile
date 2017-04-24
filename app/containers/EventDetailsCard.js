@@ -5,19 +5,22 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
+	Image
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
 
 
 
-export default class EventDetailsCard extends Component
+class EventDetailsCard extends Component
 {
 	constructor(props)
 	{
 		super(props);
+		this.state = {}
 	}
 
 	formatTimeScanned(timestamp){
@@ -55,8 +58,21 @@ export default class EventDetailsCard extends Component
 		return 'Scanned on ' + month + ' ' + date + ' ' + hours + ':' + minute;
 	}
 
+	componentDidMount(){
+		this.props.downloadProfilePic(this.props.attendee.id);
+	}
+
+	componentWillReceiveProps(nextProps){
+		const {profilePictureURLDictionary} = nextProps;
+		this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendee.id]})
+	}
+
 	render()
-	{
+	{	
+		var profPicView = this.state.profilePictureURL ?
+		<Image style={{width:40,height:40,borderRadius:20}} source={{uri: this.state.profilePictureURL}}></Image>
+		:
+		<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
 		return(
 			<TouchableOpacity
 				onPress={() => 
@@ -70,7 +86,7 @@ export default class EventDetailsCard extends Component
 			>
 				<View style={styles.container}>
 					<View style={{flexDirection:'row'}}>
-						<Icon name="ios-contact" size={40} style={styles.profpic}></Icon>
+						{profPicView}
 						<View style={styles.attendee_scan_information}>
 							<Text style={styles.attendee_name}>{this.props.attendee.name}</Text>
 							<Text style={styles.attendee_summary}>{this.props.attendee.summary}</Text>
@@ -146,3 +162,12 @@ const styles = StyleSheet.create({
 		fontSize:12
 	}
 })
+
+function mapStateToProps(state){
+	const {profilePictureURLDictionary} = state
+	return {
+		profilePictureURLDictionary,
+	};
+}
+
+export default connect(mapStateToProps)(EventDetailsCard);

@@ -54,17 +54,24 @@ class AttendeeProfilePage extends Component
 	componentDidMount(){
 		this.props.removeDownloadedResume();
  		this.props.setSelectedAttendee(this.props.attendeeID);
+ 		this.props.downloadProfilePic(this.props.attendeeID);
 		this.props.downloadResume();
 	}
 
 	componentWillReceiveProps(nextProps){
-		const { attendee,attendeePDFLocation } = nextProps;
+		const { attendee,attendeePDFLocation,profilePictureURLDictionary} = nextProps;
 		if (attendee) this.setState({attendee});
 		if (attendeePDFLocation) this.setState({attendeePDFLocation});
+		if (profilePictureURLDictionary) this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendeeID]})
 	}			 	  	 	   	 	  	  		 	 	 	
 
 	render()
-	{
+	{	
+		var profPicView = this.state.profilePictureURL ?
+		<Image style={[{width:80,height:80,borderRadius:40},styles.shadow]} source={{uri: this.state.profilePictureURL}}></Image>
+		:
+		<Icon name="ios-contact" size={80} style={styles.profpic}></Icon>
+
 		var links = this.state.attendee.links;
 		var linkTags = []
 		var linkTags = links ? 
@@ -101,10 +108,11 @@ class AttendeeProfilePage extends Component
 									}}>
 									<View id='attendee-profile' 
 										style={{
-											alignItems: 'center'
+											alignItems: 'center',
+											marginTop:20
 										}}
 										>
-											<Icon name="ios-contact" size={80} style={styles.profpic}></Icon>
+											{profPicView}
 											<Text style={styles.name}>{this.state.attendee.name}</Text>
 											<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
 									</View>
@@ -195,9 +203,7 @@ const styles = StyleSheet.create({
 	container:{
 		backgroundColor:"#EEF1F7",
 	},
-	profpic:{
-		color:'#535455'
-	},
+
 	name:{
 		fontWeight:"bold",
 		fontSize:30,
@@ -273,10 +279,11 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state){
-	const {selectedAttendee, attendeePDFLocation} = state;
+	const {selectedAttendee, attendeePDFLocation,profilePictureURLDictionary} = state;
 	return{
 		attendee: selectedAttendee,
-		attendeePDFLocation: attendeePDFLocation
+		attendeePDFLocation: attendeePDFLocation,
+		profilePictureURLDictionary
 	}
 }
 
