@@ -19,7 +19,7 @@ import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 
-var Modal   = require('react-native-modalbox');
+var Modal = require('react-native-modalbox');
 
 import{
 	FormLabel,FormInput
@@ -138,12 +138,12 @@ class EventPage extends Component
 									<View
 										id="cancel-button"
 										style={[styles.shadow,{
-																				padding:15,
-																				backgroundColor:'#e74c3c',
-																				borderRadius:30,
-																				width:100,
-																				alignItems:'center'
-																			}]}
+													padding:15,
+													backgroundColor:'#e74c3c',
+													borderRadius:30,
+													width:100,
+													alignItems:'center'
+												}]}
 									>
 										<Text style={{color:"#FFF",fontWeight:'600'}}>Yes</Text>
 									</View>
@@ -155,12 +155,12 @@ class EventPage extends Component
 									<View
 										id="send-button"
 										style={[styles.shadow,{
-																				padding:15,
-																				backgroundColor:'#1DBB96',
-																				borderRadius:30,
-																				width:100,
-																				alignItems:'center'
-																			}]}
+													padding:15,
+													backgroundColor:'#1DBB96',
+													borderRadius:30,
+													width:100,
+													alignItems:'center'
+												}]}
 									>
 										<Text style={{color:"#FFF",fontWeight:'600'}}>No</Text>
 									</View>

@@ -75,11 +75,20 @@ export function zipAndEmailResumes({event}){
 														name: 'resumes.zip'
 													}
 												}, (error,event) => {
-													if(error){
-														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to support@example.com');
+													if(event){
+														dispatch({
+															type: types.READY_TO_EMAIL_RESUMES,
+															val:false
+														})
+													}else if(error){
+														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to trurecruit.email@gmail.com');
 													}
 												})
 
+												dispatch({
+													type: types.READY_TO_EMAIL_RESUMES,
+													val: true
+												})
 											})
 											.catch((error)=>{console.log(error)})
 									}
@@ -106,7 +115,6 @@ export function zipAndEmailResumes({event}){
 										console.log(`error = ${error}`)
 									})
 							}else{
-								// When folder for each attendee does not exist
 								RNFS.mkdir(pdfAndRecruiterCommentLocation,{
 											NSURLIsExcludedFromBackupKey: false	
 								});
@@ -116,6 +124,7 @@ export function zipAndEmailResumes({event}){
 					)
 				})
 			}
+
 			RNFS.exists(rootLocation).then(
 				(exists) =>{
 					if (exists){

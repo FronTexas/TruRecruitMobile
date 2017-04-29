@@ -5,19 +5,22 @@ import {
 	ListView,
 	View,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
+	ActivityIndicator
 } from 'react-native';
 
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export default class EventCard extends Component
+class EventCard extends Component
 {
 	constructor(props)
 	{
 		super(props);
 		this.state={
-			modalVisible:false
+			modalVisible:false,
+			isWaitingForEmailingResume:false
 		}
 	}
 
@@ -59,9 +62,29 @@ export default class EventCard extends Component
 		})
 	}
 
+	componentWillReceiveProps(nextProps){
+		const {isReadyToEmailResumes} = nextProps;
+		if(isReadyToEmailResumes){
+			this.setState({isWaitingForEmailingResume:false});
+		}
+	}
 
 	render()
 	{
+		var sendEmailButtonContent = this.state.isWaitingForEmailingResume? 
+			<ActivityIndicator
+							style={{
+							    alignItems: 'center',
+							    justifyContent: 'center',
+							    flex:1
+							  }}
+							  color="white"
+							  size="small"
+						>
+			</ActivityIndicator>
+			:
+			<Icon name="md-mail" size={20} style={{color:"#FFF"}}></Icon>
+
 		return(
 			<View>
 				<TouchableOpacity 
@@ -84,7 +107,10 @@ export default class EventCard extends Component
 				</TouchableOpacity>
 				<View style={{alignItems:'flex-start',marginTop:-30}}>
 					<TouchableOpacity
-						onPress={ () => this.props.onSendEmailClick()}
+						onPress={ () => {
+							this.setState({isWaitingForEmailingResume:true})
+							this.props.onSendEmailClick();
+						}}
 					>
 								<View id="send_email_button" style={[styles.shadow,{
 												backgroundColor:"#1DBB96",
@@ -95,9 +121,8 @@ export default class EventCard extends Component
 												justifyContent:'center',
 												marginLeft:10
 											}]}>
-							<Icon name="md-mail" size={20} style={{color:"#FFF"}}></Icon>
+									{sendEmailButtonContent} 
 						</View>
-					
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -161,3 +186,12 @@ const styles = StyleSheet.create({
 		fontSize:12
 	}
 })
+
+function mapStateToProps(state){
+	const {isReadyToEmailResumes} = state;
+	return {
+		isReadyToEmailResumes
+	};
+}
+
+export default connect(mapStateToProps)(EventCard);

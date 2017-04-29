@@ -2,6 +2,12 @@ import createReducer from '../lib/createReducer'
 import * as types from '../actions/types'
 
 
+export const isReadyToEmailResumes = createReducer(false,{
+	[types.READY_TO_EMAIL_RESUMES](state,action){
+		return action.val;
+	}
+})
+
 export const selected_event = createReducer({},{
   [types.SELECT_EVENT](state,action){
     return action.event
