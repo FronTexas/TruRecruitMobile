@@ -39,37 +39,38 @@ class Login extends Component {
       isPasswordFieldPristine:true
     }
   }
-
-    
+     
   _handleLoginPress(){
-    // Uncomment this to get login work in the intended way
+    const {email,password} = this.state;
+    var proceed = true;
+    if (!this.validateEmail(email)) {
+      this.setState({isEmailValid:false}) 
+      proceed = false;
+    }
+    if (!this.validatePassword(password)) {
+      this.setState({isPasswordValid:false}) 
+      proceed = false;
+    }
 
-    // const {email,password} = this.state;
-    // var proceed = true;
-    // if (!this.validateEmail(email)) {
-    //   this.setState({isEmailValid:false}) 
-    //   proceed = false;
-    // }
-    // if (!this.validatePassword(password)) {
-    //   this.setState({isPasswordValid:false}) 
-    //   proceed = false;
-    // }
+    if(!proceed){
+      return;
+    }
 
-    // if(!proceed){
-    //   return;
-    // }
-
-    // this.setState({isWaitingForLoginProccess:true})
-    // this.props.login({
-    //   email:this.state.email,
-    //   password: this.state.password
-    // })
+    this.setState({isWaitingForLoginProccess:true})
+    this.props.login({
+      email:this.state.email,
+      password: this.state.password
+    })
 
     // This login cred is just for dev
-    this.props.login({
-      email:'fahran.kamili@utexas.edu',
-      password: 'password123'
-    })
+    // this.props.login({
+    //   email:'fahran.kamili@utexas.edu',
+    //   password: 'password123'
+    // })
+  }
+
+  componentWillMount(){
+    // this.props.removeLoggedInUser();
   }
 
   componentWillReceiveProps(nextProps){

@@ -1,6 +1,11 @@
 import * as types from './types';
 import {AsyncStorage} from 'react-native';
 
+export function removeLoggedInUser(){
+	AsyncStorage.removeItem('user').then((error)=>{
+		console.log(`error = ${error}`)})
+}
+
 export function setUser(user){
 	return (dispatch,getState)=>{
 		dispatch({
@@ -9,7 +14,6 @@ export function setUser(user){
 		})
 	}
 }
-
 
 export function createNewUser({email,password,firstName,lastName,company}){
 	return (dispatch,getState) => {
@@ -48,7 +52,7 @@ export function login(credentials){
 	return (dispatch,getState) => {
 		const { firebaseRef } = getState();
 		const { email, password } = credentials;
-		
+
 		firebaseRef.auth().signOut().then(()=>{
 			firebaseRef
 			.auth()
