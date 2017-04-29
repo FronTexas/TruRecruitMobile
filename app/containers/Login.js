@@ -165,8 +165,8 @@ class Login extends Component {
           <View
             id="LogoArea"
             style={{
-              height:Dimensions.get('window').height * 0.45,
               justifyContent: 'center',
+              height:Dimensions.get('window').height * .45
             }}
             >
             <Image 
@@ -272,7 +272,6 @@ class Login extends Component {
           <View
             id="SignUpQueueArea"
             style={{
-              flex:Dimensions.get('window').height * 0.05,
               justifyContent:'center'
             }}
           >
