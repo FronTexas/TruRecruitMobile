@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Dimensions,
   findNodeHandle,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 
 
@@ -64,7 +64,7 @@ class Login extends Component {
 
     // This login cred is just for dev
     this.props.login({
-      email:'fahran.kamili@utexas.edu',
+      email:'forfron@gmail.com',
       password: 'trurecruitlit'
     })
   }

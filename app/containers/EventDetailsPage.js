@@ -5,7 +5,8 @@ import {
 	ListView,
 	View,
 	Text,
-	ActivityIndicator
+	ActivityIndicator,
+	Animated
 } from 'react-native';
 
 import _ from 'underscore';
@@ -17,6 +18,8 @@ import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 
+const NAVBAR_HEIGHT = 80;
+
 
 class EventDetailsPage extends Component
 {
@@ -24,6 +27,7 @@ class EventDetailsPage extends Component
 		super(props);
 		this.state = {};
 		this.state.attendees = null;
+		this.state.scrollY = new Animated.Value(0);
 	}
 
 	_goToScannerPage()
@@ -92,6 +96,10 @@ class EventDetailsPage extends Component
 					}
 					style = {styles.list_view}
 					removeClippedSubviews={false}
+					onScroll={Animated.event(
+				      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+				    )}
+				    scrollEventThrottle={12}
 					></ListView>
 		}else if(this.state.attendees){
 			body = 
@@ -117,8 +125,20 @@ class EventDetailsPage extends Component
 		}
 		return(
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
-				<Navbar navigator = {this.props.navigator} title={this.props.event.eventTitle} subtitle={this.formatTimeScanned(this.props.event.eventDate)}></Navbar>
 				{body}
+				<Navbar 
+					navigator = {this.props.navigator} 
+					title={this.props.event.eventTitle} 
+					subtitle={this.formatTimeScanned(this.props.event.eventDate)}
+					hasScrollView={true}
+					minHeight={NAVBAR_HEIGHT}
+					maxHeight={300}
+					gradient={{
+						default:'#1DBB96',
+						stretched: '#43E2BD'
+					}}
+					scrollY={this.state.scrollY}
+					></Navbar>
 				<ActionButton
 					buttonColor="rgba(0,188,150,1)"
 					icon={<Icon name="ios-qr-scanner" style={{color:"#FFF"}} size={30}></Icon>}
@@ -143,6 +163,7 @@ const styles = StyleSheet.create({
 	},
 	list_view:{
 		backgroundColor:"#FFF",
+		marginTop: NAVBAR_HEIGHT
 	},
 	header_title_and_action:{
 		flexDirection:'row',

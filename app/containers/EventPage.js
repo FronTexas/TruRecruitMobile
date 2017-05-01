@@ -7,7 +7,8 @@ import {
 	Text,
 	TouchableOpacity,
 	Button,
-	ActivityIndicator
+	ActivityIndicator,
+	Animated,
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -19,14 +20,15 @@ import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 
+
+import LinearGradient from 'react-native-linear-gradient';
 var Modal = require('react-native-modalbox');
 
 import{
 	FormLabel,FormInput
 } from 'react-native-elements';
 
-
-
+const NAVBAR_HEIGHT = 80;
 
 class EventPage extends Component
 {
@@ -37,6 +39,7 @@ class EventPage extends Component
 		this.state = {};
 		this.state.emailInputs = [];
 		this.state.events = null;
+		this.state.scrollY = new Animated.Value(0);
 	}
 
 	sendResumesToEmail(focusedEvent){
@@ -83,11 +86,16 @@ class EventPage extends Component
 								onSendEmailClick={() => this.sendResumesToEmail(rowData)}
 								onLongPress = {() => {this.setState({eventIdToDelete:rowData.eventId}); this.refs.send_email_modal.open()}}
 								{...this.props}
+								style={{marginTop:30}}
 								></EventCard>
 							}
 						}
 						style = {styles.list_view}
 						removeClippedSubviews={false}
+						onScroll={Animated.event(
+					      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+					    )}
+					    scrollEventThrottle={12}
 						>
 					</ListView> 
 		}else if(this.state.events){
@@ -114,8 +122,21 @@ class EventPage extends Component
 		}
 		return(
 			<View style={{flex:1}}>
-				<Navbar navigator={this.props.navigator} title='Events' disableBackButton={true}></Navbar>
 				{body}
+				<Navbar
+					navigator={this.props.navigator} 
+					title='Events'
+					hasScrollView={true}
+					minHeight={NAVBAR_HEIGHT}
+					maxHeight={300}
+					gradient={{
+						default:'#1DBB96',
+						stretched: '#43E2BD'
+					}}
+					scrollY={this.state.scrollY}
+					disableBackButton={true}
+					>
+				</Navbar>
 				<Modal position={"center"}
 				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
 					<View
@@ -198,7 +219,9 @@ class EventPage extends Component
 
 const styles = StyleSheet.create({
 	list_view:{
-		backgroundColor:"#FFF"
+		backgroundColor:"#FFF",
+		flex:1,
+		marginTop:NAVBAR_HEIGHT
 	},
 	arrow_back_and_list:{
 		flexDirection:"row",

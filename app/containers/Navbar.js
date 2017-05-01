@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
 	View,
-	Text
+	Text,
+	Animated
 } from 'react-native';
 
 import BackButton from './BackButton';
@@ -11,6 +12,9 @@ export default class Navbar extends Component{
 
 	constructor(props){
 		super(props);
+		this.state={
+			headerScrollDistance : this.props.maxHeight - this.props.minHeight
+		}
 	}
 
 	render(){
@@ -38,13 +42,32 @@ export default class Navbar extends Component{
 		
 		var backButton = !this.props.disableBackButton ? <BackButton onBackButtonPressed ={this.props.onBackButtonPressed} navigator={this.props.navigator}></BackButton> : <View></View>
 
+		const height = this.props.scrollY ? this.props.scrollY.interpolate({
+				    inputRange: [this.state.headerScrollDistance * -1, 0],
+				    outputRange: [this.props.maxHeight,this.props.minHeight],
+				    extrapolate: 'clamp',
+		}) : 80;
+
+		const backgroundColor = this.props.scrollY ? this.props.scrollY.interpolate({
+			inputRange: [this.state.headerScrollDistance* -1 , 0],
+			outputRange:[this.props.gradient.stretched,this.props.gradient.default],
+			extrapolate:'clamp'
+		}) : '#1DBB96'
 		return(
-				<View style={{
-						backgroundColor: '#1DBB96',
-						height:75,
+				
+				<Animated.View
+					id="header"
+					style={{
+						position: this.props.hasScrollView ? 'absolute' : 'relative',
+						top:0,
+						left:0,
+						right:0,
+						overflow:'hidden',
 						flexDirection:'row',
-						paddingTop:15,
-					}}>
+						backgroundColor,
+						height
+					}}
+				>
 					<View style={{
 						flex:.15,
 						paddingLeft:15,
@@ -64,7 +87,8 @@ export default class Navbar extends Component{
 					<View style={{
 						flex:.15
 					}}></View>
-				</View>
+				</Animated.View>
+				
 		)
 	}
 }

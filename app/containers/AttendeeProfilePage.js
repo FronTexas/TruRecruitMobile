@@ -11,7 +11,8 @@ import {
 	TouchableOpacity,
 	WebView,
 	Linking,
-	ActivityIndicator
+	ActivityIndicator,
+	Animated
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -21,6 +22,8 @@ import StarRating from 'react-native-star-rating';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 import PDFView from 'react-native-pdf-view';
+
+const NAVBAR_HEIGHT = 80;
 
 class AttendeeProfilePage extends Component
 {
@@ -33,6 +36,7 @@ class AttendeeProfilePage extends Component
 		}
 		this.state.attendeePDFLocation = null;
 		this.state.linkToOpen = null;
+		this.state.scrollY = new Animated.Value(0);
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
 	}
 
@@ -99,13 +103,18 @@ class AttendeeProfilePage extends Component
 			})
 			:
 			<View></View>
-		return (
+			return (
 				<View style={{flex:1}}>
-							<Navbar onBackButtonPressed = {() => { if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-								this.props.navigator.pop()}} navigator={this.props.navigator} title={this.state.attendee.name}></Navbar>
-							<ScrollView style={{
-										backgroundColor:"#EEF1F7"
-									}}>
+							<ScrollView 
+									style={{
+										backgroundColor:"#EEF1F7",
+										marginTop:NAVBAR_HEIGHT,
+									}}
+									onScroll={Animated.event(
+								      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+								    )}
+								    scrollEventThrottle={12}
+									>
 									<View id='attendee-profile' 
 										style={{
 											alignItems: 'center',
@@ -185,6 +194,24 @@ class AttendeeProfilePage extends Component
 										</View>
 									</TouchableOpacity>
 							</ScrollView>
+							<Navbar 
+								onBackButtonPressed = {
+										() => { 
+											if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
+											this.props.navigator.pop()
+										}
+									} 
+									navigator={this.props.navigator} 
+									title={this.state.attendee.name}
+									hasScrollView={true}
+									minHeight={NAVBAR_HEIGHT}
+									maxHeight={300}
+									gradient={{
+										default:'#1DBB96',
+										stretched: '#43E2BD'
+									}}
+									scrollY={this.state.scrollY}
+									></Navbar>
 						</View>		
 		)
 	}
