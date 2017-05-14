@@ -73,6 +73,10 @@ class Login extends Component {
     // this.props.removeLoggedInUser();
   }
 
+  componentDidMount(){
+    this.props.hideTabBar(true);
+  }
+
   componentWillReceiveProps(nextProps){
     const {user,loginError} = nextProps;
     
@@ -81,19 +85,11 @@ class Login extends Component {
       this.setState({loginError})
       return;
     }
-
     if(user){
       this.setState({isWaitingForLoginProccess:false})
       this.setState({loginError:null})
-      this.gotoEvent(); 
+      this.props.changeIsLoginMode(false);
     }
-  }
-
-  gotoEvent() {
-    this.props.navigator.push({
-      id: 'EventPage',
-      name: 'Login',
-    });
   }
 
   gotoSignup() {

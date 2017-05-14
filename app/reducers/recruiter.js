@@ -2,6 +2,12 @@ import createReducer from '../lib/createReducer'
 import * as types from '../actions/types'
 
 
+export const recruiter = createReducer(null,{
+	[types.SET_RECRUITER_INFO](state,action){
+		return action.recruiter;
+	}
+})
+
 export const isFailedSignup = createReducer(false,{
 	[types.USER_LOGGED_IN](state,action){
 		return false
@@ -20,14 +26,20 @@ export const loginError = createReducer(null,{
 	}
 })
 
-export const user = createReducer({},{
+export const user = createReducer(null,{
   [types.USER_LOGGED_IN](state,action){
     return action.user;
+  },
+  [types.USER_SIGNED_OUT](state,action){
+  	return null;
   }
 })
 
 export const isLoggedIn = createReducer(false,{
-  [types.LOGIN](state,action){
-    
+  [types.USER_LOGGED_IN](state,action){
+    return true;
+  },
+  [types.USER_SIGNED_OUT](state,action){
+  	return false;
   }
 })

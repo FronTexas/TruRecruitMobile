@@ -54,6 +54,7 @@ class EventPage extends Component
 
 	componentDidMount(){
 		this.props.listenToEventsChanges();
+		this.props.hideTabBar(false);
 	}
 
 	addEmailInput(){

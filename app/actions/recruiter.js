@@ -1,6 +1,32 @@
 import * as types from './types';
 import {AsyncStorage} from 'react-native';
 
+
+export function signOut(){
+	return(dispatch,getState) => {
+		const {firebaseRef} = getState();
+		firebaseRef.auth().signOut().then(() => {
+			dispatch({
+				type: types.USER_SIGNED_OUT
+			})
+		})
+	}
+}
+
+export function getRecruiterInfo(){
+	return (dispatch, getState) => {
+		const {firebaseRef,user} = getState();
+		firebaseRef.database().ref(`recruiters/${user.uid}`).on('value',snap => {
+			var recruiter = snap.val();
+			dispatch({
+				type: types.SET_RECRUITER_INFO,
+				recruiter
+			})
+		})
+
+	}
+}
+
 export function removeLoggedInUser(){
 	AsyncStorage.removeItem('user').then((error)=>{
 		console.log(`error = ${error}`)})

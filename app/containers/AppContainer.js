@@ -10,8 +10,14 @@ import {
   Navigator,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
+
+import {
+  Tabs,
+  Tab,
+  Icon
+} from 'react-native-elements';
 
 const firebase = require('firebase');
 
@@ -21,16 +27,14 @@ import {bindActionCreators} from 'redux';
 import {ActionCreators} from '../actions';
 
 import Login from './Login';
-import Splash from './Splash';
 import Signup from './Signup';
-import Main from './Main';
 import EventPage from './EventPage';
 import AddEventPage from './AddEventPage';
 import EventDetailsPage from './EventDetailsPage';
 import Scanner from './mainPages/Scanner';
 import AttendeeProfilePage from './AttendeeProfilePage'
-import ResumeViewPage from './ResumeViewPage'
-
+import ResumeViewPage from './ResumeViewPage';
+import RecruiterProfilePage from './RecruiterProfilePage';
 
 class AppContainer extends Component {
 
@@ -45,21 +49,84 @@ class AppContainer extends Component {
     };
     firebase.initializeApp(config);
     this.props.setFirebaseRef(firebase);
+    this.state = {
+      selectedTab:'home',
+      hideTabBar:false,
+      isLoginMode: true
+    }
   }
 
   render() {
-    return (
-      <Navigator
-          initialRoute={{id:'LoginPage', name: 'Index'}}
-          renderScene={this.renderScene.bind(this)}
-          configureScene={(route) => {
-              if (route.sceneConfig) {
-                return route.sceneConfig;
-              }
-              return Navigator.SceneConfigs.FloatFromRight;
+    let tabBarStyle = {};
+    let sceneStyle = {};
+    if (this.state.hideTabBar) {
+      tabBarStyle.height = 0;
+      tabBarStyle.overflow = 'hidden';
+      sceneStyle.paddingBottom = 0;
+    }
+    console.log(`isLoginMode = ${this.state.isLoginMode}`)
+    var toRender = this.state.isLoginMode ? 
+    <Navigator
+        initialRoute={{id:'LoginPage', name: 'Index'}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
             }
-          } />
-      )
+            return Navigator.SceneConfigs.FloatFromRight; 
+          }
+        } 
+      />
+    : 
+    <Tabs hidesTabTouch tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
+        <Tab
+          titleStyle={{fontWeight: 'bold' , fontSize: 10, }}
+          selectedTitleStyle={{color:'#1DBB96'}}
+          selected={this.state.selectedTab === 'home'}
+          title='HOME'
+          renderIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#5e6977'} name='home' size={30} />}
+          renderSelectedIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#1DBB96'} name='home' size={30} />}
+          onPress={() => this.setState({selectedTab:'home'})}>
+          <Navigator
+            initialRoute={{id:'EventPage', name: 'Index'}}
+            renderScene={this.renderScene.bind(this)}
+            configureScene={(route) => {
+                if (route.sceneConfig) {
+                  return route.sceneConfig;
+                }
+                return Navigator.SceneConfigs.FloatFromRight; 
+              }
+            } 
+          />
+        </Tab>
+        <Tab
+          titleStyle={{fontWeight: 'bold' , fontSize: 10, }}
+          selectedTitleStyle={{color:'#1DBB96'}}
+          selected={this.state.selectedTab === 'profile'}
+          title='PROFILE'
+          renderIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#5e6977'} name='account-circle' size={30} />}
+          renderSelectedIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#1DBB96'} name='account-circle' size={30} />}
+          onPress={() => this.setState({selectedTab:'profile'})}>
+          <RecruiterProfilePage
+            {...this.props}
+            changeIsLoginMode={this.changeIsLoginMode.bind(this)}
+            hideTabBar={this.hideTabBar.bind(this)}
+          ></RecruiterProfilePage>
+        </Tab>
+    </Tabs>
+
+    return toRender;
+  }
+
+  hideTabBar(val){
+    this.setState({hideTabBar:val})
+  }
+
+  changeIsLoginMode(loginMode){
+    this.setState({isLoginMode:loginMode})
+    if(!loginMode){
+      this.setState({selectedTab:'home'})
+    }
   }
 
   renderScene(route, navigator) {
@@ -76,6 +143,7 @@ class AppContainer extends Component {
         <Signup
           navigator={navigator}
           {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}
            />
       );
     }
@@ -83,14 +151,10 @@ class AppContainer extends Component {
       return (
         <Login
           navigator={navigator}
-          {...this.props} />
+          {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}
+          changeIsLoginMode={this.changeIsLoginMode.bind(this)}/>
       );
-    }
-    if (routeId === 'MainPage') {
-      return (
-        <Main
-          navigator={navigator} />
-      )
     }
 
     if (routeId === 'EventPage') {
@@ -98,7 +162,8 @@ class AppContainer extends Component {
          <EventPage
           navigator={navigator}
           events={route.events}
-          {...this.props}></EventPage>
+          {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}></EventPage>
       )
     }
 
@@ -107,6 +172,7 @@ class AppContainer extends Component {
         <AddEventPage
           navigator={navigator}
           {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}
         ></AddEventPage>
       )
     } 
@@ -115,7 +181,8 @@ class AppContainer extends Component {
       return (
          <EventDetailsPage
             navigator={navigator}
-            {...this.props}/>
+            {...this.props}
+            hideTabBar={this.hideTabBar.bind(this)}/>
       )
     } 
 
@@ -125,6 +192,7 @@ class AppContainer extends Component {
           navigator={navigator}
           event={route.event}
           {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}
           ></Scanner>
       )
     }
@@ -135,6 +203,7 @@ class AppContainer extends Component {
           navigator={navigator}
           {...this.props}
           {...route}
+          hideTabBar={this.hideTabBar.bind(this)}
         >
         </AttendeeProfilePage>
       )
@@ -144,7 +213,8 @@ class AppContainer extends Component {
       return(
       <ResumeViewPage
           navigator={navigator}
-          {...this.props}>
+          {...this.props}
+          hideTabBar={this.hideTabBar.bind(this)}>
         </ResumeViewPage>
       )
     }

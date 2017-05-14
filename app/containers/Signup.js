@@ -100,7 +100,6 @@ class Signup extends Component {
       >Email is invalid</Text> : <View></View>
 
     var passwordRequirementMessageString = "Password must be minimum 8 characters and at least have 1 Alphabet and 1 Number"
-    console.log(`isPasswordValid = ${this.state.isPasswordValid}`)
     var passwordValidationMessage = !this.state.isPasswordValid ? 
       <Text
         style={{color:"red",marginLeft:20,marginTop:10}}
