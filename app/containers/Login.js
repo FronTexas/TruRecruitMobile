@@ -93,7 +93,7 @@ class Login extends Component {
   }
 
   gotoSignup() {
-    this.props.navigator.push({
+    this.props.navigatorWrapper(true).push({
       id: 'SignupPage',
       name: 'Sign Up',
     });

@@ -56,7 +56,7 @@ class EventCard extends Component
 
 	_goToEventDetails(){
 		this.props.selectEvent(this.props.event);
-		this.props.navigator.push({
+		this.props.navigatorWrapper(false).push({
 			id:"EventDetailsPage",
 			name:"Event Details Page",
 		})

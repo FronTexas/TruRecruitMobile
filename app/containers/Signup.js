@@ -71,11 +71,15 @@ class Signup extends Component {
     this.props.createNewUser(this.state);
   }
 
+  componentDidMount(){
+    this.props.hideTabBar(true);
+  }
+
   componentWillReceiveProps(nextProps){
     var {user} = nextProps;
     if(user) {
       this.setState({isWaitingForSignUpProccess:false})
-      this.props.navigator.push({
+      this.props.navigatorWrapper(false).push({
           id: 'EventPage',
           name: 'Login',
         });
@@ -292,7 +296,7 @@ class Signup extends Component {
               }}
             >
               <TouchableOpacity
-                onPress={() => this.props.navigator.pop()}
+                onPress={() => this.props.navigatorWrapper(true).pop()}
               >
                   <Icon name="ios-arrow-back" size={50} color="#FFF"/>
               </TouchableOpacity>
@@ -302,7 +306,7 @@ class Signup extends Component {
   }
 
   gotoSplash() {
-    this.props.navigator.push({
+    this.props.navigator(true).push({
       id: 'SplashPage',
       name: 'Splash Page',
     });

@@ -52,7 +52,7 @@ class AttendeeProfilePage extends Component
 		aboutToBeSavedAttendee.scanned = scanned;
 		this.props.saveNewAttendee(aboutToBeSavedAttendee);
 		if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-		this.props.navigator.pop();
+		this.props.navigatorWrapper(false).pop();
 	}
 
 	componentDidMount(){
@@ -60,6 +60,7 @@ class AttendeeProfilePage extends Component
  		this.props.setSelectedAttendee(this.props.attendeeID);
  		this.props.downloadProfilePic(this.props.attendeeID);
 		this.props.downloadResume();
+		this.props.hideTabBar(false);
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -139,7 +140,7 @@ class AttendeeProfilePage extends Component
 											}
 										</View>
 										<TouchableOpacity
-											onPress={() => this.props.navigator.push({
+											onPress={() => this.props.navigatorWrapper(true).push({
 												id: "ResumeViewPage",
 											}) }
 											style={styles.shadow}
@@ -198,10 +199,10 @@ class AttendeeProfilePage extends Component
 								onBackButtonPressed = {
 										() => { 
 											if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-											this.props.navigator.pop()
+											this.props.navigatorWrapper(false).pop()
 										}
 									} 
-									navigator={this.props.navigator} 
+									navigatorWrapper={this.props.navigatorWrapper} 
 									title={this.state.attendee.name}
 									hasScrollView={true}
 									minHeight={NAVBAR_HEIGHT}

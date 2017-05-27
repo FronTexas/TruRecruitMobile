@@ -51,7 +51,7 @@ class Splash extends Component {
   }
 
   gotoEvent() {
-    this.props.navigator.push({
+    this.props.navigatorWrapper(false).push({
       id: 'EventPage',
       name: 'Login',
     });

@@ -83,7 +83,7 @@ class EventPage extends Component
 						renderRow={(rowData) =>{
 								return <EventCard
 								event = {rowData}
-								navigator={this.props.navigator}
+								navigatorWrapper={this.props.navigatorWrapper}
 								onSendEmailClick={() => this.sendResumesToEmail(rowData)}
 								onLongPress = {() => {this.setState({eventIdToDelete:rowData.eventId}); this.refs.send_email_modal.open()}}
 								{...this.props}
@@ -125,7 +125,7 @@ class EventPage extends Component
 			<View style={{flex:1}}>
 				{body}
 				<Navbar
-					navigator={this.props.navigator} 
+					navigatorWrapper={this.props.navigatorWrapper} 
 					title='Events'
 					hasScrollView={true}
 					minHeight={NAVBAR_HEIGHT}
@@ -209,7 +209,7 @@ class EventPage extends Component
 	}
 
 	_goToAddEventPage(){
-		this.props.navigator.push({
+		this.props.navigatorWrapper(false).push({
 			id:"AddEventPage",
 			name:"Add Event Page",
 			events: this.state.events,

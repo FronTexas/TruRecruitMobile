@@ -37,7 +37,7 @@ class ResumeViewPage extends Component{
 
 	_handleDonePress(){
 		this.props.saveNotes(this.state.notes);
-		this.props.navigator.pop();
+		this.props.navigatorWrapper(false).pop();
 	}
 
 	componentWillReceiveProps(nextProps){

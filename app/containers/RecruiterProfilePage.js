@@ -110,7 +110,7 @@ class RecruiterProfilePage extends Component
 				</ScrollView>
 				<Navbar 
 						disableBackButton={true}
-						navigator={this.props.navigator} 
+						navigatorWrapper={this.props.navigatorWrapper} 
 						title="Profile"
 						hasScrollView={true}
 						minHeight={NAVBAR_HEIGHT}

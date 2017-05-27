@@ -32,7 +32,7 @@ class EventDetailsPage extends Component
 
 	_goToScannerPage()
 	{
-		this.props.navigator.push({
+		this.props.navigatorWrapper(false).push({
 			id: 'ScannerPage',
 			name: 'Scanner Page',
 			event: this.props.event,
@@ -42,6 +42,7 @@ class EventDetailsPage extends Component
 	componentWillMount(){
 		this.props.listenToAttendeesChanges();
 	}
+
 	componentWillReceiveProps(nextProps){
 		const {attendees} = nextProps;
 		if(attendees) this.setState({attendees});
@@ -90,7 +91,7 @@ class EventDetailsPage extends Component
 					renderRow={(rowData) =>
 						<EventDetailsCard
 						attendee={rowData}
-						navigator={this.props.navigator}
+						navigatorWrapper={this.props.navigatorWrapper}
 						{...this.props}
 						></EventDetailsCard>
 					}
@@ -127,7 +128,7 @@ class EventDetailsPage extends Component
 			<View style={{flex:1,backgroundColor:"#FFF"}}>
 				{body}
 				<Navbar 
-					navigator = {this.props.navigator} 
+					navigatorWrapper = {this.props.navigatorWrapper} 
 					title={this.props.event.eventTitle} 
 					subtitle={this.formatTimeScanned(this.props.event.eventDate)}
 					hasScrollView={true}

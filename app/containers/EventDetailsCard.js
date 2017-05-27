@@ -77,7 +77,7 @@ class EventDetailsCard extends Component
 			<TouchableOpacity
 				onPress={() => 
 						{	
-							this.props.navigator.push({
+							this.props.navigatorWrapper(false).push({
 								id:"AttendeeProfilePage",
 								attendeeID: this.props.attendee.id
 							})

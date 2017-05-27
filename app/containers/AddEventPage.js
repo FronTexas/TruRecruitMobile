@@ -48,6 +48,9 @@ class AddEventPage extends Component{
 			showDatePicker: false,
 		}
 	}
+	componentDidMount(){
+		this.props.hideTabBar(false);
+	}
 	render(){
 		const datePicker = this.state.showDatePicker ?
 		<View style={styles.datePicker_area}>
@@ -85,7 +88,7 @@ class AddEventPage extends Component{
 							resumeScanned: 0
 						}
 						this.props.saveNewEvent(theEvent);
-						this.props.navigator.pop();
+						this.props.navigatorWrapper(false).pop();
 					}
 
 				}
@@ -98,7 +101,7 @@ class AddEventPage extends Component{
 
 		return(
 			<View style={{backgroundColor:"#FFF",flex:1}}>
-				<Navbar navigator = {this.props.navigator} title={"Add Event"}></Navbar>
+				<Navbar navigatorWrapper = {this.props.navigatorWrapper} title={"Add Event"}></Navbar>
 
 				<FormLabel labelStyle={styles.formLabel}>Name</FormLabel>
 				<FormInput

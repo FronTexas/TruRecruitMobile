@@ -40,7 +40,7 @@ export default class Navbar extends Component{
 		var subtitle = this.props.subtitle ? 
 		<Text style={subtitleStyle}>{this.props.subtitle}</Text> : <View></View>;
 		
-		var backButton = !this.props.disableBackButton ? <BackButton onBackButtonPressed ={this.props.onBackButtonPressed} navigator={this.props.navigator}></BackButton> : <View></View>
+		var backButton = !this.props.disableBackButton ? <BackButton onBackButtonPressed ={this.props.onBackButtonPressed} navigatorWrapper={this.props.navigatorWrapper}></BackButton> : <View></View>
 
 		const height = this.props.scrollY ? this.props.scrollY.interpolate({
 				    inputRange: [this.state.headerScrollDistance * -1, 0],

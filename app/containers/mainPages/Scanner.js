@@ -47,7 +47,7 @@ export default class Scanner extends Component {
         this.state.qrReadAlready = false;
       }
 
-      this.props.navigator.push({
+      this.props.navigatorWrapper(false).push({
           id:"AttendeeProfilePage",
           name:"Attendee Profile Page",
           attendeeID,
@@ -104,7 +104,7 @@ export default class Scanner extends Component {
                         this.state.attendee
                       )
                     }
-                    this.props.navigator.pop();
+                    this.props.navigatorWrapper(false).pop();
                   }}
                 >
                   <Text id="done_text" style={[styles.textShadow,{color:"#FFF",fontSize:30,fontWeight:"600"}]}>Done</Text>
@@ -116,7 +116,7 @@ export default class Scanner extends Component {
   }
 
   gotoSplash() {
-    this.props.navigator.push({
+    this.props.navigatorWrapper(true).push({
       id: 'SplashPage',
       name: 'Splash Page',
     });

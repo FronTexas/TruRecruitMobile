@@ -64,7 +64,7 @@ class AppContainer extends Component {
       tabBarStyle.overflow = 'hidden';
       sceneStyle.paddingBottom = 0;
     }
-    console.log(`isLoginMode = ${this.state.isLoginMode}`)
+    
     var toRender = this.state.isLoginMode ? 
     <Navigator
         initialRoute={{id:'LoginPage', name: 'Index'}}
@@ -130,18 +130,24 @@ class AppContainer extends Component {
   }
 
   renderScene(route, navigator) {
+    const navigatorWrapper = (hideTabBar) => {
+            const isHideTabBar = hideTabBar ? true : false; 
+            this.hideTabBar(isHideTabBar);
+            return navigator;
+    }
+
     var routeId = route.id;
     if (routeId === 'SplashPage') {
       return (
         <Splash
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           {...this.props} />
       );
     }
     if (routeId === 'SignupPage') {
       return (
         <Signup
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}
            />
@@ -150,7 +156,7 @@ class AppContainer extends Component {
     if (routeId === 'LoginPage') {
       return (
         <Login
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}
           changeIsLoginMode={this.changeIsLoginMode.bind(this)}/>
@@ -160,7 +166,7 @@ class AppContainer extends Component {
     if (routeId === 'EventPage') {
       return (
          <EventPage
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           events={route.events}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}></EventPage>
@@ -170,7 +176,7 @@ class AppContainer extends Component {
     if (routeId === 'AddEventPage'){
       return(
         <AddEventPage
-          navigator={navigator}
+          navigatorWrapper = {navigatorWrapper}          
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}
         ></AddEventPage>
@@ -180,7 +186,7 @@ class AppContainer extends Component {
     if (routeId === 'EventDetailsPage') {
       return (
          <EventDetailsPage
-            navigator={navigator}
+            navigatorWrapper={navigatorWrapper}
             {...this.props}
             hideTabBar={this.hideTabBar.bind(this)}/>
       )
@@ -189,7 +195,7 @@ class AppContainer extends Component {
     if (routeId === 'ScannerPage'){
       return(
         <Scanner
-          navigator={navigator}
+          navigatorWrapper = {navigatorWrapper}
           event={route.event}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}
@@ -200,7 +206,7 @@ class AppContainer extends Component {
     if(routeId === 'AttendeeProfilePage'){
       return(
         <AttendeeProfilePage
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           {...this.props}
           {...route}
           hideTabBar={this.hideTabBar.bind(this)}
@@ -212,7 +218,7 @@ class AppContainer extends Component {
     if(routeId == 'ResumeViewPage'){
       return(
       <ResumeViewPage
-          navigator={navigator}
+          navigatorWrapper={navigatorWrapper}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}>
         </ResumeViewPage>

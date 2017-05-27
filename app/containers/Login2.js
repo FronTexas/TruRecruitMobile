@@ -63,7 +63,7 @@ class Login extends Component {
             <View style={{'flexDirection':'row'}}>
               <Text style={{color:"#FFF"}}>Don't have an account?</Text>
               <TouchableOpacity
-                onPress={() => this.props.navigator.push({
+                onPress={() => this.props.navigatorWrapper(true).push({
                   id:'SignupPage'
                 })}
               >
@@ -83,7 +83,7 @@ class Login extends Component {
   }
 
   gotoEvent() {
-    this.props.navigator.push({
+    this.props.navigatorWrapper(true).push({
       id: 'EventPage',
       name: 'Login',
     });
@@ -92,7 +92,7 @@ class Login extends Component {
 
 
   gotoSignup() {
-    this.props.navigator.push({
+    this.props.navigatorWrapper(true).push({
       id: 'SignupPage',
       name: 'Sign Up',
     });
