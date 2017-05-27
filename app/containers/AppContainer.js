@@ -64,7 +64,7 @@ class AppContainer extends Component {
       tabBarStyle.overflow = 'hidden';
       sceneStyle.paddingBottom = 0;
     }
-    
+        
     var toRender = this.state.isLoginMode ? 
     <Navigator
         initialRoute={{id:'LoginPage', name: 'Index'}}
@@ -132,7 +132,6 @@ class AppContainer extends Component {
   renderScene(route, navigator) {
     const navigatorWrapper = (hideTabBar) => {
             const isHideTabBar = hideTabBar ? true : false; 
-            this.hideTabBar(isHideTabBar);
             return navigator;
     }
 
