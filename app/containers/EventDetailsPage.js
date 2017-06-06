@@ -32,7 +32,7 @@ class EventDetailsPage extends Component
 
 	_goToScannerPage()
 	{
-		this.props.navigatorWrapper(false).push({
+		this.props.navigatorWrapper(true).push({
 			id: 'ScannerPage',
 			name: 'Scanner Page',
 			event: this.props.event,

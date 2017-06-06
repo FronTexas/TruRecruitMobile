@@ -11,12 +11,13 @@ import {
   Text,
   View,
   AsyncStorage,
+  Dimensions
 } from 'react-native';
 
 import {
   Tabs,
   Tab,
-  Icon
+  Icon,
 } from 'react-native-elements';
 
 const firebase = require('firebase');
@@ -26,6 +27,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {ActionCreators} from '../actions';
 
+import FadeInOut from './FadeInOut';
 import Login from './Login';
 import Signup from './Signup';
 import EventPage from './EventPage';
@@ -59,26 +61,19 @@ class AppContainer extends Component {
   render() {
     let tabBarStyle = {};
     let sceneStyle = {};
+
     if (this.state.hideTabBar) {
       tabBarStyle.height = 0;
       tabBarStyle.overflow = 'hidden';
       sceneStyle.paddingBottom = 0;
     }
-        
-    var toRender = this.state.isLoginMode ? 
-    <Navigator
-        initialRoute={{id:'LoginPage', name: 'Index'}}
-        renderScene={this.renderScene.bind(this)}
-        configureScene={(route) => {
-            if (route.sceneConfig) {
-              return route.sceneConfig;
-            }
-            return Navigator.SceneConfigs.FloatFromRight; 
-          }
-        } 
-      />
-    : 
-    <Tabs hidesTabTouch tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
+
+
+    var toRender = 
+    <View
+      style={{flex:1}}
+    >
+      <Tabs hidesTabTouch tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
         <Tab
           titleStyle={{fontWeight: 'bold' , fontSize: 10, }}
           selectedTitleStyle={{color:'#1DBB96'}}
@@ -113,7 +108,29 @@ class AppContainer extends Component {
             hideTabBar={this.hideTabBar.bind(this)}
           ></RecruiterProfilePage>
         </Tab>
-    </Tabs>
+      </Tabs>
+      <FadeInOut
+          isVisible={this.state.isLoginMode}
+          style={{
+            position:'absolute',
+            top:0,
+            width:Dimensions.get('window').width,
+            height:Dimensions.get('window').height,
+          }}
+        >
+          <Navigator
+            initialRoute={{id:'LoginPage', name: 'Index'}}
+            renderScene={this.renderScene.bind(this)}
+            configureScene={(route) => {
+                if (route.sceneConfig) {
+                  return route.sceneConfig;
+                }
+                return Navigator.SceneConfigs.FloatFromRight; 
+              }
+          } 
+          />
+        </FadeInOut>
+    </View>
 
     return toRender;
   }
@@ -132,6 +149,7 @@ class AppContainer extends Component {
   renderScene(route, navigator) {
     const navigatorWrapper = (hideTabBar) => {
             const isHideTabBar = hideTabBar ? true : false; 
+            this.hideTabBar(isHideTabBar)
             return navigator;
     }
 

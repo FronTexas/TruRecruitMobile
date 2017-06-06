@@ -164,28 +164,31 @@ export function saveNewEvent(event){
 export function listenToEventsChanges(){
 	return (dispatch,getState) => {
 		const { firebaseRef, user } = getState();
-		firebaseRef.database()
-		.ref('/recruiters/' + user.uid + '/events/')
-		.on('value', (snapshot) => {
-			var events = snapshot.val()
-			if(!events){
-				dispatch(updateEvents({}));
-				return;
-			}
+		if(user){
+			firebaseRef.database()
+			.ref('/recruiters/' + user.uid + '/events/')
+			.on('value', (snapshot) => {
+				var events = snapshot.val()
+				if(!events){
+					dispatch(updateEvents({}));
+					return;
+				}
 
 
-			for(let key of Object.keys(events)){
-				events[key].eventId = key
-			}
-			
-			var eventKeySorted = Object.keys(events).sort((a,b)=>{return events[b]["eventDate"] - events[a]["eventDate"]})
+				for(let key of Object.keys(events)){
+					events[key].eventId = key
+				}
+				
+				var eventKeySorted = Object.keys(events).sort((a,b)=>{return events[b]["eventDate"] - events[a]["eventDate"]})
 
-			var eventsSorted = [];
-			eventKeySorted.forEach((key)=>{
-				eventsSorted.push(events[key]);
+				var eventsSorted = [];
+				eventKeySorted.forEach((key)=>{
+					eventsSorted.push(events[key]);
+				})
+				dispatch(updateEvents(eventsSorted))	
 			})
-			dispatch(updateEvents(eventsSorted))	
-		})
+		}
+		
 	}
 }
 

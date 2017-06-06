@@ -51,7 +51,8 @@ export default class Scanner extends Component {
           id:"AttendeeProfilePage",
           name:"Attendee Profile Page",
           attendeeID,
-          toggleScannerPagesQRReadAlready
+          toggleScannerPagesQRReadAlready,
+          prevPageHasTabBar: false
         })
     }
   }

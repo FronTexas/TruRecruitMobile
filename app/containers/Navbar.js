@@ -71,14 +71,16 @@ export default class Navbar extends Component{
 					<View style={{
 						flex:.15,
 						paddingLeft:15,
-						justifyContent:'center'
+						justifyContent:'center',
+						paddingTop: 10
 					}}>
 						{backButton}
 					</View>
 					<View
 						style={{
 							flex:.7,
-							justifyContent: 'center'
+							justifyContent: 'center',
+							paddingTop:10
 						}}
 					>
 					{title}

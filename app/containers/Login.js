@@ -85,10 +85,13 @@ class Login extends Component {
       this.setState({loginError})
       return;
     }
+
     if(user){
       this.setState({isWaitingForLoginProccess:false})
       this.setState({loginError:null})
       this.props.changeIsLoginMode(false);
+      this.props.hideTabBar(false);
+      this.props.listenToEventsChanges();
     }
   }
 

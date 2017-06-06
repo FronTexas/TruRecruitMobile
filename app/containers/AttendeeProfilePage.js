@@ -38,6 +38,7 @@ class AttendeeProfilePage extends Component
 		this.state.linkToOpen = null;
 		this.state.scrollY = new Animated.Value(0);
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
+		this.state.prevPageHasTabBar = this.props.prevPageHasTabBar ? this.props.prevPageHasTabBar : true
 	}
 
 	_onStarPress(rating){
@@ -52,7 +53,7 @@ class AttendeeProfilePage extends Component
 		aboutToBeSavedAttendee.scanned = scanned;
 		this.props.saveNewAttendee(aboutToBeSavedAttendee);
 		if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-		this.props.navigatorWrapper(false).pop();
+		this.props.navigatorWrapper(this.state.prevPageHasTabBar).pop();
 	}
 
 	componentDidMount(){
@@ -199,7 +200,7 @@ class AttendeeProfilePage extends Component
 								onBackButtonPressed = {
 										() => { 
 											if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-											this.props.navigatorWrapper(false).pop()
+											this.props.navigatorWrapper(this.state.prevPageHasTabBar).pop()
 										}
 									} 
 									navigatorWrapper={this.props.navigatorWrapper} 
