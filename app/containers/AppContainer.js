@@ -68,7 +68,6 @@ class AppContainer extends Component {
       sceneStyle.paddingBottom = 0;
     }
 
-
     var toRender = 
     <View
       style={{flex:1}}

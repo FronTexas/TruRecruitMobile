@@ -38,6 +38,7 @@ class RecruiterProfilePage extends Component
 			summary: 'Loading'
 		}
 		this.state.scrollY = new Animated.Value(0);
+		this.state.isLoggedIn = false;
 	}
 
 	componentDidMount(){
@@ -47,14 +48,17 @@ class RecruiterProfilePage extends Component
 
 	componentWillReceiveProps(nextProps){
 		const {recruiter,isLoggedIn} = nextProps;
-
-		if (!isLoggedIn){
-			this.props.changeIsLoginMode(true);
+		if(isLoggedIn != this.state.isLoggedIn){
+			this.setState({isLoggedIn})
+			if (!isLoggedIn){
+				this.props.changeIsLoginMode(true);
+			}
 		}
-
-		if(recruiter){
+		noRecruiterInThisComponent = !(this.state.recruiter.name == 'Loading')
+		if(recruiter && noRecruiterInThisComponent){
 			this.setState({recruiter})
 		}
+		
 	}
 
 	closeModal(){
@@ -141,7 +145,7 @@ class RecruiterProfilePage extends Component
 								this.closeModal();
 							}}>
 									<View
-										id="cancel-button"
+										id="yes-button"
 										style={[styles.shadow,{
 													padding:15,
 													backgroundColor:'#e74c3c',
@@ -158,7 +162,7 @@ class RecruiterProfilePage extends Component
 								this.closeModal();
 							}}>
 									<View
-										id="send-button"
+										id="no-button"
 										style={[styles.shadow,{
 													padding:15,
 													backgroundColor:'#1DBB96',

@@ -27,7 +27,6 @@ export default class FadeInOut extends Component{
 		}
 
 		if(!isVisible && shouldBeVisible){
-			this.insertView();
 			Animated.timing(this.state.opacity,{
 				toValue: 1, 
 				duration:200
