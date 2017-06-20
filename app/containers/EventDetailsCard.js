@@ -80,7 +80,7 @@ class EventDetailsCard extends Component
 							this.props.navigatorWrapper(false).push({
 								id:"AttendeeProfilePage",
 								attendeeID: this.props.attendee.id,
-								prevPageHasTabBar: true
+								prevPageShouldHideTabBar: false
 							})
 						}
 				}

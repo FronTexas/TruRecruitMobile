@@ -38,7 +38,7 @@ class AttendeeProfilePage extends Component
 		this.state.linkToOpen = null;
 		this.state.scrollY = new Animated.Value(0);
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
-		this.state.prevPageHasTabBar = this.props.prevPageHasTabBar ? this.props.prevPageHasTabBar : true
+		this.state.prevPageShouldHideTabBar = this.props.prevPageShouldHideTabBar != null ? this.props.prevPageShouldHideTabBar: false
 	}
 
 	_onStarPress(rating){
@@ -52,8 +52,9 @@ class AttendeeProfilePage extends Component
 		var aboutToBeSavedAttendee = {...this.state.attendee};
 		aboutToBeSavedAttendee.scanned = scanned;
 		this.props.saveNewAttendee(aboutToBeSavedAttendee);
+
 		if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-		this.props.navigatorWrapper(this.state.prevPageHasTabBar).pop();
+		this.props.navigatorWrapper(this.state.prevPageShouldHideTabBar).pop();
 	}
 
 	componentDidMount(){
@@ -65,7 +66,12 @@ class AttendeeProfilePage extends Component
 	}
 
 	componentWillReceiveProps(nextProps){
+		// TODO PROBLEM MIGHT BE HERE 
+		// ComponentWillReceiveProps is called when going to ResumeViewPage, this should not happen
+
 		const { attendee,attendeePDFLocation,profilePictureURLDictionary} = nextProps;
+		console.log(`in componentWillReceiveProps, nextProps.attendee = ${JSON.stringify(attendee)}`)
+		console.log(`in componentWillReceiveProps, this.state.attendee = ${JSON.stringify(this.state.attendee)}`)
 		if (attendee) this.setState({attendee});
 		if (attendeePDFLocation) this.setState({attendeePDFLocation});
 		if (profilePictureURLDictionary) this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendeeID]})
@@ -73,6 +79,8 @@ class AttendeeProfilePage extends Component
 
 	render()
 	{	
+		console.log(`this.state.attendee = ${JSON.stringify(this.state.attendee)}`)
+		console.log(`this.state.attendee.rating = ${this.state.attendee.rating}`)
 		var profPicView = this.state.profilePictureURL ?
 		<Image style={[{width:80,height:80,borderRadius:40},styles.shadow]} source={{uri: this.state.profilePictureURL}}></Image>
 		:
@@ -200,7 +208,7 @@ class AttendeeProfilePage extends Component
 								onBackButtonPressed = {
 										() => { 
 											if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-											this.props.navigatorWrapper(this.state.prevPageHasTabBar).pop()
+											this.props.navigatorWrapper(this.state.prevPageShouldHideTabBar).pop()
 										}
 									} 
 									navigatorWrapper={this.props.navigatorWrapper} 

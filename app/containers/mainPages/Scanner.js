@@ -32,7 +32,7 @@ export default class Scanner extends Component {
   }
 
   _handleBarcodeReadFake(){
-    this._goToAttendeeProfilePage('-KdrTZY6gyfFa64ZKMys');
+    // this._goToAttendeeProfilePage('-KdrTZY6gyfFa64ZKMys');
   }
 
   _handleBarcodeRead(attendeeID){
@@ -52,7 +52,7 @@ export default class Scanner extends Component {
           name:"Attendee Profile Page",
           attendeeID,
           toggleScannerPagesQRReadAlready,
-          prevPageHasTabBar: false
+          prevPageShouldHideTabBar: true
         })
     }
   }
@@ -87,7 +87,7 @@ export default class Scanner extends Component {
           </View>
           <View style={styles.scan_and_instruction}>
             <Image  source={require('../img/scanner.png')} style={styles.scan}/>
-            <Text onPress={this._handleBarcodeReadFake.bind(this)} style={[styles.textShadow,styles.instruction]}>Place the QR code in the middle of TruRecruit Logo</Text>
+            <Text style={[styles.textShadow,styles.instruction]}>Place the QR code in the middle of TruRecruit Logo</Text>
           </View>
           <View 
               id="done_text_area"

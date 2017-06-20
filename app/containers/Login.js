@@ -87,6 +87,7 @@ class Login extends Component {
     }
 
     if(user){
+      this.setState({email:'',password:''})
       this.setState({isWaitingForLoginProccess:false})
       this.setState({loginError:null})
       this.props.changeIsLoginMode(false);
@@ -208,6 +209,7 @@ class Login extends Component {
                       this.setState({email})
                       this.setState({isEmailValid: !this.state.isEmailFieldPristine && this.validateEmail(email) ? true : this.state.isEmailValid})
                     }}
+                    value={this.state.email}
                     keyboardType="email-address"
                     onBlur={()=> {
                       this.setState({isEmailFieldPristine:false})
@@ -226,6 +228,7 @@ class Login extends Component {
                       this.setState({password})
                       this.setState({isPasswordValid: !this.state.isPasswordFieldPristine && this.validatePassword(password) ? true : this.state.isPasswordValid})
                     }}
+                    value={this.state.password}
                     onBlur={()=> {
                       this.setState({isPasswordFieldPristine:false})
                       this.setState({isPasswordValid: this.validatePassword(this.state.password) ? true : false})

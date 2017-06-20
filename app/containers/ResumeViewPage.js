@@ -97,7 +97,7 @@ class ResumeViewPage extends Component{
 				        onChangeText={(notes) => this.setState({notes})}
 				        value={this.state.notes}
 				        multiline={true}
-				        placeholder={'Starts Typing Here'}
+				        placeholder={'Click here to type'}
 				        placeholderTextColor="white"
 				    >
 				    </TextInput>			

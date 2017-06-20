@@ -105,11 +105,15 @@ class AddEventPage extends Component{
 
 				<FormLabel labelStyle={styles.formLabel}>Name</FormLabel>
 				<FormInput
+					textInputRef={(component) => this.eventTitleField = component}
 					placeholder="Enter the name of the event"
+	                returnKeyType="next"
+					onSubmitEditing={() => {this.eventLocationField.focus()}}
 					onChangeText={(eventTitle) => this.setState({eventTitle: eventTitle})}></FormInput>
 
 				<FormLabel labelStyle={styles.formLabel}>Location</FormLabel>
 				<FormInput
+					textInputRef={(component) => this.eventLocationField = component}
 					placeholder="Enter the location of the event"
 					onChangeText={(eventLocation) => this.setState({eventLocation: eventLocation})}></FormInput>
 

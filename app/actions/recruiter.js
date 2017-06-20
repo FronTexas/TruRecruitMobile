@@ -57,6 +57,9 @@ export function createNewUser({email,password,firstName,lastName,company}){
 					console.log(error)
 				}else{
 					dispatch({
+						type:types.SIGNUP_SUCCESS
+					})
+					dispatch({
 						type: types.USER_LOGGED_IN, 
 						user: user
 					})
@@ -69,6 +72,7 @@ export function createNewUser({email,password,firstName,lastName,company}){
 			console.log(errorMessage);
 			dispatch({
 				type: types.FAILED_TO_CREATE_NEW_USER,
+				errorMessage
 			})
 		})
 	}

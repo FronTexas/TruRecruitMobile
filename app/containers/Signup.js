@@ -76,9 +76,16 @@ class Signup extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    var {user} = nextProps;
+    var {user,failedSignupMessage} = nextProps;
+
+    if (failedSignupMessage){
+      this.setState({isWaitingForSignUpProccess:false})
+      this.setState({signUpFailureMessage: failedSignupMessage})
+    }
+
     if(user) {
       this.setState({isWaitingForSignUpProccess:false})
+      this.setState({signUpFailureMessage:null})
       this.props.navigatorWrapper(false).push({
           id: 'EventPage',
           name: 'Login',
@@ -97,6 +104,11 @@ class Signup extends Component {
   }
 
   render() {
+
+    var signUpFailureMessage = this.state.signUpFailureMessage ? 
+      <Text
+        style={{color:"red",marginLeft:20,marginTop:10}}
+      >{this.state.signUpFailureMessage}</Text> : <View></View>
 
     var emailValidationMessage = !this.state.isEmailValid ? 
       <Text
@@ -282,6 +294,7 @@ class Signup extends Component {
                       {signUpButtonContent}
                     </View>
                   </TouchableOpacity>
+                  {signUpFailureMessage}
                 </View>
             </View>
           </View>
@@ -372,9 +385,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-  var {user} = state;
+  var {user,failedSignupMessage} = state;
   return {
-    user
+    user,
+    failedSignupMessage
   }
 }
 
