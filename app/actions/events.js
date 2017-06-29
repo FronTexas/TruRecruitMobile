@@ -5,6 +5,16 @@ var RNFS = require('react-native-fs');
 import RNHTMLToPDF from 'react-native-html-to-pdf';
 
 
+export function toggleNoResumeScannedFlag(){
+	return (dispatch,getState) => {
+		const {isNoResumeScannedFlagRaised} = getState();
+		dispatch({
+			type: types.RAISED_NO_RESUME_SCANNED_FLAG,
+			val: !isNoResumeScannedFlagRaised
+		})
+	}
+}
+
 export function deleteEvent(eventId){
 	return(dispatch,getState) => {
 		const {firebaseRef,user} = getState();
@@ -27,6 +37,14 @@ export function zipAndEmailResumes({event}){
 					notes: child.val().notes ? child.val().notes : ''
 				});
 			});
+
+			if (listOfAttendees.length == 0) {
+				console.log('No resume scanned flag is about to be raised')
+				dispatch({
+					type:types.RAISED_NO_RESUME_SCANNED_FLAG,
+					val:true
+				})
+			}
 
 			var storageRef = firebaseRef.storage().ref();
 			var listOfAttendeesLength = listOfAttendees.length;
@@ -66,7 +84,7 @@ export function zipAndEmailResumes({event}){
 									
 										zip(sourcePath,targetPath)
 											.then((path)=>{
-												Mailer.mail({
+													Mailer.mail({
 													subject: 'Resumes for ' + event.eventTitle,
 													recipients:[''],
 													attachment:{
@@ -75,7 +93,7 @@ export function zipAndEmailResumes({event}){
 														name: 'resumes.zip'
 													}
 												}, (error,event) => {
-													if(event){
+													if(event == "sent" || event == "cancelled"){
 														dispatch({
 															type: types.READY_TO_EMAIL_RESUMES,
 															val:false
@@ -84,7 +102,6 @@ export function zipAndEmailResumes({event}){
 														AlertIOS.alert('Error', 'Could not send mail. Please send a mail to trurecruit.email@gmail.com');
 													}
 												})
-
 												dispatch({
 													type: types.READY_TO_EMAIL_RESUMES,
 													val: true
@@ -142,7 +159,7 @@ export function zipAndEmailResumes({event}){
 						RNFS.mkdir(rootLocation,{
 								NSURLIsExcludedFromBackupKey: false	
 						});
-						loopingThroughAttendees();
+						loopingThroughAttendees(listOfAttendees);
 					}
 				}
 			)

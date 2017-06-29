@@ -93,7 +93,7 @@ class EventCard extends Component
 						this.props.onLongPress();
 					}}
 					>
-					<View style={[styles.shadow,styles.container]}>
+						<View style={[styles.shadow,styles.container]}>
 						<View style={styles.eventInfoContainer}>
 							<Text style={styles.eventTitle}>{this.props.event.eventTitle}</Text>
 							<Text style={styles.eventDate}>{this.props.event.eventLocation}</Text>

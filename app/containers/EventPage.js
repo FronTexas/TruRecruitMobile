@@ -20,7 +20,6 @@ import ActionButton from 'react-native-action-button';
 import BackButton from './BackButton';
 import Navbar from './Navbar';
 
-
 import LinearGradient from 'react-native-linear-gradient';
 var Modal = require('react-native-modalbox');
 
@@ -48,10 +47,6 @@ class EventPage extends Component
 		});
 	}
 
-	closeModal(){
-		this.refs.send_email_modal.close()
-	}
-
 	componentDidMount(){
 		this.props.listenToEventsChanges();
 		this.props.hideTabBar(false);
@@ -70,8 +65,14 @@ class EventPage extends Component
 	}
 
 	componentWillReceiveProps(nextProps){
-		const {events} = nextProps;
+		const {events,isNoResumeScannedFlagRaised} = nextProps;
 		if(events) this.setState({events});
+		if (isNoResumeScannedFlagRaised != null){
+			if(isNoResumeScannedFlagRaised){
+				this.refs.no_resume_scanned_modal.open()
+				this.setState({isNoResumeScannedFlagRaised:true})
+			}
+		}
 	}
 
 	render()
@@ -81,14 +82,15 @@ class EventPage extends Component
 			body = <ListView
 						dataSource={this.getDataSource()}
 						renderRow={(rowData) =>{
-								return <EventCard
-								event = {rowData}
-								navigatorWrapper={this.props.navigatorWrapper}
-								onSendEmailClick={() => this.sendResumesToEmail(rowData)}
-								onLongPress = {() => {this.setState({eventIdToDelete:rowData.eventId}); this.refs.send_email_modal.open()}}
-								{...this.props}
-								style={{marginTop:30}}
-								></EventCard>
+								return (
+								<EventCard
+									event = {rowData}
+									navigatorWrapper={this.props.navigatorWrapper}
+									onSendEmailClick={() => this.sendResumesToEmail(rowData)}
+									onLongPress = {() => {this.setState({eventIdToDelete:rowData.eventId}); this.refs.delete_event_modal.open()}}
+									{...this.props}
+									style={{marginTop:30}}
+								></EventCard>)
 							}
 						}
 						style = {styles.list_view}
@@ -138,8 +140,24 @@ class EventPage extends Component
 					disableBackButton={true}
 					>
 				</Navbar>
+				<Modal 
+					position={"center"} 
+					ref={"no_resume_scanned_modal"} 
+					backdrop={true} 
+					style={{height:200,width:200,borderRadius:25}}
+					onClosed={()=>{
+						this.props.toggleNoResumeScannedFlag()
+					}}>
+					<View style={{flex:1,flexDirection:"row",padding:10}}>
+						<IconFa style={{color:"#7f8c8d",alignSelf:"center"}} size={30} name="file-text-o"></IconFa>
+						<View style={{alignSelf:"center",marginLeft:10}}>
+							<Text style={{fontWeight:"600", fontSize:25,color:"#7f8c8d"}}>No resume</Text>
+							<Text style={{fontWeight:"600", fontSize:25,color:"#7f8c8d"}}>scanned yet</Text>
+						</View>
+					</View>
+				</Modal>
 				<Modal position={"center"}
-				ref={"send_email_modal"} backdrop={true} style={{height:200,width:300}}>
+				ref={"delete_event_modal"} backdrop={true} style={{height:200,width:300,borderRadius:25}}>
 					<View
 						id="modal-container"
 						style={{
@@ -155,7 +173,7 @@ class EventPage extends Component
 						<View style={{flexDirection:'row',justifyContent:'space-around'}}>
 							<TouchableOpacity onPress={() => {
 								this.props.deleteEvent(this.state.eventIdToDelete);
-								this.closeModal();
+								this.refs.delete_event_modal.close()
 							}}>
 									<View
 										id="cancel-button"
@@ -172,7 +190,7 @@ class EventPage extends Component
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={() => {
-								this.closeModal();
+								this.refs.delete_event_modal.clos();
 							}}>
 									<View
 										id="send-button"
@@ -279,8 +297,10 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state){
+	const {events,isNoResumeScannedFlagRaised} = state
 	return {
-		events: state.events
+		events,
+		isNoResumeScannedFlagRaised
 	};
 }
 
