@@ -74,7 +74,7 @@ class AppContainer extends Component {
     >
       <Tabs hidesTabTouch tabBarStyle={tabBarStyle} sceneStyle={sceneStyle}>
         <Tab
-          titleStyle={{fontWeight: 'bold' , fontSize: 10, }}
+          titleStyle={{fontWeight: 'bold' , fontSize: 10,}}
           selectedTitleStyle={{color:'#1DBB96'}}
           selected={this.state.selectedTab === 'home'}
           title='HOME'
@@ -130,7 +130,6 @@ class AppContainer extends Component {
           />
         </FadeInOut>
     </View>
-
     return toRender;
   }
 
@@ -139,9 +138,9 @@ class AppContainer extends Component {
   }
 
   changeIsLoginMode(loginMode){
-    this.setState({isLoginMode:loginMode})
+    this.setState({isLoginMode:loginMode});
     if(!loginMode){
-      this.setState({selectedTab:'home'})
+      this.setState({selectedTab:'home'});
     }
   }
 
@@ -166,7 +165,8 @@ class AppContainer extends Component {
           navigatorWrapper={navigatorWrapper}
           {...this.props}
           hideTabBar={this.hideTabBar.bind(this)}
-           />
+          changeIsLoginMode={this.changeIsLoginMode.bind(this)}
+          />
       );
     }
     if (routeId === 'LoginPage') {

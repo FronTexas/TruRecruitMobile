@@ -48,27 +48,31 @@ class Signup extends Component {
 
   _handleSignUpPress() {
 
-    var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
-    var proceed = true;
-    if (!this.validateEmail(email)) {
-      this.setState({isEmailValid:false});
-      proceed = false;
-    }
-    if (!this.validatePassword(password)) {
-      this.setState({isPasswordValid:false}) 
-      proceed = false;
-    }
-    if (password != confirmedPassword) {
-      this.setState({isPasswordIdentical:false}) 
-      proceed = false
-    }
+    // var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
+    // var proceed = true;
+    // if (!this.validateEmail(email)) {
+    //   this.setState({isEmailValid:false});
+    //   proceed = false;
+    // }
+    // if (!this.validatePassword(password)) {
+    //   this.setState({isPasswordValid:false}) 
+    //   proceed = false;
+    // }
+    // if (password != confirmedPassword) {
+    //   this.setState({isPasswordIdentical:false}) 
+    //   proceed = false
+    // }
 
-    if(!proceed){
-      return;
-    }
+    // if(!proceed){
+    //   return;
+    // }
 
-    this.setState({isWaitingForSignUpProccess:true})
-    this.props.createNewUser(this.state);
+    // this.setState({isWaitingForSignUpProccess:true})
+    // this.props.createNewUser(this.state);
+    this.props.login({
+      email:'forfron@gmail.com',
+      password: 'trurecruitlit'
+    })
   }
 
   componentDidMount(){
@@ -86,10 +90,10 @@ class Signup extends Component {
     if(user) {
       this.setState({isWaitingForSignUpProccess:false})
       this.setState({signUpFailureMessage:null})
+      this.props.changeIsLoginMode(false);
       this.props.navigatorWrapper(false).push({
-          id: 'EventPage',
-          name: 'Login',
-        });
+        id:'LoginPage'
+      })
     }
   }
 

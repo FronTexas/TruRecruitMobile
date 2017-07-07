@@ -73,10 +73,6 @@ class Login extends Component {
     // this.props.removeLoggedInUser();
   }
 
-  componentDidMount(){
-    this.props.hideTabBar(true);
-  }
-
   componentWillReceiveProps(nextProps){
     const {user,loginError} = nextProps;
     
@@ -91,7 +87,6 @@ class Login extends Component {
       this.setState({isWaitingForLoginProccess:false})
       this.setState({loginError:null})
       this.props.changeIsLoginMode(false);
-      this.props.hideTabBar(false);
       this.props.listenToEventsChanges();
     }
   }

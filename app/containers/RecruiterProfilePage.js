@@ -126,7 +126,7 @@ class RecruiterProfilePage extends Component
 						scrollY={this.state.scrollY}
 				></Navbar>
 				<Modal position={"center"}
-				ref={"signOutConfirmationModal"} backdrop={true} style={{height:200,width:300}}>
+				ref={"signOutConfirmationModal"} backdrop={true} style={{height:200,width:300,borderRadius:25}}>
 					<View
 						id="modal-container"
 						style={{
