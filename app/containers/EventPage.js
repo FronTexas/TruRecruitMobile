@@ -190,7 +190,7 @@ class EventPage extends Component
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={() => {
-								this.refs.delete_event_modal.clos();
+								this.refs.delete_event_modal.close();
 							}}>
 									<View
 										id="send-button"

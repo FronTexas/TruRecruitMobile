@@ -87,20 +87,20 @@ class EventDetailsPage extends Component
 	{
 		if (this.state.attendees && !_.isEmpty(this.state.attendees)){
 			body = <ListView
-					dataSource={this.getDataSource()}
-					renderRow={(rowData) =>
-						<EventDetailsCard
-						attendee={rowData}
-						navigatorWrapper={this.props.navigatorWrapper}
-						{...this.props}
-						></EventDetailsCard>
-					}
-					style = {styles.list_view}
-					removeClippedSubviews={false}
-					onScroll={Animated.event(
-				      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
-				    )}
-				    scrollEventThrottle={12}
+						dataSource={this.getDataSource()}
+						renderRow={(rowData) =>
+							<EventDetailsCard
+							attendee={rowData}
+							navigatorWrapper={this.props.navigatorWrapper}
+							{...this.props}
+							></EventDetailsCard>
+						}
+						style = {styles.list_view}
+						removeClippedSubviews={false}
+						onScroll={Animated.event(
+					      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+					    )}
+					    scrollEventThrottle={12}
 					></ListView>
 		}else if(this.state.attendees){
 			body = 

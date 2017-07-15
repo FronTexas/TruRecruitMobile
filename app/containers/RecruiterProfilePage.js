@@ -54,7 +54,7 @@ class RecruiterProfilePage extends Component
 				this.props.changeIsLoginMode(true);
 			}
 		}
-		noRecruiterInThisComponent = !(this.state.recruiter.name == 'Loading')
+		noRecruiterInThisComponent = (this.state.recruiter.name == 'Loading')
 		if(recruiter && noRecruiterInThisComponent){
 			this.setState({recruiter})
 		}
