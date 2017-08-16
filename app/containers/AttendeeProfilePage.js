@@ -50,8 +50,10 @@ class AttendeeProfilePage extends Component
 	_handleSave(){
 		var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
 		var aboutToBeSavedAttendee = {...this.state.attendee};
+		console.log(`in AttendeeProfilePage, this.state.attendee = ${JSON.stringify(this.state.attendee)}`);
 		aboutToBeSavedAttendee.scanned = scanned;
 		this.props.saveNewAttendee(aboutToBeSavedAttendee);
+		this.props.notifyAttendee(aboutToBeSavedAttendee);
 
 		if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
 		this.props.navigatorWrapper(this.state.prevPageShouldHideTabBar).pop();
@@ -70,8 +72,6 @@ class AttendeeProfilePage extends Component
 		// ComponentWillReceiveProps is called when going to ResumeViewPage, this should not happen
 
 		const { attendee,attendeePDFLocation,profilePictureURLDictionary} = nextProps;
-		console.log(`in componentWillReceiveProps, nextProps.attendee = ${JSON.stringify(attendee)}`)
-		console.log(`in componentWillReceiveProps, this.state.attendee = ${JSON.stringify(this.state.attendee)}`)
 		if (attendee) this.setState({attendee});
 		if (attendeePDFLocation) this.setState({attendeePDFLocation});
 		if (profilePictureURLDictionary) this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendeeID]})
@@ -79,8 +79,6 @@ class AttendeeProfilePage extends Component
 
 	render()
 	{	
-		console.log(`this.state.attendee = ${JSON.stringify(this.state.attendee)}`)
-		console.log(`this.state.attendee.rating = ${this.state.attendee.rating}`)
 		var profPicView = this.state.profilePictureURL ?
 		<Image style={[{width:80,height:80,borderRadius:40},styles.shadow]} source={{uri: this.state.profilePictureURL}}></Image>
 		:

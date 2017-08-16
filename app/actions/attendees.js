@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import * as types from './types';
 var RNFS = require('react-native-fs');
 
@@ -106,7 +107,7 @@ export function setSelectedAttendee(attendeeID){
 				var mergedAttendee = {
 					email: sourceAttendee.email,
 					name: sourceAttendee.name,
-					links: sourceAttendee.links,
+					links: sourceAttendee.links ? sourceAttendee.links : null,
 					summary: sourceAttendee.summary,
 					notes: recruiterAttendee.notes ? recruiterAttendee.notes : null,
 					rating: recruiterAttendee.rating ? recruiterAttendee.rating : 0,
@@ -135,6 +136,18 @@ export function saveNewAttendee(attendee){
 		+ attendee.id] = attendee
 		firebaseRef.database().ref().update(updates)
 	}
+}
+
+export function saveNotes(notes){
+	return (dispatch,getState) => {
+		const { user, selected_event, selectedAttendee } = getState();
+		var modifiedSelectedAttendee = {...selectedAttendee};
+		modifiedSelectedAttendee["notes"] = notes; 
+		dispatch({
+			type:types.SELECT_ATTENDEE,
+			attendee: modifiedSelectedAttendee
+		});
+	}	
 }
 
 export function listenToAttendeesChanges(){
@@ -172,22 +185,36 @@ export function listenToAttendeesChanges(){
 	}
 }
 
+export function notifyAttendee(attendee){
+	return (dispatch,getState)=>{
+		var {firebaseRef,user} = getState();
+
+		firebaseRef.database()
+		.ref(`attendees/${attendee.id}`)
+		.once('value')
+		.then((snap)=>{
+			var current_attendee = snap.val();
+			var recruiter_who_scanned_you = current_attendee.recruiter_who_scanned_you ? current_attendee.recruiter_who_scanned_you : [];
+			if(!_.some(recruiter_who_scanned_you,(o)=>{return _.has(o,user.email)}))
+			{
+				recruiter_who_scanned_you.push({
+					email:user.email,
+					name: user.name, 
+					company: user.company
+				});
+				current_attendee.recruiter_who_scanned_you = recruiter_who_scanned_you;
+				var updates = {};
+				updates[`/attendees/${attendee.id}` ] = current_attendee;
+				firebaseRef.database().ref().update(updates);
+			}
+		});
+	}
+}
+
 export function updateAttendees(attendees,recruitersAttendees){
 	return {
 		type: types.UPDATE_ATTENDEES,
 		attendees: attendees,
 		recruitersAttendees
 	}
-}
-
-export function saveNotes(notes){
-	return (dispatch,getState) => {
-		const { user, selected_event, selectedAttendee } = getState();
-		var modifiedSelectedAttendee = {...selectedAttendee};
-		modifiedSelectedAttendee["notes"] = notes; 
-		dispatch({
-			type:types.SELECT_ATTENDEE,
-			attendee: modifiedSelectedAttendee
-		});
-	}	
 }

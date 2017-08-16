@@ -16,7 +16,10 @@ export function signOut(){
 export function getRecruiterInfo(){
 	return (dispatch, getState) => {
 		const {firebaseRef,user} = getState();
-		firebaseRef.database().ref(`recruiters/${user.uid}`).on('value',snap => {
+		firebaseRef
+		.database()
+		.ref(`recruiters/${user.uid}`)
+		.on('value',snap => {
 			var recruiter = snap.val();
 			dispatch({
 				type: types.SET_RECRUITER_INFO,
@@ -98,11 +101,20 @@ export function login(credentials){
 			firebaseRef.auth().onAuthStateChanged(
 			user => {
 				if(user){
-					dispatch({
-						type: types.USER_LOGGED_IN, 
-						user: user
+					firebaseRef
+					.database()
+					.ref(`recruiters/${user.uid}`)
+					.once('value')
+					.then((snap)=>{
+						var user_from_database = snap.val();
+						user_from_database.uid = user.uid;
+						dispatch({
+							type: types.USER_LOGGED_IN, 
+							user: user_from_database
+						})
+						AsyncStorage.setItem('user',JSON.stringify(user_from_database));
 					})
-					AsyncStorage.setItem('user',JSON.stringify(user));
+					
 				}
 			}
 		)
