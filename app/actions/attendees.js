@@ -197,7 +197,7 @@ export function notifyAttendee(attendee){
 			var recruiter_who_scanned_you = current_attendee.recruiter_who_scanned_you ? current_attendee.recruiter_who_scanned_you : [];
 			if(!_.some(recruiter_who_scanned_you,(o)=>{return _.has(o,user.email)}))
 			{
-				recruiter_who_scanned_you.push({
+				recruiter_who_scanned_you.unshift({
 					email:user.email,
 					name: user.name, 
 					company: user.company
