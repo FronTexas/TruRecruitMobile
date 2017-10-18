@@ -48,31 +48,33 @@ class Signup extends Component {
 
   _handleSignUpPress() {
 
-    // var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
-    // var proceed = true;
-    // if (!this.validateEmail(email)) {
-    //   this.setState({isEmailValid:false});
-    //   proceed = false;
-    // }
-    // if (!this.validatePassword(password)) {
-    //   this.setState({isPasswordValid:false}) 
-    //   proceed = false;
-    // }
-    // if (password != confirmedPassword) {
-    //   this.setState({isPasswordIdentical:false}) 
-    //   proceed = false
-    // }
+    var {email,firstName,lastName,company,password,confirmedPassword} = this.state;
+    var proceed = true;
+    if (!this.validateEmail(email)) {
+      this.setState({isEmailValid:false});
+      proceed = false;
+    }
+    if (!this.validatePassword(password)) {
+      this.setState({isPasswordValid:false}) 
+      proceed = false;
+    }
+    if (password != confirmedPassword) {
+      this.setState({isPasswordIdentical:false}) 
+      proceed = false
+    }
 
-    // if(!proceed){
-    //   return;
-    // }
+    if(!proceed){
+      return;
+    }
 
-    // this.setState({isWaitingForSignUpProccess:true})
-    // this.props.createNewUser(this.state);
-    this.props.login({
-      email:'forfron@gmail.com',
-      password: 'trurecruitlit'
-    })
+    this.setState({isWaitingForSignUpProccess:true})
+    this.props.createNewUser(this.state);
+
+    // This is for Dev
+    // this.props.login({
+    //   email:'forfron@gmail.com',
+    //   password: 'password123'
+    // })
   }
 
   componentDidMount(){
