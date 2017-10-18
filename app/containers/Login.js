@@ -62,10 +62,10 @@ class Login extends Component {
     //   password: this.state.password
     // })
 
-    // This login cred is just for dev
+    //This login cred is just for dev
     this.props.login({
       email:'forfron@gmail.com',
-      password: 'trurecruitlit'
+      password: 'password123'
     })
   }
 
