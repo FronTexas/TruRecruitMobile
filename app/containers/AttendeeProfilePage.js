@@ -39,6 +39,7 @@ class AttendeeProfilePage extends Component
 		this.state.scrollY = new Animated.Value(0);
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
 		this.state.prevPageShouldHideTabBar = this.props.prevPageShouldHideTabBar != null ? this.props.prevPageShouldHideTabBar: false
+		this.state.shouldUpdateAttendeePDFLocation = true;
 	}
 
 	_onStarPress(rating){
@@ -69,10 +70,9 @@ class AttendeeProfilePage extends Component
 	componentWillReceiveProps(nextProps){
 		// TODO PROBLEM MIGHT BE HERE 
 		// ComponentWillReceiveProps is called when going to ResumeViewPage, this should not happen
-
 		const { attendee,attendeePDFLocation,profilePictureURLDictionary} = nextProps;
 		if (attendee) this.setState({attendee});
-		if (attendeePDFLocation) this.setState({attendeePDFLocation});
+		if (attendeePDFLocation && this.state.shouldUpdateAttendeePDFLocation) this.setState({attendeePDFLocation});
 		if (profilePictureURLDictionary) this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendeeID]})
 	}			 	  	 	   	 	  	  		 	 	 	
 
@@ -112,113 +112,94 @@ class AttendeeProfilePage extends Component
 			<View></View>
 			return (
 				<View style={{flex:1}}>
-							<ScrollView 
-									style={{
-										backgroundColor:"#EEF1F7",
-										marginTop:NAVBAR_HEIGHT,
-									}}
-									onScroll={Animated.event(
-								      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
-								    )}
-								    scrollEventThrottle={12}
-									>
-									<View id='attendee-profile' 
-										style={{
-											alignItems: 'center',
-											marginTop:20
-										}}
-										>
-											{profPicView}
-											<Text style={styles.name}>{this.state.attendee.name}</Text>
-											<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
-									</View>
-									<View id="links-and-resume" style={{
-											flex: 1,
-											backgroundColor:"#EEF1F7",
-											paddingLeft:20,
-											paddingTop:10,
-											paddingRight:20
-										}}
-										>
-										<View id='links'>
-											{
-												linkTags
-											}
-										</View>
-										<TouchableOpacity
-											onPress={() => this.props.navigatorWrapper(true).push({
-												id: "ResumeViewPage",
-											}) }
-											style={styles.shadow}
-										>
-											{
-												this.state.attendeePDFLocation ?
-												<PDFView
-													src={this.state.attendeePDFLocation}
-													style={styles.resume_preview}
-													zoom={1}
-												>
-												</PDFView>
-												:
-												<ActivityIndicator
-													style={[{
-															    alignItems: 'center',
-															    justifyContent: 'center',
-															    flex:1
-															  },styles.resume_preview]}
-												>
-												</ActivityIndicator>
-											}
-										</TouchableOpacity>
-									</View>
-									<View style={styles.rate_area}>
-										<Text style={styles.rate_text}>
-											Rate the candidate
-										</Text>
-										<View style={{width:200}}>
-											<StarRating
-												maxStars={5}
-												rating={this.state.attendee.rating}
-												selectedStar={(rating) => this._onStarPress(rating)}
-												starSize={30}
-												starColor="#F5C87F"
-												emptyStarColor="#CCCCCC"
-												></StarRating>
-										</View>
-									</View>
-									<TouchableOpacity
-										onPress=
-										{ () => 
-											{
-												this._handleSave();
-											}
-										}
-									>
-										<View style={styles.save_button_area}>
-											<View style={styles.save_button}>
-										    	<Text style={styles.save_text}>Save</Text>
-										    </View>
-										</View>
-									</TouchableOpacity>
-							</ScrollView>
-							<Navbar 
-								onBackButtonPressed = {
-										() => { 
-											if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
-											this.props.navigatorWrapper(this.state.prevPageShouldHideTabBar).pop()
-										}
-									} 
-									navigatorWrapper={this.props.navigatorWrapper} 
-									title={this.state.attendee.name}
-									hasScrollView={true}
-									minHeight={NAVBAR_HEIGHT}
-									maxHeight={300}
-									gradient={{
-										default:'#1DBB96',
-										stretched: '#43E2BD'
-									}}
-									scrollY={this.state.scrollY}
-									></Navbar>
+					<ScrollView 
+							style={{
+								backgroundColor:"#EEF1F7",
+								marginTop:NAVBAR_HEIGHT,
+							}}
+							onScroll={Animated.event(
+						      [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
+						    )}
+						    scrollEventThrottle={12}
+							>
+							<View id='attendee-profile' 
+								style={{
+									alignItems: 'center',
+									marginTop:20
+								}}
+								>
+									{profPicView}
+									<Text style={styles.name}>{this.state.attendee.name}</Text>
+									<Text style={styles.graduation}>{this.state.attendee.summary}</Text>
+							</View>
+							<View id="links-and-resume" style={{
+									flex: 1,
+									backgroundColor:"#EEF1F7",
+									paddingLeft:20,
+									paddingTop:10,
+									paddingRight:20
+								}}
+								>
+								<View id='links'>
+									{
+										linkTags
+									}
+								</View>
+								<TouchableOpacity
+									onPress={() => this.props.navigatorWrapper(true).push({ id: "ResumeViewPage" })}
+									style={styles.shadow}
+								>
+									<View style={[styles.resume_preview,{backgroundColor:'#FFF'}]}></View>
+								</TouchableOpacity>
+							</View>
+							<View style={styles.rate_area}>
+								<Text style={styles.rate_text}>
+									Rate the candidate
+								</Text>
+								<View style={{width:200}}>
+									<StarRating
+										maxStars={5}
+										rating={this.state.attendee.rating}
+										selectedStar={(rating) => this._onStarPress(rating)}
+										starSize={30}
+										starColor="#F5C87F"
+										emptyStarColor="#CCCCCC"
+										></StarRating>
+								</View>
+							</View>
+							<TouchableOpacity
+								onPress=
+								{ () => 
+									{
+										this._handleSave();
+									}
+								}
+							>
+								<View style={styles.save_button_area}>
+									<View style={styles.save_button}>
+								    	<Text style={styles.save_text}>Save</Text>
+								    </View>
+								</View>
+							</TouchableOpacity>
+					</ScrollView>
+					<Navbar 
+						onBackButtonPressed = {
+								() => { 
+									if(this.toggleScannerPagesQRReadAlready) toggleScannerPagesQRReadAlready();
+									this.props.navigatorWrapper(this.state.prevPageShouldHideTabBar).pop()
+								}
+							} 
+							navigatorWrapper={this.props.navigatorWrapper} 
+							title={this.state.attendee.name}
+							hasScrollView={true}
+							minHeight={NAVBAR_HEIGHT}
+							maxHeight={300}
+							gradient={{
+								default:'#1DBB96',
+								stretched: '#43E2BD'
+							}}
+							scrollY={this.state.scrollY}
+							></Navbar>
 						</View>		
 		)
 	}
