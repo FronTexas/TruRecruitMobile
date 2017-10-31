@@ -4,8 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.BV.LinearGradient.LinearGradientPackage;
-<<<<<<< ours
-import com.parkerdan.htmltopdf.RNHTMLtoPDFPackage;
 import com.chirag.RNMail.RNMail;
 import com.rnziparchive.RNZipArchivePackage;
 import com.rnfs.RNFSPackage;
@@ -13,8 +11,6 @@ import com.keyee.pdfview.PDFView;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
-=======
->>>>>>> theirs
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new LinearGradientPackage(),
-            new RNHTMLtoPDFPackage(),
             new RNMail(),
             new RNZipArchivePackage(),
             new RNFSPackage(),

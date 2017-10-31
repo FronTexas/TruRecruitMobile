@@ -50,7 +50,6 @@ class AttendeeProfilePage extends Component
 	_handleSave(){
 		var scanned = this.state.attendee.scanned ? this.state.attendee.scanned : Date.now();
 		var aboutToBeSavedAttendee = {...this.state.attendee};
-		console.log(`in AttendeeProfilePage, this.state.attendee = ${JSON.stringify(this.state.attendee)}`);
 		aboutToBeSavedAttendee.scanned = scanned;
 		this.props.saveNewAttendee(aboutToBeSavedAttendee);
 		this.props.notifyAttendee(aboutToBeSavedAttendee);
