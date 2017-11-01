@@ -39,7 +39,6 @@ class AttendeeProfilePage extends Component
 		this.state.scrollY = new Animated.Value(0);
 		this.toggleScannerPagesQRReadAlready = this.props.toggleScannerPagesQRReadAlready;
 		this.state.prevPageShouldHideTabBar = this.props.prevPageShouldHideTabBar != null ? this.props.prevPageShouldHideTabBar: false
-		this.state.shouldUpdateAttendeePDFLocation = true;
 	}
 
 	_onStarPress(rating){
@@ -63,7 +62,6 @@ class AttendeeProfilePage extends Component
 		this.props.removeDownloadedResume();
  		this.props.setSelectedAttendee(this.props.attendeeID);
  		this.props.downloadProfilePic(this.props.attendeeID);
-		this.props.downloadResume();
 		this.props.hideTabBar(false);
 	}
 
@@ -72,7 +70,7 @@ class AttendeeProfilePage extends Component
 		// ComponentWillReceiveProps is called when going to ResumeViewPage, this should not happen
 		const { attendee,attendeePDFLocation,profilePictureURLDictionary} = nextProps;
 		if (attendee) this.setState({attendee});
-		if (attendeePDFLocation && this.state.shouldUpdateAttendeePDFLocation) this.setState({attendeePDFLocation});
+		if (attendeePDFLocation) this.setState({attendeePDFLocation});
 		if (profilePictureURLDictionary) this.setState({profilePictureURL:profilePictureURLDictionary[this.props.attendeeID]})
 	}			 	  	 	   	 	  	  		 	 	 	
 
@@ -149,7 +147,9 @@ class AttendeeProfilePage extends Component
 									onPress={() => this.props.navigatorWrapper(true).push({ id: "ResumeViewPage" })}
 									style={styles.shadow}
 								>
-									<View style={[styles.resume_preview,{backgroundColor:'#FFF'}]}></View>
+									<View style={[styles.resume_preview, { alignItems: 'center' }, {backgroundColor:'#FFF'}]}>
+										<Text>Click here to see resume</Text>
+									</View>
 								</TouchableOpacity>
 							</View>
 							<View style={styles.rate_area}>

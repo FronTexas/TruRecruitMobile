@@ -26,7 +26,7 @@ class ResumeViewPage extends Component{
 		{
 			isNoteTakingMode : false,
 			notes:this.props.attendee.notes ? this.props.attendee.notes : '',
-			attendeePDFLocation: this.props.attendeePDFLocation
+			attendeePDFLocation: null,
 		}
 	}
 
@@ -40,10 +40,14 @@ class ResumeViewPage extends Component{
 		this.props.navigatorWrapper(false).pop();
 	}
 
+	componentDidMount(){
+		this.props.downloadResume();
+	}
+
 	componentWillReceiveProps(nextProps){
-		const {attendeePDFLocation,attendee} = nextProps;
+		const { attendeePDFLocation, attendee } = nextProps;
 		if (attendeePDFLocation){
-			this.setState({attendeePDFLocation,notes: attendee.notes ? attendee.notes : ''})
+			this.setState({attendeePDFLocation, notes: attendee.notes ? attendee.notes : ''})
 		}
 	}
 
